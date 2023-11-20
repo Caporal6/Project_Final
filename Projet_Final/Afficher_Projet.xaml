@@ -11,5 +11,10 @@
 
     <Grid Background="Blue">
 
+        <TextBlock>Afficher Projets</TextBlock>
+        
+        
+        
+        
     </Grid>
 </Page>
