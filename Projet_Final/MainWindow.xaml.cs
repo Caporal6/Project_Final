@@ -33,22 +33,19 @@ namespace Projet_Final
         {
             var item = (NavigationViewItem)args.SelectedItem;
 
-            /*
+            
             switch (item.Name)
             {
-                case "iClients":
-                    mainFrame.Navigate(typeof(Page1));
+                case "AjProjet":
+                    mainFrame.Navigate(typeof(Ajouter_Projet));
                     break;
-                case "iAgenda":
-                    mainFrame.Navigate(typeof(Page2));
-                    break;
-                case "iAgenda2":
-                    mainFrame.Navigate(typeof(Page4));
+                case "AfProjet":
+                    mainFrame.Navigate(typeof(Afficher_Projet));
                     break;
                 default:
                     break;
             }
-            */
+            
 
         }
     }

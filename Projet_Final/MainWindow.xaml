@@ -16,9 +16,12 @@
     <NavigationView PaneDisplayMode="Left" PaneTitle="Joueur" x:Name="navView" SelectionChanged="navView_SelectionChanged" >
         <NavigationView.MenuItems>
             <NavigationViewItemHeader Content="Zone 1"/>
-            <NavigationViewItem Content="Ajouter" x:Name="iClients" Icon="People"/>
-            <NavigationViewItem Content="Joueur" x:Name="iAgenda" Icon="Calendar"/>
-            <NavigationViewItem Content="Joueur" x:Name="iAgenda2" Icon="Calendar"/>
+            <NavigationViewItem Content="Ajouter Projet" x:Name="AjProjet" Icon="People"/>
+            <NavigationViewItem Content="Afficher Projet" x:Name="AfProjet" Icon="Calendar"/>
+            <NavigationViewItem Content="Ajouter Employer" x:Name="AjEmployer" Icon="Calendar"/>
+            <NavigationViewItem Content="Afficher Employer" x:Name="AfEmployer" Icon="Calendar"/>
+            <NavigationViewItem Content="Ajouter Clients" x:Name="AjClient" Icon="Calendar"/>
+            <NavigationViewItem Content="Afficher Clients" x:Name="AfClient" Icon="Calendar"/>
         </NavigationView.MenuItems>
 
         <Frame x:Name="mainFrame" Grid.Row="1" />
