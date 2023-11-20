@@ -42,6 +42,18 @@ namespace Projet_Final
                 case "AfProjet":
                     mainFrame.Navigate(typeof(Afficher_Projet));
                     break;
+                case "AjClient":
+                    mainFrame.Navigate(typeof(Ajouter_Client));
+                    break;
+                case "AfClient":
+                    mainFrame.Navigate(typeof(Afficher_Client));
+                    break;
+                case "AjEmployer":
+                    mainFrame.Navigate(typeof(Ajouter_Employer));
+                    break;
+                case "AfEmployer":
+                    mainFrame.Navigate(typeof(Afficher_Employer));
+                    break;
                 default:
                     break;
             }
