@@ -12,8 +12,12 @@
     <EnableMsixTooling>true</EnableMsixTooling>
   </PropertyGroup>
   <ItemGroup>
+    <Content Remove="Assets\Add.svg" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove="Afficher_Projet.xaml" />
     <None Remove="Ajouter_Projet.xaml" />
+    <None Remove="Employe\MenuGestionEmploye.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,12 +45,22 @@
     <ProjectCapability Include="Msix" />
   </ItemGroup>
   <ItemGroup>
+    <None Update="Assets\Add.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
     <Page Update="Ajouter_Projet.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Afficher_Projet.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Employe\MenuGestionEmploye.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

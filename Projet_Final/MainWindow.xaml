@@ -15,11 +15,15 @@
     
     <NavigationView PaneDisplayMode="Left" PaneTitle="Joueur" x:Name="navView" SelectionChanged="navView_SelectionChanged" >
         <NavigationView.MenuItems>
+            <NavigationViewItemHeader Content="Gestion des employees"/>
+            <NavigationViewItem Content="Gestion des employees" x:Name="gestionEmploye" Icon="OtherUser"/>
+
             <NavigationViewItemHeader Content="Zone 1"/>
             <NavigationViewItem Content="Ajouter" x:Name="iClients" Icon="People"/>
             <NavigationViewItem Content="Joueur" x:Name="iAgenda" Icon="Calendar"/>
             <NavigationViewItem Content="Joueur" x:Name="iAgenda2" Icon="Calendar"/>
         </NavigationView.MenuItems>
+
 
         <Frame x:Name="mainFrame" Grid.Row="1" />
     </NavigationView>
