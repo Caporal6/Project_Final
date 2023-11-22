@@ -25,19 +25,19 @@
         </Grid.RowDefinitions>
 
         <!-- Nom -->
-        <TextBlock Grid.Column="0" Grid.Row="0" Margin="5" VerticalAlignment="Center" Text="Nom :"/>
+        <TextBlock Grid.Column="0" Grid.Row="0" Margin="5" VerticalAlignment="Center" Text="Nom :" x:Name="Nom"/>
         <TextBox Grid.Column="1" Grid.Row="0" Margin="5" VerticalAlignment="Center" Name="txtNom"/>
 
         <!-- Adresse -->
-        <TextBlock Grid.Column="0" Grid.Row="1" Margin="5" VerticalAlignment="Center" Text="Adresse :"/>
+        <TextBlock Grid.Column="0" Grid.Row="1" Margin="5" VerticalAlignment="Center" Text="Adresse :" x:Name="Adresse"/>
         <TextBox Grid.Column="1" Grid.Row="1" Margin="5" VerticalAlignment="Center" Name="txtAdresse"/>
 
         <!-- Numéro de téléphone -->
-        <TextBlock Grid.Column="0" Grid.Row="2" Margin="5" VerticalAlignment="Center" Text="Téléphone :"/>
+        <TextBlock Grid.Column="0" Grid.Row="2" Margin="5" VerticalAlignment="Center" Text="Téléphone :" x:Name="Telephone"/>
         <TextBox Grid.Column="1" Grid.Row="2" Margin="5" VerticalAlignment="Center" Name="txtTelephone"/>
 
         <!-- Email -->
-        <TextBlock Grid.Column="0" Grid.Row="3" Margin="5" VerticalAlignment="Center" Text="Email :"/>
+        <TextBlock Grid.Column="0" Grid.Row="3" Margin="5" VerticalAlignment="Center" Text="Email :" x:Name="Email"/>
         <TextBox Grid.Column="1" Grid.Row="3" Margin="5" VerticalAlignment="Center" Name="txtEmail"/>
 
         <!-- Bouton pour soumettre le formulaire -->

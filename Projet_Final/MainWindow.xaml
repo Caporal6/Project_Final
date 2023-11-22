@@ -22,6 +22,7 @@
             <NavigationViewItem Content="Afficher Employer" x:Name="AfEmployer" Icon="Calendar"/>
             <NavigationViewItem Content="Ajouter Clients" x:Name="AjClient" Icon="Calendar"/>
             <NavigationViewItem Content="Afficher Clients" x:Name="AfClient" Icon="Calendar"/>
+            
         </NavigationView.MenuItems>
 
         <Frame x:Name="mainFrame" Grid.Row="1" />
