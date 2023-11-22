@@ -56,7 +56,29 @@ namespace Projet_Final
 
 
 
+        public void afficher_Client()
+        {
+            try
+            {
+                MySqlCommand commande = new MySqlCommand();
+                commande.Connection = con;
+                commande.CommandText = "Select * from clients";
+                con.Open();
+                MySqlDataReader r = commande.ExecuteReader();
+                while (r.Read())
+                {
+                    //lvListe.Items.Add(r["id"] + " " + r["nom"] + " " + r["prenom"]);
+                }
 
+                r.Close();
+                con.Close();
+            }
+            catch (MySqlException ex)
+            {
+                con.Close();
+            }
+
+        }
 
 
 
