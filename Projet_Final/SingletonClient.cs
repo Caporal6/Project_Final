@@ -46,13 +46,13 @@ namespace Projet_Final
 
 
 
-        public void ajouter_Client(string nom,string adresse, string num, string email)
+        public void ajouter_Client(string nom, string adresse, string num, string email)
         {
             try
             {
                 MySqlCommand commande = new MySqlCommand();
                 commande.Connection = con;
-                commande.CommandText = "insert into client values(@nom, @adresse, @num, @email) ";
+                commande.CommandText = "CALL AjouterClient(0,@nom, @adresse, @num, @email)";
 
                 commande.Parameters.AddWithValue("@nom", nom);
                 commande.Parameters.AddWithValue("@adresse", adresse);
@@ -82,7 +82,7 @@ namespace Projet_Final
                 ObservableCollection<Client> liste2 = new ObservableCollection<Client>();
                 MySqlCommand commande = new MySqlCommand();
                 commande.Connection = con;
-                commande.CommandText = "Select * from client";
+                commande.CommandText = "CALL GetClientList()";
                 con.Open();
                 MySqlDataReader r = commande.ExecuteReader();
                 while (r.Read())
