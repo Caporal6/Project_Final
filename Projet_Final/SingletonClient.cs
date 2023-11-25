@@ -28,30 +28,20 @@ namespace Projet_Final
             return instance;
         }
 
-
+        //Retourne la liste (pas super important)
         public ObservableCollection<Client> GetListeClients()
         {
             return liste;
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
+        /*------------------Ajoute les Clients-----------------------------*/
         public void ajouter_Client(string nom, string adresse, string num, string email)
         {
             try
             {
                 MySqlCommand commande = new MySqlCommand();
                 commande.Connection = con;
+                /*------------------------Procedure stockes-----------------------------------*/
                 commande.CommandText = "CALL AjouterClient(0,@nom, @adresse, @num, @email)";
 
                 commande.Parameters.AddWithValue("@nom", nom);
@@ -73,7 +63,7 @@ namespace Projet_Final
         }
 
 
-
+        /*--------------------------Retourne la liste des Clients------------------------*/
         public ObservableCollection<Client> afficher_Client()
         {
 
