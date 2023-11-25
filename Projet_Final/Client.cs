@@ -8,11 +8,21 @@ namespace Projet_Final
 {
     class Client
     {
-        private int id;
-        private string nom;
-        private string adresse;
-        private string num;
-        private string email;
+         int id;
+         string nom;
+         string adresse;
+         string num;
+         string email;
+
+        public Client() 
+        { 
+            id = 0;
+            nom = "";
+            adresse = "";
+            num = "";
+            email = string.Empty;
+        
+        }
 
         public Client(int id, string nom, string adresse, string num, string email)
         {

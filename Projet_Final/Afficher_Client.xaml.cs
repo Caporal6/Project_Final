@@ -12,6 +12,7 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using System.Collections.ObjectModel;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -26,6 +27,19 @@ namespace Projet_Final
         public Afficher_Client()
         {
             this.InitializeComponent();
+            lvClients.ItemsSource = SingletonClient.getInstance().afficher_Client();
+
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            
+
+        }
+
+        private void lvClients_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }
