@@ -56,7 +56,7 @@ namespace Projet_Final
 
         public override string ToString()
         {
-            return $"Id: {Id} Nom: {Nom}";
+            return $"Id: {Id} \nNom: {Nom} \nAdresse: {Adresse} \nNumero de telephone: {Num} \nEmail {Email}";
         }
     }
 }
