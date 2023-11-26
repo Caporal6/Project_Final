@@ -208,6 +208,66 @@ END;
 
 DELIMITER ;
 
+
+/*************Procedure stocker sur la table Client**************/
+
+/*------------Retourne la liste de Client----------------------*/
+
+CREATE PROCEDURE GetClientList()
+BEGIN
+    SELECT * FROM Client;
+END;
+
+/*------------Creer un nouveau Client----------------------*/
+
+CREATE PROCEDURE AjouterClient(
+    IN c_Identifiant     INT,
+    IN c_Nom             VARCHAR(50),
+    IN c_Adresse         VARCHAR(200),
+    IN c_NumeroTelephone VARCHAR(15),
+    IN c_Email           VARCHAR(100)
+)
+BEGIN
+    INSERT INTO Client (
+        Identifiant,
+        Nom,
+        Adresse,
+        NumeroTelephone,
+        Email
+    ) VALUES (
+         c_Identifiant,
+         c_Nom,
+         c_Adresse,
+         c_NumeroTelephone,
+         c_Email
+    );
+END;
+
+
+
+/*------------Modifier les informations d'un Client----------------------*/
+
+
+CREATE PROCEDURE ModifierInformationsClient(
+    IN c_Identifiant     INT,
+    IN c_Nom             VARCHAR(50),
+    IN c_Adresse         VARCHAR(200),
+    IN c_NumeroTelephone VARCHAR(15),
+    IN c_Email           VARCHAR(100)
+)
+BEGIN
+    UPDATE Client
+    SET
+        Identifiant = c_Identifiant,
+        Nom = c_Nom,
+        Adresse = c_Adresse,
+        NumeroTelephone = c_NumeroTelephone,
+        Email = c_Email
+    WHERE Identifiant = c_Identifiant;
+END;
+
+
+
 /*Creation de la table Projet*/
 DROP TABLE IF EXISTS Projet;
 CREATE TABLE Projet
