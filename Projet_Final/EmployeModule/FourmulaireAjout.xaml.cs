@@ -32,5 +32,15 @@ namespace Projet_Final.EmployeModule
         {
 
         }
+
+        private void dpDateEmbauche_DateChanged(object sender, DatePickerValueChangedEventArgs e)
+        {
+
+        }
+
+        private void cbStatut_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }
