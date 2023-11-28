@@ -9,7 +9,7 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid Background="White">
+    <Grid x:Name="mainGrid" Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
@@ -32,8 +32,10 @@
 
 
 
-        <StackPanel Grid.Row="0" Grid.Column="1" Background="Fuchsia" Height="250" Width="250" Margin="0 110 300 0">
+        <StackPanel x:Name="ajouterEmploye" Grid.Row="0" Grid.Column="1" Background="Fuchsia" Height="250" Width="250" Margin="0 110 300 0" IsTapEnabled="True" Tapped="ajouterEmploye_Tapped">
+            <FontIcon FontSize="40"  FontFamily="Segoe MDL2 Assets"  Glyph="&#xE790;"/>
 
+            <TextBlock VerticalAlignment="Center"  HorizontalAlignment="Center">Ajouter un employer</TextBlock>
         </StackPanel>
 
         <StackPanel Grid.Row="1" Grid.Column="0" Background="GreenYellow" Height="250" Width="250" Margin="290 0 0 100">

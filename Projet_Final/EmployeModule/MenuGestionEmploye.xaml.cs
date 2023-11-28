@@ -5,6 +5,7 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using Projet_Final.EmployeModule;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -31,6 +32,15 @@ namespace Projet_Final.Employe
         private void listEmploye_Tapped(object sender, TappedRoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(ListeEmploye));
+        }
+
+        private async void ajouterEmploye_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            FourmulaireAjout dialog = new FourmulaireAjout();
+            dialog.XamlRoot = mainGrid.XamlRoot;
+            dialog.Title = "Ajouter un employer";
+           
+            var result = await dialog.ShowAsync();
         }
     }
 }
