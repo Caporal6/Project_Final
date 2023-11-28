@@ -22,7 +22,7 @@
 
         <StackPanel Orientation="Vertical"   Grid.Row="0" Grid.Column="0" Background="LightGray" Height="250" Width="250" Margin="290 110 0 0">
 
-            <FontIcon FontSize="13" FontFamily="Segoe MDL2 Assets"  Glyph="&#xE790;"/>
+            <FontIcon FontSize="40" FontFamily="Segoe MDL2 Assets"  Glyph="&#xE790;"/>
 
             <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">Liste des employees</TextBlock>
 
