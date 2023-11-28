@@ -37,7 +37,7 @@ namespace Projet_Final
             liste.Clear();
             try
             {
-                MySqlCommand commande = new MySqlCommand("ObtenirTousLesProduits");
+                MySqlCommand commande = new MySqlCommand("GetEmployeeList");
                 commande.Connection = con;
                 //commande.CommandText = "Select * from produits";
                 commande.CommandType = System.Data.CommandType.StoredProcedure;
@@ -50,11 +50,11 @@ namespace Projet_Final
                     {
                         Matricule = r["Matricule"] as String,
                         Nom = r["Nom"] as String,
-                        Prenom = r["Meuble"] as String,
-                        DateNaissance = r["Categorie"] as String,
+                        Prenom = r["Prenom"] as String,
+                        DateNaissance = r["DateNaissance"] as String,
                         Email = r["Email"] as String,
                         Adresse = r["Adresse"] as String,
-                        DateEmbauche = r["Adresse"] as String,
+                        DateEmbauche = r["DateEmbauche"] as String,
                         TauxHoraire = Convert.ToDouble(r["TauxHoraire"], CultureInfo.InvariantCulture),
                         PhotoIdentite = r["PhotoIdentite"] as String,
                         Statut = r["Statut"] as String,

@@ -20,13 +20,17 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Orientation="Vertical"   Grid.Row="0" Grid.Column="0" Background="LightGray" Height="250" Width="250" Margin="290 110 0 0">
+        <!--<Border BorderThickness="3" Grid.Row="0" Grid.Column="0" Height="250" Width="250" BorderBrush="#FF006400" Background="#FFFFFFFF"  >-->
+        <StackPanel x:Name="listEmploye" Orientation="Vertical"  Grid.Row="0" Grid.Column="0" Background="LightGray" Height="250" Width="250" Margin="290 110 0 0" IsTapEnabled="True" Tapped="listEmploye_Tapped">
 
-            <FontIcon FontSize="40" FontFamily="Segoe MDL2 Assets"  Glyph="&#xE790;"/>
+                <FontIcon FontSize="40"  FontFamily="Segoe MDL2 Assets"  Glyph="&#xE790;"/>
 
-            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">Liste des employees</TextBlock>
+                <TextBlock VerticalAlignment="Center"  HorizontalAlignment="Center">Liste des employees</TextBlock>
 
-        </StackPanel>
+            </StackPanel>
+        <!--</Border>-->
+
+
 
         <StackPanel Grid.Row="0" Grid.Column="1" Background="Fuchsia" Height="250" Width="250" Margin="0 110 300 0">
 

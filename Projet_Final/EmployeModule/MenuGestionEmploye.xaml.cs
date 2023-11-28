@@ -27,5 +27,10 @@ namespace Projet_Final.Employe
         {
             this.InitializeComponent();
         }
+
+        private void listEmploye_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(ListeEmploye));
+        }
     }
 }
