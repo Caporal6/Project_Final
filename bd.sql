@@ -213,10 +213,18 @@ DELIMITER ;
 
 /*------------Retourne la liste de Client----------------------*/
 
+/*----------View-----------*/
+CREATE VIEW GetClient
+AS SELECT * FROM Client;
+
+DROP PROCEDURE IF EXISTS GetClientList;
+
 CREATE PROCEDURE GetClientList()
 BEGIN
-    SELECT * FROM Client;
+    SELECT * FROM GetClient;
 END;
+
+
 
 /*------------Creer un nouveau Client----------------------*/
 
