@@ -39,7 +39,6 @@ namespace Projet_Final
             {
                 MySqlCommand commande = new MySqlCommand("GetEmployeeList");
                 commande.Connection = con;
-                //commande.CommandText = "Select * from produits";
                 commande.CommandType = System.Data.CommandType.StoredProcedure;
                 con.Open();
                 MySqlDataReader r = commande.ExecuteReader();
@@ -51,10 +50,10 @@ namespace Projet_Final
                         Matricule = r["Matricule"] as String,
                         Nom = r["Nom"] as String,
                         Prenom = r["Prenom"] as String,
-                        DateNaissance = r["DateNaissance"] as String,
+                        DateNaissance = Convert.ToDateTime(r["DateNaissance"]),
                         Email = r["Email"] as String,
                         Adresse = r["Adresse"] as String,
-                        DateEmbauche = r["DateEmbauche"] as String,
+                        DateEmbauche = Convert.ToDateTime(r["DateEmbauche"]),
                         TauxHoraire = Convert.ToDouble(r["TauxHoraire"], CultureInfo.InvariantCulture),
                         PhotoIdentite = r["PhotoIdentite"] as String,
                         Statut = r["Statut"] as String,
@@ -77,6 +76,39 @@ namespace Projet_Final
             }
 
             return liste;
+        }
+
+        // Ajoute un Employe dans la BD
+        public void Ajouter(EmployeC employe)
+        {
+            try
+            {
+                MySqlCommand commande = new MySqlCommand("AjouterEmploye");
+                commande.Connection = con;
+                commande.CommandType = System.Data.CommandType.StoredProcedure;
+
+                commande.Parameters.AddWithValue("@p_Nom", employe.Nom);
+                commande.Parameters.AddWithValue("@p_Prenom", employe.Prenom);
+                commande.Parameters.AddWithValue("@p_DateNaissance", employe.DateNaissance);
+                commande.Parameters.AddWithValue("@p_Email", employe.Email);
+                commande.Parameters.AddWithValue("@p_Adresse", employe.Adresse);
+                commande.Parameters.AddWithValue("@p_DateEmbauche", employe.DateNaissance);
+                commande.Parameters.AddWithValue("@p_TauxHoraire", employe.TauxHoraire);
+                commande.Parameters.AddWithValue("@p_PhotoIdentite", employe.PhotoIdentite);
+                commande.Parameters.AddWithValue("@p_Statut", employe.Statut);
+
+                con.Open();
+                commande.Prepare();
+                commande.ExecuteNonQuery();
+                con.Close();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                con.Close();
+            }
+
+            liste.Add(employe);
         }
     }
 }

@@ -12,10 +12,10 @@ namespace Projet_Final
         public string Matricule { get; set; }
         public string Nom { get; set; }
         public string Prenom { get; set; }
-        public string DateNaissance { get; set; }
+        public DateTime DateNaissance { get; set; }
         public string Email { get; set; }
         public string Adresse { get; set; }
-        public string DateEmbauche { get; set; }
+        public DateTime DateEmbauche { get; set; }
         public double TauxHoraire { get; set; }
         public string PhotoIdentite { get; set; }
         public string Statut { get; set; }

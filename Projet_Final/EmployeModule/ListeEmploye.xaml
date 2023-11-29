@@ -18,43 +18,41 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Row="0" Grid.Column="1"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" Height="Auto">
 
-            <ListView x:Name="lvEmploye" ItemsSource="{x:Bind listeEmployes}"   IsItemClickEnabled="True">
-                <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="local:EmployeC">
-                        <Grid Width="300" Background="White" CornerRadius="8" BorderThickness="1" BorderBrush="LightGray" Margin="16">
+        <ListView x:Name="lvEmploye" ItemsSource="{x:Bind listeEmployes}"   IsItemClickEnabled="True">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="local:EmployeC">
+                    <Grid Width="300" Background="White" CornerRadius="8" BorderThickness="1" BorderBrush="LightGray" Margin="16">
 
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
 
-                            <StackPanel>
+                        <StackPanel>
 
-                                <!--Image de l'événement (si nécessaire)-->
-                                <!--<Image Source="{x:Bind Image}" Stretch="UniformToFill" Height="120" />-->
+                            <!--Image de l'événement (si nécessaire)-->
+                            <!--<Image Source="{x:Bind Image}" Stretch="UniformToFill" Height="120" />-->
 
-                                <!--Nom de l'employe-->
-                                <TextBlock x:Name="eventName" Text="{x:Bind Matricule}" FontSize="20" FontWeight="Bold" Margin="12,8,12,0" />
+                            <!--Nom de l'employe-->
+                            <TextBlock x:Name="eventName" Text="{x:Bind Matricule}" FontSize="20" FontWeight="Bold" Margin="12,8,12,0" />
 
-                                <!--Lieu de l'événement-->
-                                <TextBlock x:Name="eventDate" Text="{x:Bind Nom}" FontSize="15" Margin="12,4,12,0" Grid.Row="1" />
+                            <!--Lieu de l'événement-->
+                            <TextBlock x:Name="eventDate" Text="{x:Bind Nom}" FontSize="15" Margin="12,4,12,0" Grid.Row="1" />
 
-                                <!--Date de l'événement-->
+                            <!--Date de l'événement-->
 
-                                <TextBlock x:Name="eventTime" Text="{x:Bind Prenom}" FontSize="15" Margin="12,4,12,12" Grid.Row="2" />
+                            <TextBlock x:Name="eventTime" Text="{x:Bind Prenom}" FontSize="15" Margin="12,4,12,12" Grid.Row="2" />
 
-                            </StackPanel>
+                        </StackPanel>
 
-                        </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
 
     </Grid>
 </Page>
