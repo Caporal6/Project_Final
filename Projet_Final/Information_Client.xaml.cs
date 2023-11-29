@@ -23,6 +23,7 @@ namespace Projet_Final
     /// </summary>
     public sealed partial class Information_Client : Page
     {
+
         public Information_Client()
         {
             this.InitializeComponent();
@@ -37,5 +38,21 @@ namespace Projet_Final
             }
         }
 
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Modifier_Client dialog = new Modifier_Client();
+            dialog.XamlRoot = stkpnl.XamlRoot;
+            dialog.Title = "Modifier un client";
+            dialog.PrimaryButtonText = "Oui";
+            dialog.CloseButtonText = "Modifier";
+            dialog.DefaultButton = ContentDialogButton.Primary;
+
+            ContentDialogResult result = await dialog.ShowAsync();
+            
+            if(result == ContentDialogResult.Primary)
+            {
+                tbxText.Text = "Nom: " + dialog.Nom + "Adresse: " + dialog.Adresse;
+            }
+        }
     }
 }

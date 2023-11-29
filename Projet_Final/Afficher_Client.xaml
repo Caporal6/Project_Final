@@ -9,8 +9,9 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
+    <ScrollView>
         <StackPanel>
+
             <ListView x:Name="lvClients" SelectionChanged="lvClients_SelectionChanged">
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="local:Client">
@@ -25,7 +26,8 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+           
         </StackPanel>
+    </ScrollView>
 
-    </Grid>
 </Page>

@@ -9,17 +9,20 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
+    <StackPanel x:Name="stkpnl">
 
         <TextBlock x:Name="tbId"></TextBlock>
         <TextBlock x:Name="tbNom"></TextBlock>
         <TextBlock x:Name="tbAdresse"></TextBlock>
         <TextBlock x:Name="tbNum"></TextBlock>
         <TextBlock x:Name="tbEmail"></TextBlock>
+        <TextBlock x:Name="tbxText" />
+        
+        <Button Click="Button_Click">Modifier</Button>
 
-        
-        
-        
-        
-    </Grid>
+
+
+
+
+    </StackPanel>
 </Page>
