@@ -17,6 +17,7 @@
   <ItemGroup>
     <None Remove="Afficher_Projet.xaml" />
     <None Remove="Ajouter_Projet.xaml" />
+    <None Remove="EmployeModule\DetailEmploye.xaml" />
     <None Remove="EmployeModule\FourmulaireAjout.xaml" />
     <None Remove="EmployeModule\ListeEmploye.xaml" />
     <None Remove="EmployeModule\MenuGestionEmploye.xaml" />
@@ -51,6 +52,9 @@
     <None Update="Assets\Add.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="EmployeModule\DetailEmploye.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="EmployeModule\FourmulaireAjout.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

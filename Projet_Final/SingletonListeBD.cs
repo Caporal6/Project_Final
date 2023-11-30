@@ -110,5 +110,56 @@ namespace Projet_Final
 
             liste.Add(employe);
         }
+
+        public EmployeC RetourneUnEmploye(String Matricule)
+        {
+
+            EmployeC employe = new EmployeC();
+
+            try
+            {
+                MySqlCommand commande = new MySqlCommand("ObtenirEmployeParMatricule");
+                commande.Connection = con;
+                commande.CommandType = System.Data.CommandType.StoredProcedure;
+
+                commande.Parameters.AddWithValue("@MatriculeParam", Matricule);
+
+                con.Open();
+                commande.Prepare();
+                MySqlDataReader r = commande.ExecuteReader();
+                
+                while (r.Read())
+                {
+                    employe = new EmployeC
+                    {
+                        Matricule = r["Matricule"] as String,
+                        Nom = r["Nom"] as String,
+                        Prenom = r["Prenom"] as String,
+                        DateNaissance = Convert.ToDateTime(r["DateNaissance"]),
+                        Email = r["Email"] as String,
+                        Adresse = r["Adresse"] as String,
+                        DateEmbauche = Convert.ToDateTime(r["DateEmbauche"]),
+                        TauxHoraire = Convert.ToDouble(r["TauxHoraire"], CultureInfo.InvariantCulture),
+                        PhotoIdentite = r["PhotoIdentite"] as String,
+                        Statut = r["Statut"] as String,
+                        ProjetId = r["ProjetId"] as String,
+                    };
+
+                }
+
+                r.Close();
+                con.Close();
+            }
+            catch (MySqlException ex)
+            {
+                Debug.WriteLine(ex.Message);
+                if (con.State == System.Data.ConnectionState.Open)
+                {
+                    con.Close();
+                }
+            }
+
+            return employe;
+        }
     }
 }

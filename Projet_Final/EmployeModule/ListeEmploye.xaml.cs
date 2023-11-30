@@ -14,6 +14,8 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Reflection;
+using Projet_Final.EmployeModule;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -26,12 +28,30 @@ namespace Projet_Final.Employe
     public sealed partial class ListeEmploye : Page
     {
         ObservableCollection<EmployeC> listeEmployes = SingletonListeBD.GetInstance().ListeEmployees();
+        int index = 0;
+        Boolean cliked = false;
         public ListeEmploye()
         {
             this.InitializeComponent();
 
-            Debug.WriteLine(listeEmployes.Count.ToString());
+            Console.WriteLine(listeEmployes.Count.ToString());
         }
 
+        private void gvListeEmploye_ItemClick(object sender, ItemClickEventArgs e)
+        {
+
+            cliked = true;
+        }
+
+        private void gvListeEmploye_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cliked)
+            {
+                index = gvListeEmploye.SelectedIndex;
+                this.Frame.Navigate(typeof(DetailEmploye), listeEmployes[index].Matricule);
+
+            }
+            cliked = false;
+        }
     }
 }

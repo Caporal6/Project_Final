@@ -260,5 +260,10 @@ namespace Projet_Final.EmployeModule
         {
             dateNaissanceChange = true;
         }
+
+        private void fermer_Click(object sender, RoutedEventArgs e)
+        {
+            this.Hide();
+        }
     }
 }

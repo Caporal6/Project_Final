@@ -18,41 +18,44 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-
-        <ListView x:Name="lvEmploye" ItemsSource="{x:Bind listeEmployes}"   IsItemClickEnabled="True">
-            <ListView.ItemTemplate>
+        <GridView  x:Name="gvListeEmploye" ItemClick="gvListeEmploye_ItemClick" SelectionChanged="gvListeEmploye_SelectionChanged" IsItemClickEnabled="True" ItemsSource="{x:Bind listeEmployes}">
+            <GridView.ItemTemplate>
                 <DataTemplate x:DataType="local:EmployeC">
-                    <Grid Width="300" Background="White" CornerRadius="8" BorderThickness="1" BorderBrush="LightGray" Margin="16">
+                    <GridViewItem>
+                        <Border BorderBrush="LightGray" Background="White" BorderThickness="2" CornerRadius="4" Margin="5">
+                            <Grid Width="300" Background="White" CornerRadius="8" Margin="16">
 
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
 
-                        <StackPanel>
+                                <StackPanel Background="White">
 
-                            <!--Image de l'événement (si nécessaire)-->
-                            <!--<Image Source="{x:Bind Image}" Stretch="UniformToFill" Height="120" />-->
 
-                            <!--Nom de l'employe-->
-                            <TextBlock x:Name="eventName" Text="{x:Bind Matricule}" FontSize="20" FontWeight="Bold" Margin="12,8,12,0" />
+                                    <!--<Image Source="{x:Bind PhotoIdentite}" Stretch="UniformToFill" Height="120" />-->
 
-                            <!--Lieu de l'événement-->
-                            <TextBlock x:Name="eventDate" Text="{x:Bind Nom}" FontSize="15" Margin="12,4,12,0" Grid.Row="1" />
+                                    <!--Nom de l'employe-->
+                                    <TextBlock x:Name="eventName" Text="{x:Bind Matricule}" FontSize="20" FontWeight="Bold" Margin="12,8,12,0" />
 
-                            <!--Date de l'événement-->
+                                    <!--Lieu de l'événement-->
+                                    <TextBlock x:Name="eventDate" Text="{x:Bind Nom}" FontSize="15" Margin="12,4,12,0" Grid.Row="1" />
 
-                            <TextBlock x:Name="eventTime" Text="{x:Bind Prenom}" FontSize="15" Margin="12,4,12,12" Grid.Row="2" />
+                                    <!--Date de l'événement-->
 
-                        </StackPanel>
+                                    <TextBlock x:Name="eventTime" Text="{x:Bind Prenom}" FontSize="15" Margin="12,4,12,12" Grid.Row="2" />
 
-                    </Grid>
+                                </StackPanel>
+
+                            </Grid>
+                        </Border>
+                    </GridViewItem>
                 </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+            </GridView.ItemTemplate>
+        </GridView>
 
     </Grid>
 </Page>
