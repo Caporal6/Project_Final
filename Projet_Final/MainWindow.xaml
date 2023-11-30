@@ -15,6 +15,9 @@
     
     <NavigationView PaneDisplayMode="Left" PaneTitle="Joueur" x:Name="navView" SelectionChanged="navView_SelectionChanged" BackRequested="navView_BackRequested" IsBackEnabled="True" >
         <NavigationView.MenuItems>
+            <NavigationViewItemHeader Content="Gestion des employees"/>
+            <NavigationViewItem Content="Gestion des employees" x:Name="gestionEmploye" Icon="OtherUser"/>
+
             <NavigationViewItemHeader Content="Zone 1"/>
             <NavigationViewItem Content="Ajouter Projet" x:Name="AjProjet" Icon="People"/>
             <NavigationViewItem Content="Afficher Projet" x:Name="AfProjet" Icon="Calendar"/>
@@ -24,6 +27,7 @@
             <NavigationViewItem Content="Afficher Clients" x:Name="AfClient" Icon="Calendar"/>
             
         </NavigationView.MenuItems>
+
 
         <Frame x:Name="mainFrame" Grid.Row="1" />
     </NavigationView>

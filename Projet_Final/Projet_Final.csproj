@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows10.0.19041.0</TargetFramework>
@@ -12,14 +12,26 @@
     <EnableMsixTooling>true</EnableMsixTooling>
   </PropertyGroup>
   <ItemGroup>
+
+    <Content Remove="Assets\Add.svg" />
+  </ItemGroup>
+  <ItemGroup>
+
     <None Remove="Afficher_Client.xaml" />
-    <None Remove="Afficher_Employer.xaml" />
+
     <None Remove="Afficher_Projet.xaml" />
     <None Remove="Ajouter_Client.xaml" />
     <None Remove="Ajouter_Employer.xaml" />
     <None Remove="Ajouter_Projet.xaml" />
+
+    <None Remove="EmployeModule\DetailEmploye.xaml" />
+    <None Remove="EmployeModule\FourmulaireAjout.xaml" />
+    <None Remove="EmployeModule\ListeEmploye.xaml" />
+    <None Remove="EmployeModule\MenuGestionEmploye.xaml" />
+
     <None Remove="Information_Client.xaml" />
     <None Remove="Modifier_Client.xaml" />
+
   </ItemGroup>
 
   <ItemGroup>
@@ -48,6 +60,18 @@
     <ProjectCapability Include="Msix" />
   </ItemGroup>
   <ItemGroup>
+    <None Update="Assets\Add.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <Page Update="EmployeModule\DetailEmploye.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="EmployeModule\FourmulaireAjout.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Employe\ListeEmploye.xaml">
+		<Generator>MSBuild:Compile</Generator>
+	</Page>
     <Page Update="Modifier_Client.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -74,6 +98,7 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="Ajouter_Client.xaml">
+
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
@@ -84,6 +109,11 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="Afficher_Projet.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Employe\MenuGestionEmploye.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
