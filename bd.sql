@@ -98,9 +98,8 @@ BEGIN
 END;
 
 /*------------Creer un nouvel employe----------------------*/
-
+DROP PROCEDURE IF EXISTS AjouterEmploye;
 CREATE PROCEDURE AjouterEmploye(
-    IN p_Matricule VARCHAR(20),
     IN p_Nom VARCHAR(50),
     IN p_Prenom VARCHAR(50),
     IN p_DateNaissance DATE,
@@ -113,7 +112,7 @@ CREATE PROCEDURE AjouterEmploye(
 )
 BEGIN
     INSERT INTO Employe (
-        Matricule,
+
         Nom,
         Prenom,
         DateNaissance,
@@ -125,18 +124,18 @@ BEGIN
         Statut,
         ProjetId
     ) VALUES (
-        p_Matricule,
-        p_Nom,
-        p_Prenom,
-        p_DateNaissance,
-        p_Email,
-        p_Adresse,
-        p_DateEmbauche,
-        p_TauxHoraire,
-        p_PhotoIdentite,
-        p_Statut,
-        NULL
-    );
+
+                 p_Nom,
+                 p_Prenom,
+                 p_DateNaissance,
+                 p_Email,
+                 p_Adresse,
+                 p_DateEmbauche,
+                 p_TauxHoraire,
+                 p_PhotoIdentite,
+                 p_Statut,
+                 NULL
+             );
 END;
 
 /*------------Modifier les informations d'un employe----------------------*/
@@ -164,6 +163,21 @@ BEGIN
         Statut = p_Statut
     WHERE Matricule = p_Matricule;
 END;
+
+/*------------Recherche un employe par son matricule----------------------*/
+
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS ObtenirEmployeParMatricule;
+//
+CREATE PROCEDURE ObtenirEmployeParMatricule(IN MatriculeParam VARCHAR(20))
+BEGIN
+    SELECT *
+    FROM Employe
+    WHERE Matricule = MatriculeParam;
+END //
+DELIMITER ;
+
 
 
 
@@ -213,18 +227,10 @@ DELIMITER ;
 
 /*------------Retourne la liste de Client----------------------*/
 
-/*----------View-----------*/
-CREATE VIEW GetClient
-AS SELECT * FROM Client;
-
-DROP PROCEDURE IF EXISTS GetClientList;
-
 CREATE PROCEDURE GetClientList()
 BEGIN
-    SELECT * FROM GetClient;
+    SELECT * FROM Client;
 END;
-
-
 
 /*------------Creer un nouveau Client----------------------*/
 
@@ -243,12 +249,12 @@ BEGIN
         NumeroTelephone,
         Email
     ) VALUES (
-         c_Identifiant,
-         c_Nom,
-         c_Adresse,
-         c_NumeroTelephone,
-         c_Email
-    );
+                 c_Identifiant,
+                 c_Nom,
+                 c_Adresse,
+                 c_NumeroTelephone,
+                 c_Email
+             );
 END;
 
 
