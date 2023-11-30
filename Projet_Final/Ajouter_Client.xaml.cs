@@ -27,5 +27,34 @@ namespace Projet_Final
         {
             this.InitializeComponent();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (txtNom.Text == "")
+            {
+                Nom.Text = "Erreur: Entrez un nom";
+            }
+            else if (txtAdresse.Text == "")
+            {
+                Adresse.Text = "Erreur: Entrez une adresse";
+            }
+            else if (txtTelephone.Text == "")
+            {
+                Telephone.Text = "Erreur: Entrez un numero de Telephone";
+            }
+            else if (txtEmail.Text == "")
+            {
+                Email.Text = "Erreur: Entrez un email";
+            }
+            else
+            {
+                SingletonClient.getInstance().ajouter_Client(txtNom.Text, txtAdresse.Text, txtTelephone.Text, txtEmail.Text);
+            }
+
+
+
+
+
+        }
     }
 }

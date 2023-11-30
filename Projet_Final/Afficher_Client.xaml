@@ -9,7 +9,25 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid Background="Purple">
+    <ScrollView>
+        <StackPanel>
 
-    </Grid>
+            <ListView x:Name="lvClients" SelectionChanged="lvClients_SelectionChanged">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="local:Client">
+                        <StackPanel Orientation="Vertical"
+                                Margin="5" HorizontalAlignment="Stretch">
+                            <TextBlock Text="{x:Bind Id}" Margin="5,5,5,10" />
+                            <TextBlock Text="{x:Bind Nom}" Margin="5,5,5,10"/>
+                            <TextBlock Text="{x:Bind Adresse}" Margin="5,5,5,10"/>
+                            <TextBlock Text="{x:Bind Num}" Margin="5,5,5,10"/>
+                            <TextBlock Text="{x:Bind Email}" Margin="5,5,5,10"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+           
+        </StackPanel>
+    </ScrollView>
+
 </Page>

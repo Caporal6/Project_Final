@@ -27,13 +27,12 @@ namespace Projet_Final
         public MainWindow()
         {
             this.InitializeComponent();
+            mainFrame.Navigate(typeof(Afficher_Projet));
         }
 
         private void navView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
             var item = (NavigationViewItem)args.SelectedItem;
-
-            
             switch (item.Name)
             {
                 case "AjProjet":
@@ -57,8 +56,19 @@ namespace Projet_Final
                 default:
                     break;
             }
-            
 
+
+
+
+        }
+
+        private void navView_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
+        {
+            if(mainFrame.CanGoBack)
+            {
+                
+                mainFrame.GoBack();
+            }
         }
     }
 }
