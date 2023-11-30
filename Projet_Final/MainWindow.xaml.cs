@@ -33,6 +33,9 @@ namespace Projet_Final
 
         private void navView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
+
+            var item = (NavigationViewItem)args.SelectedItem;
+
             switch (item.Name)
             {
                 case "AjProjet":
