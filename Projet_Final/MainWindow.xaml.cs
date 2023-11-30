@@ -5,6 +5,7 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using Projet_Final.Employe;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -32,7 +33,6 @@ namespace Projet_Final
 
         private void navView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
-            var item = (NavigationViewItem)args.SelectedItem;
             switch (item.Name)
             {
                 case "AjProjet":
@@ -52,6 +52,9 @@ namespace Projet_Final
                     break;
                 case "AfEmployer":
                     mainFrame.Navigate(typeof(Afficher_Employer));
+                    break;
+                case "gestionEmploye":
+                    mainFrame.Navigate(typeof(MenuGestionEmploye));
                     break;
                 default:
                     break;
