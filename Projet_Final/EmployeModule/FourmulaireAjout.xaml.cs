@@ -52,8 +52,6 @@ namespace Projet_Final.EmployeModule
         {
             Boolean formValid = true;
 
-            Debug.WriteLine("-----------------------------------");
-
             Debug.WriteLine(formValid);
 
             //nom
@@ -70,7 +68,7 @@ namespace Projet_Final.EmployeModule
                 formValid = formValid & true;
             }
 
-            Debug.WriteLine(formValid);
+
 
             //prenom
 
@@ -87,7 +85,6 @@ namespace Projet_Final.EmployeModule
                 formValid = formValid & true;
             }
 
-            Debug.WriteLine(formValid);
 
             //date de naissance
 
@@ -103,7 +100,6 @@ namespace Projet_Final.EmployeModule
                 formValid = formValid & true;
             }
 
-            Debug.WriteLine(formValid);
 
             // email
 
@@ -119,7 +115,6 @@ namespace Projet_Final.EmployeModule
                 formValid = formValid & true;
             }
 
-            Debug.WriteLine(formValid);
 
             // adresse
 
@@ -135,7 +130,6 @@ namespace Projet_Final.EmployeModule
                 formValid = formValid & true;
             }
 
-            Debug.WriteLine(formValid);
 
             // date embauche
 
@@ -151,7 +145,6 @@ namespace Projet_Final.EmployeModule
                 formValid = formValid & true;
             }
 
-            Debug.WriteLine(formValid);
 
             // taux horraire
 
@@ -177,7 +170,6 @@ namespace Projet_Final.EmployeModule
                 }
             }
 
-            Debug.WriteLine(formValid);
 
             // photo identite
 
@@ -204,7 +196,6 @@ namespace Projet_Final.EmployeModule
                 }
             }
 
-            Debug.WriteLine(formValid);
 
             // statut
 
@@ -220,7 +211,6 @@ namespace Projet_Final.EmployeModule
                 formValid = formValid & true;
             }
 
-            Debug.WriteLine(formValid);
 
             if (formValid == true)
             {
