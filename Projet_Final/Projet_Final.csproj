@@ -12,15 +12,26 @@
     <EnableMsixTooling>true</EnableMsixTooling>
   </PropertyGroup>
   <ItemGroup>
+
     <Content Remove="Assets\Add.svg" />
   </ItemGroup>
   <ItemGroup>
+
+    <None Remove="Afficher_Client.xaml" />
+
     <None Remove="Afficher_Projet.xaml" />
+    <None Remove="Ajouter_Client.xaml" />
+    <None Remove="Ajouter_Employer.xaml" />
     <None Remove="Ajouter_Projet.xaml" />
+
     <None Remove="EmployeModule\DetailEmploye.xaml" />
     <None Remove="EmployeModule\FourmulaireAjout.xaml" />
     <None Remove="EmployeModule\ListeEmploye.xaml" />
     <None Remove="EmployeModule\MenuGestionEmploye.xaml" />
+
+    <None Remove="Information_Client.xaml" />
+    <None Remove="Modifier_Client.xaml" />
+
   </ItemGroup>
 
   <ItemGroup>
@@ -34,7 +45,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.4.231008000" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.4.231115000" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.2428" />
     <PackageReference Include="MySql.Data" Version="8.2.0" />
     <Manifest Include="$(ApplicationManifest)" />
@@ -49,6 +60,7 @@
     <ProjectCapability Include="Msix" />
   </ItemGroup>
   <ItemGroup>
+
     <None Update="Assets\Add.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -59,6 +71,34 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="Employe\ListeEmploye.xaml">
+
+    <Page Update="Modifier_Client.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Information_Client.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Afficher_Employer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Ajouter_Employer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Afficher_Client.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Ajouter_Client.xaml">
+
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

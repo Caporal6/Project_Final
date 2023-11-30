@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="Projet_Final.Ajouter_Client"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Projet_Final"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Nom -->
+        <TextBlock Grid.Column="0" Grid.Row="0" Margin="5" VerticalAlignment="Center" Text="Nom :" x:Name="Nom"/>
+        <TextBox Grid.Column="1" Grid.Row="0" Margin="5" VerticalAlignment="Center" Name="txtNom"/>
+
+        <!-- Adresse -->
+        <TextBlock Grid.Column="0" Grid.Row="1" Margin="5" VerticalAlignment="Center" Text="Adresse :" x:Name="Adresse"/>
+        <TextBox Grid.Column="1" Grid.Row="1" Margin="5" VerticalAlignment="Center" Name="txtAdresse"/>
+
+        <!-- Numéro de téléphone -->
+        <TextBlock Grid.Column="0" Grid.Row="2" Margin="5" VerticalAlignment="Center" Text="Téléphone :" x:Name="Telephone"/>
+        <TextBox Grid.Column="1" Grid.Row="2" Margin="5" VerticalAlignment="Center" Name="txtTelephone"/>
+
+        <!-- Email -->
+        <TextBlock Grid.Column="0" Grid.Row="3" Margin="5" VerticalAlignment="Center" Text="Email :" x:Name="Email"/>
+        <TextBox Grid.Column="1" Grid.Row="3" Margin="5" VerticalAlignment="Center" Name="txtEmail"/>
+
+        <!-- Bouton pour soumettre le formulaire -->
+        <Button Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Margin="5" VerticalAlignment="Center" Content="Soumettre" Click="Button_Click"/>
+    </Grid>
+</Page>

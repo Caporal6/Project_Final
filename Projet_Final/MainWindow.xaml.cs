@@ -28,14 +28,31 @@ namespace Projet_Final
         public MainWindow()
         {
             this.InitializeComponent();
+            mainFrame.Navigate(typeof(Afficher_Projet));
         }
 
         private void navView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
-            var item = (NavigationViewItem)args.SelectedItem;
-
             switch (item.Name)
             {
+                case "AjProjet":
+                    mainFrame.Navigate(typeof(Ajouter_Projet));
+                    break;
+                case "AfProjet":
+                    mainFrame.Navigate(typeof(Afficher_Projet));
+                    break;
+                case "AjClient":
+                    mainFrame.Navigate(typeof(Ajouter_Client));
+                    break;
+                case "AfClient":
+                    mainFrame.Navigate(typeof(Afficher_Client));
+                    break;
+                case "AjEmployer":
+                    mainFrame.Navigate(typeof(Ajouter_Employer));
+                    break;
+                case "AfEmployer":
+                    mainFrame.Navigate(typeof(Afficher_Employer));
+                    break;
                 case "gestionEmploye":
                     mainFrame.Navigate(typeof(MenuGestionEmploye));
                     break;
@@ -43,23 +60,18 @@ namespace Projet_Final
                     break;
             }
 
-            /*
-            switch (item.Name)
-            {
-                case "iClients":
-                    mainFrame.Navigate(typeof(Page1));
-                    break;
-                case "iAgenda":
-                    mainFrame.Navigate(typeof(Page2));
-                    break;
-                case "iAgenda2":
-                    mainFrame.Navigate(typeof(Page4));
-                    break;
-                default:
-                    break;
-            }
-            */
 
+
+
+        }
+
+        private void navView_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
+        {
+            if(mainFrame.CanGoBack)
+            {
+                
+                mainFrame.GoBack();
+            }
         }
     }
 }
