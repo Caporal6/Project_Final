@@ -15,5 +15,7 @@
 
         <TextBox Header="Nom: " x:Name="tbxNom"></TextBox>
         <TextBox Header="Adresse: " x:Name="tbxAdresse"></TextBox>
+        <TextBox Header="Numéro de Téléphone: " x:Name="tbxNum"></TextBox>
+        <TextBox Header="Email: " x:Name="tbxEmail"></TextBox>
     </StackPanel>
 </ContentDialog>

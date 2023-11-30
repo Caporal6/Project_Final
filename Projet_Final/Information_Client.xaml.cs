@@ -34,7 +34,13 @@ namespace Projet_Final
         {
             if (e.Parameter is not null)
             {
-                tbId.Text = e.Parameter.ToString();
+                Client yup = (Client) e.Parameter;
+                tbId.Text = yup.Id.ToString();
+                tbNom.Text = yup.Nom.ToString();
+                tbAdresse.Text = yup.Adresse.ToString();
+                tbNum.Text = yup.Num.ToString();
+                tbEmail.Text = yup.Email.ToString();
+                
             }
         }
 
@@ -51,8 +57,13 @@ namespace Projet_Final
             
             if(result == ContentDialogResult.Primary)
             {
-                tbxText.Text = "Nom: " + dialog.Nom + "Adresse: " + dialog.Adresse;
+              SingletonClient.getInstance().modifier_Client(tbId.Text,dialog.Nom, dialog.Adresse, dialog.Num, dialog.Email);
             }
         }
+
+
+
+
+
     }
 }

@@ -57,10 +57,39 @@ namespace Projet_Final
             }
             catch (Exception ex)
             {
-                //message d'erreur
+                Console.WriteLine(ex.ToString());
             }
 
         }
+
+
+        /*-----------------------Modification Client--------------------------------*/
+
+        public void modifier_Client(string Id,string nom, string adresse, string num, string email)
+        {
+            try
+            {
+                MySqlCommand commande = new MySqlCommand();
+                commande.Connection = con;
+                commande.CommandText = "CALL ModifierInformationsClient(@Id,@nom, @adresse, @num, @email)";
+
+                commande.Parameters.AddWithValue("@Id", Id);
+                commande.Parameters.AddWithValue("@nom", nom);
+                commande.Parameters.AddWithValue("@adresse", adresse);
+                commande.Parameters.AddWithValue("@num", num);
+                commande.Parameters.AddWithValue("@email", email);
+
+                con.Open();
+                int i = commande.ExecuteNonQuery();
+                con.Close();
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+        }
+
 
 
         /*--------------------------Retourne la liste des Clients------------------------*/
@@ -78,7 +107,7 @@ namespace Projet_Final
                 while (r.Read())
                 {
 
-                    liste2.Add(new Client { Id = int.Parse(r["Identifiant"].ToString()), Nom = r["Nom"].ToString(), Adresse = r["Adresse"].ToString(), Num = r["NumeroTelephone"].ToString(), Email = r["Email"].ToString() });
+                    liste2.Add(new Client { Id =  int.Parse(r["Identifiant"].ToString()), Nom = r["Nom"].ToString(), Adresse = r["Adresse"].ToString(), Num = r["NumeroTelephone"].ToString(), Email = r["Email"].ToString() });
                 }
 
                 r.Close();

@@ -19,6 +19,7 @@
         <TextBlock x:Name="tbxText" />
         
         <Button Click="Button_Click">Modifier</Button>
+        <Button Click="Button_Click">Supprimez</Button>
 
 
 
