@@ -50,12 +50,6 @@ namespace Projet_Final
                 case "AfClient":
                     mainFrame.Navigate(typeof(Afficher_Client));
                     break;
-                case "AjEmployer":
-                    mainFrame.Navigate(typeof(Ajouter_Employer));
-                    break;
-                case "AfEmployer":
-                    mainFrame.Navigate(typeof(Afficher_Employer));
-                    break;
                 case "gestionEmploye":
                     mainFrame.Navigate(typeof(MenuGestionEmploye));
                     break;

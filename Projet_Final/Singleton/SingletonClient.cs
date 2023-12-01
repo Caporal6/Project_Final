@@ -121,6 +121,7 @@ namespace Projet_Final
                 {
                     con.Close();
                 }
+                Console.WriteLine(ex.ToString());
             }
             return liste;
 

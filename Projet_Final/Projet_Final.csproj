@@ -21,7 +21,6 @@
 
     <None Remove="Afficher_Projet.xaml" />
     <None Remove="Ajouter_Client.xaml" />
-    <None Remove="Ajouter_Employer.xaml" />
     <None Remove="Ajouter_Projet.xaml" />
 
     <None Remove="EmployeModule\DetailEmploye.xaml" />
@@ -87,16 +86,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="Afficher_Employer.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Ajouter_Employer.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
     <Page Update="Afficher_Client.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -121,6 +110,10 @@
     <Page Update="Employe\MenuGestionEmploye.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ClientModule\" />
+    <Folder Include="ModuleProjet\" />
   </ItemGroup>
 
   <!-- 

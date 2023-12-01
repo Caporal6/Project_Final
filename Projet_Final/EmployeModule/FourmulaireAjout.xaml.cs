@@ -48,11 +48,23 @@ namespace Projet_Final.EmployeModule
             statut = cbStatut.SelectedItem as String;
         }
 
+        // Fonction pour calculer l'âge à partir de la date de naissance
+        public int CalculateAge(DateTime dateOfBirth)
+        {
+            DateTime currentDate = DateTime.Today;
+            int age = currentDate.Year - dateOfBirth.Year;
+
+            if (currentDate < dateOfBirth.AddYears(age))
+            {
+                age--;
+            }
+
+            return age;
+        }
+
         private async void btnAjouter_Click(object sender, RoutedEventArgs e)
         {
             Boolean formValid = true;
-
-            Debug.WriteLine(formValid);
 
             //nom
 
@@ -88,7 +100,7 @@ namespace Projet_Final.EmployeModule
 
             //date de naissance
 
-            if (dateNaissanceChange == false)
+            if (!dateNaissanceChange)
             {
                 dpDateNaissanceError.Visibility = Visibility.Visible;
                 dpDateNaissanceError.Text = "La date de naissance est obligatoire";
@@ -97,8 +109,24 @@ namespace Projet_Final.EmployeModule
             else
             {
                 dpDateNaissanceError.Visibility = Visibility.Collapsed;
-                formValid = formValid & true;
+
+                // Vérification de l'âge entre 18 et 65 ans
+                int age = CalculateAge(dpDateNaissance.Date.DateTime);
+
+                if (age < 18 || age > 65)
+                {
+                    dpDateNaissanceError.Visibility = Visibility.Visible;
+                    dpDateNaissanceError.Text = "Veuillez entrer une date valide qui donne a l'employe entre 18 et 65 ans";
+                    formValid = formValid & false;
+                }
+                else
+                {
+                    dpDateNaissanceError.Visibility = Visibility.Collapsed;
+                    formValid = formValid & true;
+                }
             }
+
+            
 
 
             // email
@@ -133,7 +161,7 @@ namespace Projet_Final.EmployeModule
 
             // date embauche
 
-            if (dateEmbaucheChange == false)
+            if (!dateEmbaucheChange)
             {
                 dpDateEmbaucheError.Visibility = Visibility.Visible;
                 dpDateEmbaucheError.Text = "La date d'embauche est obligatoire";
@@ -142,7 +170,18 @@ namespace Projet_Final.EmployeModule
             else
             {
                 dpDateEmbaucheError.Visibility = Visibility.Collapsed;
-                formValid = formValid & true;
+
+                if (dpDateEmbauche.Date.DateTime > DateTime.Today)
+                {
+                    dpDateEmbaucheError.Visibility = Visibility.Visible;
+                    dpDateEmbaucheError.Text = "La date d'embauche ne peut pas être postérieure à la date du jour";
+                    formValid = formValid & false;
+                }
+                else
+                {
+                    dpDateEmbaucheError.Visibility = Visibility.Collapsed;
+                    formValid = formValid & true;
+                }
             }
 
 
@@ -157,9 +196,15 @@ namespace Projet_Final.EmployeModule
             }
             else
             {
-                if (nbTauxHorraire.Value < 0 || nbTauxHorraire.Value < 15)
+                if (nbTauxHorraire.Value < 0)
                 {
-                    nbTauxHorraireError.Text = "Le taux horraire doit etre compris entre 0 et 15";
+                    nbTauxHorraireError.Text = "Le taux horraire ne peut etre une valeur negative";
+                    nbTauxHorraireError.Visibility = Visibility.Visible;
+                    formValid = formValid & false;
+
+                }else if ( nbTauxHorraire.Value > 30)
+                {
+                    nbTauxHorraireError.Text = "Le taux horraire ne peut etre supperieur a 30";
                     nbTauxHorraireError.Visibility = Visibility.Visible;
                     formValid = formValid & false;
                 }
@@ -230,7 +275,7 @@ namespace Projet_Final.EmployeModule
                     Statut = statut
                 };
 
-                SingletonListeBD.GetInstance().Ajouter(employe);
+                SingletonEmploye.GetInstance().AjouterEmploye(employe);
 
                 this.Hide();
 
