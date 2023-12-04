@@ -1,6 +1,45 @@
-/**********************Creation de la table Employe******************/
+-- DROP DES ELEMENTS EXISTANTS
 
+-- DROP DES PROCEDURES
+DROP PROCEDURE IF EXISTS AjouterEmploye;
+DROP PROCEDURE IF EXISTS ModifierInformationsEmploye;
+DROP PROCEDURE IF EXISTS ObtenirEmployeParMatricule;
+DROP PROCEDURE IF EXISTS GetEmployeeList;
+DROP PROCEDURE IF EXISTS AjouterClient;
+DROP PROCEDURE IF EXISTS ModifierInformationsClient;
+DROP PROCEDURE IF EXISTS GetClientList;
+
+-- DROP DES FONCTIONS
+DROP FUNCTION IF EXISTS CalculerCoutTotalProjet;
+DROP FUNCTION IF EXISTS ObtenirBudgetTotalProjetsClient;
+DROP FUNCTION IF EXISTS ObtenirNombreAssignationsEmploye;
+DROP FUNCTION IF EXISTS CalculerTotalSalaireEmploye;
+DROP FUNCTION IF EXISTS ObtenirInformationsClient;
+
+-- DROP DES TRIGGERS
+DROP TRIGGER IF EXISTS before_insert_employe_set_matricule;
+DROP TRIGGER IF EXISTS before_insert_employe_tauxhoraire_verification;
+DROP TRIGGER IF EXISTS before_update_statut_check_anciennete;
+DROP TRIGGER IF EXISTS before_insert_client_set_identifiant;
+DROP TRIGGER IF EXISTS before_insert_projet_set_numeroprojet;
+DROP TRIGGER IF EXISTS after_insert_assignation_attribute_to_employe;
+
+-- DROP DES VUES
+DROP VIEW IF EXISTS VueEmployeDetails;
+DROP VIEW IF EXISTS VueClientInformations;
+DROP VIEW IF EXISTS VueProjetDetails;
+DROP VIEW IF EXISTS VueAssignations;
+DROP VIEW IF EXISTS VueEmployesProjets;
+
+-- DROP DES TABLES
+DROP TABLE IF EXISTS Assignation;
 DROP TABLE IF EXISTS Employe;
+DROP TABLE IF EXISTS Projet;
+DROP TABLE IF EXISTS Client;
+
+-- CREATION DES TABLES
+
+-- Création de la table Employe
 CREATE TABLE Employe
 (
     Matricule     VARCHAR(20),
@@ -16,13 +55,57 @@ CREATE TABLE Employe
     ProjetId      VARCHAR(20),
     CONSTRAINT Pk_Employe PRIMARY KEY (Matricule),
     CONSTRAINT Ck_Statut CHECK (Statut IN ('Journalier', 'Permanent')),
-    CONSTRAINT Ck_Tauxhorraire CHECK (TauxHoraire >= 15)
+    CONSTRAINT Ck_Tauxhoraire CHECK (TauxHoraire >= 15)
 );
 
-/*******************Trigger sur la table Employe********************/
+-- Création de la table Client
 
-/*------------------Trigger qui change le matricule----------------*/
+CREATE TABLE Client
+(
+    Identifiant INT,
+    Nom VARCHAR(50),
+    Adresse VARCHAR(200),
+    NumeroTelephone VARCHAR(15),
+    Email VARCHAR(100),
+    CONSTRAINT Pk_Client PRIMARY KEY (Identifiant)
+);
 
+-- Création de la table Projet
+
+CREATE TABLE Projet
+(
+    NumeroProjet VARCHAR(20),
+    Titre VARCHAR(100),
+    DateDebut DATE,
+    Description TEXT,
+    Budget DECIMAL(10, 2),
+    EmployesRequis INT,
+    TotalSalaires DECIMAL(10, 2),
+    ClientIdentifiant INT,
+    test INT(32) DEFAULT 20,
+    Statut VARCHAR(20) DEFAULT 'En cours',
+    CONSTRAINT CK_NombreEmploye CHECK (EmployesRequis <= 5),
+    CONSTRAINT Pk_Projet PRIMARY KEY (NumeroProjet),
+    CONSTRAINT Fk_Projet_Client FOREIGN KEY (ClientIdentifiant) REFERENCES Client (Identifiant)
+);
+
+-- Création de la table Assignation
+DROP TABLE IF EXISTS Assignation;
+
+CREATE TABLE Assignation
+(
+    AssignationId INT(32) AUTO_INCREMENT,
+    EmployeId VARCHAR(20),
+    ProjetId VARCHAR(20),
+    NbreHeures INT(32),
+    CONSTRAINT Pk_Assignation PRIMARY KEY (AssignationId),
+    CONSTRAINT Fk_Assignation_Employe FOREIGN KEY (EmployeId) REFERENCES Employe (Matricule),
+    CONSTRAINT Fk_Assignation_Projet FOREIGN KEY (ProjetId) REFERENCES Projet (NumeroProjet)
+);
+
+-- CREATION DES TRIGGERS
+
+-- Trigger pour générer le Matricule
 DELIMITER //
 
 CREATE TRIGGER before_insert_employe_set_matricule
@@ -30,16 +113,15 @@ CREATE TRIGGER before_insert_employe_set_matricule
     ON Employe
     FOR EACH ROW
 BEGIN
-    SET NEW.Matricule =
-            CONCAT(SUBSTRING(NEW.Nom, 1, 2), '-', YEAR(NEW.DateNaissance), '-', FLOOR(RAND() * (99 - 10 + 1) + 10));
+    -- Générer le Matricule basé sur le nom, la date de naissance et une valeur aléatoire
+    SET NEW.Matricule = CONCAT(SUBSTRING(NEW.Nom, 1, 2), '-', YEAR(NEW.DateNaissance), '-', FLOOR(RAND() * (99 - 10 + 1) + 10));
 END;
 
 //
 
 DELIMITER ;
 
-/*-----------------Trigger qui verifie le taux horraire------------------*/
-
+-- Trigger pour vérifier le Taux Horaire
 DELIMITER //
 
 CREATE TRIGGER before_insert_employe_tauxhoraire_verification
@@ -47,6 +129,7 @@ CREATE TRIGGER before_insert_employe_tauxhoraire_verification
     ON Employe
     FOR EACH ROW
 BEGIN
+    -- Vérifier que le Taux Horaire est supérieur ou égal à 15
     IF NEW.TauxHoraire < 15 THEN
         SIGNAL SQLSTATE '45000'
             SET MESSAGE_TEXT = 'Le taux horaire doit être supérieur ou égal à 15 $';
@@ -57,8 +140,7 @@ END;
 
 DELIMITER ;
 
-/*----------------Trigger changement de statut-------------------------*/
-
+-- Trigger pour changer le Statut
 DELIMITER //
 
 CREATE TRIGGER before_update_statut_check_anciennete
@@ -67,17 +149,17 @@ CREATE TRIGGER before_update_statut_check_anciennete
     FOR EACH ROW
 BEGIN
     DECLARE anciennete INT;
-    IF NEW.Statut = 'Permanent' AND OLD.Statut = 'Journalier' THEN
-        -- Calculer la différence entre la date actuelle et la date d'embauche en années
 
+    -- Vérifier les changements de statut et l'ancienneté nécessaire
+    IF NEW.Statut = 'Permanent' AND OLD.Statut = 'Journalier' THEN
         SET anciennete = DATEDIFF(OLD.DateEmbauche, CURRENT_DATE());
 
-        -- Vérifier si l'ancienneté est inférieure à 3 ans jour pour jour
+        -- Vérifier si l'ancienneté est inférieure à 3 ans
         IF anciennete < 3 THEN
             SIGNAL SQLSTATE '45000'
                 SET MESSAGE_TEXT = 'Un employé doit avoir au moins 3 ans d''ancienneté pour devenir Permanent';
         ELSEIF NEW.Statut = 'Journalier' AND OLD.Statut = 'Permanent' THEN
-            -- Empêcher le passage de Permanent à Journalier
+            -- Empêcher la transition de Permanent à Journalier
             SIGNAL SQLSTATE '45000'
                 SET MESSAGE_TEXT = 'Impossible de passer de Permanent à Journalier';
         END IF;
@@ -88,16 +170,69 @@ END;
 
 DELIMITER ;
 
-/*************Procedure stocker sur la table employe**************/
+-- Trigger sur la table Client
+DELIMITER //
+CREATE TRIGGER before_insert_client_set_identifiant
+    BEFORE INSERT
+    ON Client
+    FOR EACH ROW
+BEGIN
+    DECLARE random_id INT;
 
-/*------------Retourne la liste d'employees----------------------*/
+    -- Générer une valeur aléatoire entre 100 et 999
+    SET random_id = FLOOR(RAND() * (999 - 100 + 1) + 100);
 
+    -- Vérifier si la valeur aléatoire est déjà utilisée
+    WHILE EXISTS (SELECT 1 FROM Client WHERE Identifiant = random_id)
+    DO
+        SET random_id = FLOOR(RAND() * (999 - 100 + 1) + 100);
+    END WHILE;
+
+    -- Affecter la valeur aléatoire à l'Identifiant
+    SET NEW.Identifiant = random_id;
+END;
+
+//
+DELIMITER ;
+
+-- Trigger sur la table Projet
+DELIMITER //
+CREATE TRIGGER before_insert_projet_set_numeroprojet
+    BEFORE INSERT
+    ON Projet
+    FOR EACH ROW
+BEGIN
+    -- Affecter le nouveau numéro de projet à la nouvelle entrée
+    SET NEW.NumeroProjet = CONCAT(New.ClientIdentifiant, '-', (FLOOR(RAND() * 99) + 1), '-', YEAR(New.DateDebut));
+END;
+
+//
+DELIMITER ;
+
+-- Trigger après insertion sur la table Assignation
+DELIMITER //
+CREATE TRIGGER after_insert_assignation_attribute_to_employe
+    AFTER INSERT
+    ON Assignation
+    FOR EACH ROW
+BEGIN
+    -- Mettre à jour le ProjetId de l'employé
+    UPDATE Employe SET ProjetId = NEW.ProjetId WHERE Matricule = NEW.EmployeId;
+END;
+
+//
+DELIMITER ;
+
+
+-- CREATION PROCEDURES STOCKEES
+
+-- Procédure pour retourner la liste des employés
 CREATE PROCEDURE GetEmployeeList()
 BEGIN
     SELECT * FROM Employe;
 END;
 
-/*------------Creer un nouvel employe----------------------*/
+-- Procédure pour ajouter un nouvel employé
 DROP PROCEDURE IF EXISTS AjouterEmploye;
 CREATE PROCEDURE AjouterEmploye(
     IN p_Nom VARCHAR(50),
@@ -112,7 +247,6 @@ CREATE PROCEDURE AjouterEmploye(
 )
 BEGIN
     INSERT INTO Employe (
-
         Nom,
         Prenom,
         DateNaissance,
@@ -124,23 +258,20 @@ BEGIN
         Statut,
         ProjetId
     ) VALUES (
-
-                 p_Nom,
-                 p_Prenom,
-                 p_DateNaissance,
-                 p_Email,
-                 p_Adresse,
-                 p_DateEmbauche,
-                 p_TauxHoraire,
-                 p_PhotoIdentite,
-                 p_Statut,
-                 NULL
-             );
+        p_Nom,
+        p_Prenom,
+        p_DateNaissance,
+        p_Email,
+        p_Adresse,
+        p_DateEmbauche,
+        p_TauxHoraire,
+        p_PhotoIdentite,
+        p_Statut,
+        NULL
+    );
 END;
 
-/*------------Modifier les informations d'un employe----------------------*/
-
-
+-- Procédure pour modifier les informations d'un employé
 CREATE PROCEDURE ModifierInformationsEmploye(
     IN p_Matricule VARCHAR(20),
     IN p_Nom VARCHAR(50),
@@ -164,9 +295,7 @@ BEGIN
     WHERE Matricule = p_Matricule;
 END;
 
-/*------------Recherche un employe par son matricule----------------------*/
-
-
+-- Procédure pour obtenir un employé par Matricule
 DELIMITER //
 DROP PROCEDURE IF EXISTS ObtenirEmployeParMatricule;
 //
@@ -178,68 +307,33 @@ BEGIN
 END //
 DELIMITER ;
 
-
-
-
-
-/***************Creation de la table Client*******************/
+-- Création de la table Client
 DROP TABLE IF EXISTS Client;
+
 CREATE TABLE Client
 (
-    Identifiant     INT,
-    Nom             VARCHAR(50),
-    Adresse         VARCHAR(200),
+    Identifiant INT,
+    Nom VARCHAR(50),
+    Adresse VARCHAR(200),
     NumeroTelephone VARCHAR(15),
-    Email           VARCHAR(100),
+    Email VARCHAR(100),
     CONSTRAINT Pk_Client PRIMARY KEY (Identifiant)
 );
 
-/*Trigger sur la table Client */
 
-DELIMITER //
-
-CREATE TRIGGER before_insert_client_set_identifiant
-    BEFORE INSERT
-    ON Client
-    FOR EACH ROW
-BEGIN
-    DECLARE random_id INT;
-
-    -- Générer une valeur aléatoire entre 100 et 999
-    SET random_id = FLOOR(RAND() * (999 - 100 + 1) + 100);
-
-    -- Vérifier si la valeur aléatoire est déjà utilisée
-    WHILE EXISTS (SELECT 1 FROM Client WHERE Identifiant = random_id)
-        DO
-            SET random_id = FLOOR(RAND() * (999 - 100 + 1) + 100);
-        END WHILE;
-
-    -- Affecter la valeur aléatoire à l'identifiant
-    SET NEW.Identifiant = random_id;
-END;
-
-//
-
-DELIMITER ;
-
-
-/*************Procedure stocker sur la table Client**************/
-
-/*------------Retourne la liste de Client----------------------*/
-
+-- Procédure pour retourner la liste des clients
 CREATE PROCEDURE GetClientList()
 BEGIN
     SELECT * FROM Client;
 END;
 
-/*------------Creer un nouveau Client----------------------*/
-
+-- Procédure pour ajouter un nouveau client
 CREATE PROCEDURE AjouterClient(
-    IN c_Identifiant     INT,
-    IN c_Nom             VARCHAR(50),
-    IN c_Adresse         VARCHAR(200),
+    IN c_Identifiant INT,
+    IN c_Nom VARCHAR(50),
+    IN c_Adresse VARCHAR(200),
     IN c_NumeroTelephone VARCHAR(15),
-    IN c_Email           VARCHAR(100)
+    IN c_Email VARCHAR(100)
 )
 BEGIN
     INSERT INTO Client (
@@ -249,25 +343,21 @@ BEGIN
         NumeroTelephone,
         Email
     ) VALUES (
-                 c_Identifiant,
-                 c_Nom,
-                 c_Adresse,
-                 c_NumeroTelephone,
-                 c_Email
-             );
+        c_Identifiant,
+        c_Nom,
+        c_Adresse,
+        c_NumeroTelephone,
+        c_Email
+    );
 END;
 
-
-
-/*------------Modifier les informations d'un Client----------------------*/
-
-
+-- Procédure pour modifier les informations d'un client
 CREATE PROCEDURE ModifierInformationsClient(
-    IN c_Identifiant     INT,
-    IN c_Nom             VARCHAR(50),
-    IN c_Adresse         VARCHAR(200),
+    IN c_Identifiant INT,
+    IN c_Nom VARCHAR(50),
+    IN c_Adresse VARCHAR(200),
     IN c_NumeroTelephone VARCHAR(15),
-    IN c_Email           VARCHAR(100)
+    IN c_Email VARCHAR(100)
 )
 BEGIN
     UPDATE Client
@@ -281,167 +371,115 @@ BEGIN
 END;
 
 
+-- CREATION DES FONCTIONS STOCKEES
 
-/*Creation de la table Projet*/
-DROP TABLE IF EXISTS Projet;
-CREATE TABLE Projet
-(
-    NumeroProjet      VARCHAR(20),
-    Titre             VARCHAR(100),
-    DateDebut         DATE,
-    Description       TEXT,
-    Budget            DECIMAL(10, 2),
-    EmployesRequis    INT,
-    TotalSalaires     DECIMAL(10, 2),
-    ClientIdentifiant INT,
-    test              INT(32)     default 20,
-    Statut            VARCHAR(20) DEFAULT 'En cours',
-    CONSTRAINT CK_NombreEmploye CHECK (EmployesRequis <= 5),
-    CONSTRAINT Pk_Projet PRIMARY KEY (NumeroProjet),
-    CONSTRAINT Fk_Projet_Client FOREIGN KEY (ClientIdentifiant) REFERENCES Client (Identifiant)
-);
+-- Fonction pour calculer le coût total d'un projet
+DELIMITER //
+CREATE FUNCTION CalculerCoutTotalProjet(numeroProjet VARCHAR(20)) RETURNS DECIMAL(10, 2)
+BEGIN
+    DECLARE coutTotal DECIMAL(10, 2);
 
-/*Trigger sur la table Projet */
+    SELECT SUM(E.TauxHoraire * A.NbreHeures)
+    INTO coutTotal
+    FROM Assignation A
+         JOIN Employe E ON A.EmployeId = E.Matricule
+    WHERE A.ProjetId = numeroProjet;
+
+    RETURN coutTotal;
+END //
 
 DELIMITER //
 
-CREATE TRIGGER before_insert_projet_set_numeroprojet
-    BEFORE INSERT
-    ON Projet
-    FOR EACH ROW
+-- Fonction pour obtenir le budget total des projets d'un client
+DELIMITER //
+CREATE FUNCTION ObtenirBudgetTotalProjetsClient(clientId INT) RETURNS DECIMAL(10, 2)
 BEGIN
+    DECLARE budgetTotal DECIMAL(10, 2);
 
-    -- Affecter le nouveau numéro de projet à la nouvelle entrée
-    SET NEW.NumeroProjet = CONCAT(New.ClientIdentifiant, '-', (FLOOR(RAND() * 99) + 1), '-', YEAR(New.DateDebut));
-END;
+    SELECT SUM(Budget)
+    INTO budgetTotal
+    FROM Projet
+    WHERE ClientIdentifiant = clientId;
 
-//
+    RETURN budgetTotal;
+END //
+
+DELIMITER //
+
+-- Fonction pour obtenir le nombre d'assignations d'un employé
+DELIMITER //
+CREATE FUNCTION ObtenirNombreAssignationsEmploye(matricule VARCHAR(20)) RETURNS INT
+BEGIN
+    DECLARE nombreAssignations INT;
+
+    SELECT COUNT(*) INTO nombreAssignations
+    FROM Assignation
+    WHERE EmployeId = matricule;
+
+    RETURN nombreAssignations;
+END //
+
+DELIMITER //
+
+-- Fonction pour calculer le salaire total d'un employé
+DELIMITER //
+CREATE FUNCTION CalculerTotalSalaireEmploye(matricule VARCHAR(20)) RETURNS DECIMAL(10, 2)
+BEGIN
+    DECLARE totalSalaire DECIMAL(10, 2);
+
+    SELECT SUM(E.TauxHoraire * A.NbreHeures) INTO totalSalaire
+    FROM Assignation A
+         JOIN Employe E ON A.EmployeId = E.Matricule
+    WHERE A.EmployeId = matricule;
+
+    RETURN totalSalaire;
+END //
+
+DELIMITER ;
+
+-- Fonction pour obtenir les informations d'un client
+DELIMITER //
+CREATE FUNCTION ObtenirInformationsClient(clientId INT) RETURNS VARCHAR(500)
+BEGIN
+    DECLARE clientInfo VARCHAR(500);
+
+    SELECT CONCAT('Nom: ', Nom, ', Adresse: ', Adresse, ', NumeroTelephone: ', NumeroTelephone, ', Email: ', Email)
+    INTO clientInfo
+    FROM Client
+    WHERE Identifiant = clientId;
+
+    RETURN clientInfo;
+END //
 
 DELIMITER ;
 
 
-/*Creation de la table Assignation qui regroupe chaque assignations d'un employe a un projet*/
+-- CREATION DES VUES
 
-CREATE TABLE Assignation
-(
-    AssignationId INT(32) AUTO_INCREMENT,
-    EmployeId     VARCHAR(20),
-    ProjetId      VARCHAR(20),
-    NbreHeures    INT(32),
-    CONSTRAINT Pk_Assignation PRIMARY KEY (AssignationId),
-    CONSTRAINT Fk_Assignation_Employe FOREIGN KEY (EmployeId) REFERENCES Employe (Matricule),
-    CONSTRAINT Fk_Assignation_Projet FOREIGN KEY (ProjetId) REFERENCES Projet (NumeroProjet)
-);
-
-DELIMITER //
-
-CREATE TRIGGER after_insert_assignation_attribute_to_employe
-    AFTER INSERT
-    ON Assignation
-    FOR EACH ROW
-BEGIN
-
-    -- Mettre à jour le ProjetId de l'employé
-    UPDATE Employe SET ProjetId = NEW.ProjetId WHERE Matricule = NEW.EmployeId;
-END;
-
-//
-
-DELIMITER ;
-
-
-/*Manage DB*/
-
-/*Commandes SELECT*/
-
-SELECT *
+-- Vue pour afficher les détails des employés
+CREATE VIEW VueEmployeDetails AS
+SELECT Matricule, Nom, Prenom, Email, Statut
 FROM Employe;
-SELECT *
+
+-- Vue pour afficher les informations des clients
+CREATE VIEW VueClientInformations AS
+SELECT Identifiant, Nom, Adresse, NumeroTelephone, Email
 FROM Client;
-SELECT *
+
+-- Vue pour afficher les détails des projets
+CREATE VIEW VueProjetDetails AS
+SELECT NumeroProjet, Titre, DateDebut, Budget, Statut
 FROM Projet;
-SELECT *
+
+-- Vue pour afficher les assignations
+CREATE VIEW VueAssignations AS
+SELECT AssignationId, EmployeId, ProjetId, NbreHeures
 FROM Assignation;
 
-/*Commandes DROP*/
+-- Vue pour afficher les employés et les projets auxquels ils sont assignés
+CREATE VIEW VueEmployesProjets AS
+SELECT E.Matricule, E.Nom, E.Prenom, E.ProjetId, P.Titre AS TitreProjet
+FROM Employe E
+LEFT JOIN Assignation A ON E.Matricule = A.EmployeId
+LEFT JOIN Projet P ON A.ProjetId = P.NumeroProjet;
 
-DROP TABLE IF EXISTS Employe;
-DROP TABLE IF EXISTS Client;
-DROP TABLE IF EXISTS Assignation;
-DROP TABLE IF EXISTS Projet;
-
-
-/*Commandes DELETE*/
-
-DELETE
-FROM Employe;
-DELETE
-FROM Client;
-DELETE
-FROM Projet;
-DELETE
-FROM Assignation;
-
-/*Commandes DROP TRIGGER*/
-
-DROP TRIGGER IF EXISTS before_insert_employe_set_matricule;
-DROP TRIGGER IF EXISTS before_insert_employe_tauxhoraire_verification;
-DROP TRIGGER IF EXISTS before_insert_client_set_identifiant;
-DROP TRIGGER IF EXISTS before_insert_projet_set_numeroprojet;
-DROP TRIGGER IF EXISTS after_insert_assignation_attribute_to_employe;
-
-/*Commandes INSERT*/
-
-drop table if exists lol;
-create table lol
-(
-    lol int(32) default 398
-);
-
-select *
-from lol;
-
-INSERT INTO lol
-VALUES ();
-
-insert into lol
-values (3),
-       ();
-
-/*Table Employe*/
-
-INSERT INTO Employe (Matricule, Nom, Prenom, DateNaissance, Email, Adresse, DateEmbauche, TauxHoraire, Statut, ProjetId)
-VALUES ('', 'Doe', 'John', '1978-01-01', 'john.doe@example.com', '123 Main St', '2022-01-01', 20.0, 'Permanent',
-        '123-01-2023'),
-       ('', 'Smith', 'Jane', '1985-05-15', 'jane.smith@example.com', '456 Oak St', '2022-02-01', 18.5, 'Journalier',
-        '456-02-2023'),
-       ('', 'Johnson', 'Robert', '1990-09-10', 'robert.johnson@example.com', '789 Pine St', '2022-03-01', 22.0,
-        'Permanent', '789-03-2023');
-
-/*Table Client*/
-
-INSERT INTO Client (Identifiant, Nom, Adresse, NumeroTelephone, Email)
-VALUES (null, 'ABC Corporation', '10 Corporate Lane', '555-1234', 'abc@example.com'),
-       (null, 'XYZ Corporation', '20 Business Street', '555-5678', 'xyz@example.com'),
-       (null, 'LMN Company', '30 Enterprise Blvd', '555-9101', 'lmn@example.com');
-
-/*Table Projet*/
-
-INSERT INTO Projet (NumeroProjet, Titre, DateDebut, Description, Budget, EmployesRequis, TotalSalaires,
-                    ClientIdentifiant)
-VALUES (null, 'Project A', '2023-01-15', 'Description of Project A', 50000.00, 3, 0.00, 256),
-       (null, 'Project B', '2023-02-01', 'Description of Project B', 75000.00, 5, 0.00, 786),
-       (null, 'Project C', '2023-03-10', 'Description of Project C', 100000.00, 4, 0.00, 903);
-
-DESCRIBE Projet;
-
-/*Table Assignation*/
-
-INSERT INTO Assignation (EmployeId, ProjetId)
-VALUES ('DO-1978-25', '101-01-2023'),
-       ('SM-1985-42', '202-02-2023'),
-       ('JO-1990-17', '303-03-2023');
-
-/*TODO Faire en sorte qu'un projet a sa creation ai le statut en cours*/
-
-update employe set Statut = 'Permanent' where Nom =  'Doe';
