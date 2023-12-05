@@ -9,23 +9,48 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-        <Grid x:Name="mainGrid">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+    <Grid x:Name="mainGrid">
+        <!-- Photo à gauche -->
+        <Image x:Name="imgPhotoIdentite" VerticalAlignment="Top" HorizontalAlignment="Left" Width="100" Height="100" Margin="20"/>
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
+        <!-- Nom et prénom -->
+        <TextBlock x:Name="tbNom" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="150,20,0,0" FontSize="20"/>
+        <TextBlock x:Name="tbPrenom" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="150,50,0,0" FontSize="20"/>
+        <TextBlock x:Name="tbStatut" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="150,80,0,0" />
 
-            <TextBlock Grid.Row="0" Grid.Column="1" FontWeight="Bold" FontSize="25" HorizontalTextAlignment="Center" Margin="30 30 0 0">Detail d'un employe</TextBlock>
-            <TextBlock x:Name="tbNom"  Foreground="Red"  Grid.Row="1" Grid.Column="1"  FontSize="12" Margin="0 10 0 0"></TextBlock>
+        <!-- Autres informations avec des labels -->
+        <StackPanel Margin="20,200,0,0">
+            <TextBlock Text="Date de Naissance:" FontSize="18" FontWeight="Bold"/>
+            <TextBlock x:Name="tbDateNaissance" FontSize="16" Margin="0 5 0 0"/>
 
-            <Button Grid.Row="1" Grid.Column="1" x:Name="modifierEmployer" Click="modifierEmployer_Click">Modifier</Button>
+            <TextBlock Text="Email:" FontSize="18" FontWeight="Bold"/>
+            <TextBlock x:Name="tbEmail" FontSize="16" Margin="0 5 0 0"/>
 
+            <TextBlock Text="Adresse:" FontSize="18" FontWeight="Bold"/>
+            <TextBlock x:Name="tbAdresse" FontSize="16" Margin="0 5 0 0"/>
 
+            <TextBlock Text="Date d'Embauche:" FontSize="18" FontWeight="Bold"/>
+            <TextBlock x:Name="tbDateEmbauche" FontSize="16" Margin="0 5 0 0"/>
+
+            <TextBlock Text="Taux Horaire:" FontSize="18" FontWeight="Bold"/>
+            <TextBlock x:Name="tbTauxHorraire" FontSize="16" Margin="0 5 0 0"/>
+        </StackPanel>
+
+        <!-- ListView pour les projets -->
+        <!--<ListView ItemsSource="{Binding Projets}" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="20">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Projet" DisplayMemberBinding="{Binding NomProjet}"/>
+                    --><!-- Ajoutez d'autres colonnes selon les détails du projet --><!--
+                </GridView>
+            </ListView.View>
+        </ListView>-->
+
+        <!-- Boutons -->
+        <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,20,20">
+            <Button x:Name="modifierEmployer" Content="Modifier l'employé" Click="modifierEmployer_Click"/>
+            <Button x:Name="AssocierAProjet" Content="Associer à un projet" Click="AssocierAProjet_Click"/>
+        </StackPanel>
     </Grid>
 
 </Page>

@@ -32,6 +32,7 @@
 
     <None Remove="Information_Client.xaml" />
     <None Remove="Modifier_Client.xaml" />
+    <None Remove="ModuleProjet\MenuGestionProjet.xaml" />
 
   </ItemGroup>
 
@@ -64,6 +65,9 @@
     <None Update="Assets\Add.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="ModuleProjet\MenuGestionProjet.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="EmployeModule\FormulaireModifier.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -113,7 +117,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ClientModule\" />
-    <Folder Include="ModuleProjet\" />
   </ItemGroup>
 
   <!-- 

@@ -40,8 +40,15 @@ namespace Projet_Final.EmployeModule
                 EmployeC employe = SingletonEmploye.GetInstance().RetourneUnEmploye(e.Parameter as String);
 
                 MatriculeEmploye = employe.Matricule;
-
+                imgPhotoIdentite.Source = new BitmapImage(new Uri(employe.PhotoIdentite));
                 tbNom.Text = employe.Nom;
+                tbPrenom.Text = employe.Prenom;
+                tbDateNaissance.Text = employe.DateNaissance.ToString();
+                tbEmail.Text = employe.Email;
+                tbAdresse.Text = employe.Adresse;   
+                tbDateEmbauche.Text =  employe.DateEmbauche.ToString();
+                tbTauxHorraire.Text = employe.TauxHoraire.ToString();
+                tbStatut.Text = employe.Statut;
 
             }
         }
@@ -54,6 +61,11 @@ namespace Projet_Final.EmployeModule
             dialog.SetData(employe);
 
             var result = await dialog.ShowAsync();
+        }
+
+        private void AssocierAProjet_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
