@@ -15,6 +15,9 @@ namespace Projet_Final
 
         MySqlConnection con = new MySqlConnection("Server=cours.cegep3r.info;Database=a2023_420325ri_fabeq23;Uid=2130649;Pwd=2130649;");
 
+        //MySqlConnection con = new MySqlConnection("Server=cours.cegep3r.info;Database=a2023_420326_gr01_2204989-yousouf-esdras-manefa;Uid=2204989;Pwd=2204989;");
+        
+
         public SingletonClient()
         {
             liste = new ObservableCollection<Client>();

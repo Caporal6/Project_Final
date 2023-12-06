@@ -7,8 +7,10 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Projet_Final.Employe;
 using Projet_Final.EmployeModule;
+using Projet_Final.Singleton;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -23,24 +25,31 @@ namespace Projet_Final.ModuleProjet
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MenuGestionProjet : Page
+    public sealed partial class ListeProjet : Page
     {
-        public MenuGestionProjet()
+        ObservableCollection<Projet> listeProjets = SingletonProjet.GetInstance().ListeProjets();
+        int index = 0;
+        Boolean cliked = false;
+
+        public ListeProjet()
         {
             this.InitializeComponent();
         }
 
-        private void listProjet_Tapped(object sender, TappedRoutedEventArgs e)
+        private void gvListeProjet_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            this.Frame.Navigate(typeof(ListeProjet));
+            if (cliked)
+            {
+                index = gvListeProjet.SelectedIndex;
+                this.Frame.Navigate(typeof(Afficher_Projet), listeProjets[index].NumeroProjet);
+
+            }
+            cliked = false;
         }
 
-        private async void ajouterProjet_Tapped(object sender, TappedRoutedEventArgs e)
+        private void gvListeProjet_ItemClick(object sender, ItemClickEventArgs e)
         {
-            FormulaireAjoutProjet dialog = new FormulaireAjoutProjet();
-            dialog.XamlRoot = mainGrid.XamlRoot;
-
-            var result = await dialog.ShowAsync();
+            cliked = true;
         }
     }
 }
