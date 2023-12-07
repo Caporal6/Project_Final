@@ -27,7 +27,7 @@ namespace Projet_Final.Employe
     /// </summary>
     public sealed partial class ListeEmploye : Page
     {
-        ObservableCollection<EmployeC> listeEmployes = SingletonListeBD.GetInstance().ListeEmployees();
+        ObservableCollection<EmployeC> listeEmployes = SingletonEmploye.GetInstance().ListeEmployees();
         int index = 0;
         Boolean cliked = false;
         public ListeEmploye()

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Page
-    x:Class="Projet_Final.Employe.MenuGestionEmploye"
+    x:Class="Projet_Final.ModuleProjet.MenuGestionProjet"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Projet_Final.Employe"
+    xmlns:local="using:Projet_Final.ModuleProjet"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -19,26 +19,23 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <Border x:Name="listEmployeBorder" BorderThickness="3" CornerRadius="8" Grid.Row="0" Grid.Column="0"  HorizontalAlignment="Center" VerticalAlignment="Center" Height="250" Width="250"  BorderBrush="LightGray" Background="#FFFFFFFF" Margin="0 0 2 0">
-            <StackPanel x:Name="listEmploye" Orientation="Vertical" Background="White" Height="250" Width="250" IsTapEnabled="True" Tapped="listEmploye_Tapped">
+        <Border x:Name="listProjetBorder" BorderThickness="3" CornerRadius="8" Grid.Row="0" Grid.Column="0"  HorizontalAlignment="Center" VerticalAlignment="Center" Height="250" Width="250"  BorderBrush="LightGray" Background="#FFFFFFFF" Margin="0 0 2 0">
+            <StackPanel x:Name="listProjet" Orientation="Vertical" Background="White" Height="250" Width="250" IsTapEnabled="True" Tapped="listProjet_Tapped">
 
                 <FontIcon FontSize="40" FontFamily="Segoe MDL2 Assets" Glyph="&#xF0E3;"/>
 
-                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">Liste des employés</TextBlock>
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">Liste de Projet</TextBlock>
 
             </StackPanel>
         </Border>
 
         <Border  BorderThickness="3" CornerRadius="8" Grid.Row="0" Grid.Column="1"  HorizontalAlignment="Left" VerticalAlignment="Center" Height="250" Width="250"  BorderBrush="LightGray" Background="#FFFFFFFF" Margin="0 2 0 0">
-            <StackPanel x:Name="ajouterEmploye" Background="White" Height="250" Width="250"  IsTapEnabled="True" Tapped="ajouterEmploye_Tapped">
+            <StackPanel x:Name="ajouterProjet" Background="White" Height="250" Width="250"  IsTapEnabled="True" Tapped="ajouterProjet_Tapped">
                 <FontIcon FontSize="40"  FontFamily="Segoe MDL2 Assets"  Glyph="&#xE710;"/>
 
-                <TextBlock VerticalAlignment="Center"  HorizontalAlignment="Center">Ajouter un employer</TextBlock>
+                <TextBlock VerticalAlignment="Center"  HorizontalAlignment="Center">Ajouter un Projet</TextBlock>
             </StackPanel>
         </Border>
-
-        
-
 
     </Grid>
 </Page>

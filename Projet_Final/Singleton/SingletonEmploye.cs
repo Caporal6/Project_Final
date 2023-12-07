@@ -10,24 +10,24 @@ using System.Threading.Tasks;
 
 namespace Projet_Final
 {
-    internal class SingletonListeBD
+    internal class SingletonEmploye
     {
         ObservableCollection<EmployeC> liste;
         MySqlConnection con;
-        static SingletonListeBD instance = null;
+        static SingletonEmploye instance = null;
 
         // Constructeur de la classe
-        public SingletonListeBD()
+        public SingletonEmploye()
         {
             liste = new ObservableCollection<EmployeC>();
             con = new MySqlConnection("Server=cours.cegep3r.info;Database=a2023_420326_gr01_2204989-yousouf-esdras-manefa;Uid=2204989;Pwd=2204989;");
         }
 
         // Retourne l'instance du singleton
-        public static SingletonListeBD GetInstance()
+        public static SingletonEmploye GetInstance()
         {
             if (instance == null)
-                instance = new SingletonListeBD();
+                instance = new SingletonEmploye();
 
             return instance;
         }
@@ -79,7 +79,7 @@ namespace Projet_Final
         }
 
         // Ajoute un Employe dans la BD
-        public void Ajouter(EmployeC employe)
+        public void AjouterEmploye(EmployeC employe)
         {
             try
             {
@@ -161,5 +161,38 @@ namespace Projet_Final
 
             return employe;
         }
+
+        public void ModifierInformationsEmploye(EmployeC employe)
+        {
+            try
+            {
+                MySqlCommand commande = new MySqlCommand("ModifierInformationsEmploye");
+                commande.Connection = con;
+                commande.CommandType = System.Data.CommandType.StoredProcedure;
+
+                commande.Parameters.AddWithValue("@p_Matricule", employe.Matricule);
+                commande.Parameters.AddWithValue("@p_Nom", employe.Nom);
+                commande.Parameters.AddWithValue("@p_Prenom", employe.Prenom);
+                commande.Parameters.AddWithValue("@p_Email", employe.Email);
+                commande.Parameters.AddWithValue("@p_Adresse", employe.Adresse);
+                commande.Parameters.AddWithValue("@p_TauxHoraire", employe.TauxHoraire);
+                commande.Parameters.AddWithValue("@p_PhotoIdentite", employe.PhotoIdentite);
+                commande.Parameters.AddWithValue("@p_Statut", employe.Statut);
+
+                con.Open();
+                commande.Prepare();
+                commande.ExecuteNonQuery();
+                con.Close();
+            }
+            catch (MySqlException ex)
+            {
+                Debug.WriteLine(ex.Message);
+                if (con.State == System.Data.ConnectionState.Open)
+                {
+                    con.Close();
+                }
+            }
+        }
+
     }
 }
