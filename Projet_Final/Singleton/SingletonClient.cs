@@ -17,7 +17,7 @@ namespace Projet_Final
 
         //MySqlConnection con = new MySqlConnection("Server=cours.cegep3r.info;Database=a2023_420325ri_fabeq23;Uid=2130649;Pwd=2130649;");
 
-        MySqlConnection con = new MySqlConnection("Server=cours.cegep3r.info;Database=a2023_420326_gr01_2204989-yousouf-esdras-manefa;Uid=2204989;Pwd=2204989;");
+        MySqlConnection con = new MySqlConnection("Server=cours.cegep3r.info;Database=a2023_420325ri_fabeq23;Uid=2204989;Pwd=2204989;");
         
 
         public SingletonClient()
@@ -101,11 +101,9 @@ namespace Projet_Final
         /*--------------------------Retourne la liste des Clients------------------------*/
         public ObservableCollection<Client> afficher_Client()
         {
-            Debug.WriteLine("uuuuuu");
 
             try
             {
-                Debug.WriteLine("aaaa");
                 ObservableCollection<Client> liste2 = new ObservableCollection<Client>();
                 MySqlCommand commande = new MySqlCommand("GetClientList");
                 commande.Connection = con;
@@ -115,8 +113,6 @@ namespace Projet_Final
 
                 while (r.Read())
                 {
-
-                    Debug.WriteLine("bbbbb");
 
                     liste2.Add(new Client { Id =  int.Parse(r["Identifiant"].ToString()), Nom = r["Nom"].ToString(), Adresse = r["Adresse"].ToString(), Num = r["NumeroTelephone"].ToString(), Email = r["Email"].ToString() });
                 }

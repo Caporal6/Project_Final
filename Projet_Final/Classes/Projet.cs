@@ -18,6 +18,11 @@ namespace Projet_Final
         public int ClientIdentifiant { get; set; }
         public string Statut { get; set; }
 
+        public string DateDebutString
+        {
+            get { return DateDebut.ToString("dd MMMM yyyy"); }
+        }
+
         public override string ToString()
         {
             return $"NumeroProjet: {NumeroProjet} - Titre: {Titre} - DateDebut: {DateDebut} - Description: {Description} - Budget: {Budget} - EmployesRequis: {EmployesRequis} - TotalSalaires: {TotalSalaires} - ClientIdentifiant: {ClientIdentifiant} - Statut: {Statut}";

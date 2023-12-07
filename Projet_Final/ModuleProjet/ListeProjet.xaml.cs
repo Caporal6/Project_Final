@@ -5,6 +5,7 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using Projet_Final.Classes;
 using Projet_Final.Employe;
 using Projet_Final.EmployeModule;
 using Projet_Final.Singleton;
@@ -27,7 +28,7 @@ namespace Projet_Final.ModuleProjet
     /// </summary>
     public sealed partial class ListeProjet : Page
     {
-        ObservableCollection<Projet> listeProjets = SingletonProjet.GetInstance().ListeProjets();
+        ObservableCollection<ProjetClient> listeProjetsClient = SingletonProjetClient.GetInstance().ListeProjetsAvecClients();
         int index = 0;
         Boolean cliked = false;
 
@@ -41,7 +42,7 @@ namespace Projet_Final.ModuleProjet
             if (cliked)
             {
                 index = gvListeProjet.SelectedIndex;
-                this.Frame.Navigate(typeof(Afficher_Projet), listeProjets[index].NumeroProjet);
+                this.Frame.Navigate(typeof(Afficher_Projet), listeProjetsClient[index].NumeroProjet);
 
             }
             cliked = false;

@@ -20,7 +20,7 @@ namespace Projet_Final.Singleton
         public SingletonProjet()
         {
             liste = new ObservableCollection<Projet>();
-            con = new MySqlConnection("Server=cours.cegep3r.info;Database=a2023_420326_gr01_2204989-yousouf-esdras-manefa;Uid=2204989;Pwd=2204989;");
+            con = new MySqlConnection("Server=cours.cegep3r.info;Database=a2023_420325ri_fabeq23;Uid=2204989;Pwd=2204989;");
         }
 
         // Retourne l'instance du singleton
@@ -75,6 +75,7 @@ namespace Projet_Final.Singleton
 
             return liste;
         }
+
 
         // Ajoute un Projet dans la BD
         public void AjouterProjet(Projet projet)
