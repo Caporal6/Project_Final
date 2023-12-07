@@ -27,8 +27,10 @@ namespace Projet_Final.ModuleProjet
     /// </summary>
     public sealed partial class FormulaireAjoutProjet : ContentDialog
     {
+        
         ObservableCollection<Client> listeClients = SingletonClient.getInstance().afficher_Client();
         bool dateDebutChange = false;
+        int idClient = 0;
         public FormulaireAjoutProjet()
         {
             this.InitializeComponent();
@@ -41,7 +43,7 @@ namespace Projet_Final.ModuleProjet
             this.Hide();
         }
 
-        private void btnAjouter_Click(object sender, RoutedEventArgs e)
+        private async void btnAjouter_Click(object sender, RoutedEventArgs e)
         {
             Boolean formValid = true;
 
@@ -108,7 +110,7 @@ namespace Projet_Final.ModuleProjet
                 }
                 else if (nbBudget.Value < 30)
                 {
-                    nbBudgetError.Text = "Le taux horraire ne peut etre inferieur a 20";
+                    nbBudgetError.Text = "Le budget ne peut etre inferieur a 30";
                     nbBudgetError.Visibility = Visibility.Visible;
                     formValid = formValid & false;
                 }
@@ -125,7 +127,7 @@ namespace Projet_Final.ModuleProjet
             if (nbEmployeRequis.Value.ToString() == "" || nbEmployeRequis.Text == "")
             {
 
-                nbEmployeRequisError.Text = "Le nombre d'employe requis  budget est obligatoire";
+                nbEmployeRequisError.Text = "Le nombre d'employe requis est obligatoire";
                 nbEmployeRequisError.Visibility = Visibility.Visible;
                 formValid = formValid & false;
             }
@@ -138,9 +140,9 @@ namespace Projet_Final.ModuleProjet
                     formValid = formValid & false;
 
                 }
-                else if (nbBudget.Value > 5)
+                else if (nbEmployeRequis.Value > 5)
                 {
-                    nbEmployeRequisError.Text = "Le nombre d'employe requis superieur a 5";
+                    nbEmployeRequisError.Text = "Le nombre d'employe requis ne peut etre superieur a 5";
                     nbEmployeRequisError.Visibility = Visibility.Visible;
                     formValid = formValid & false;
                 }
@@ -151,53 +153,50 @@ namespace Projet_Final.ModuleProjet
                 }
             }
 
-            // statut
+            //date debut
 
-            //if (statut == "")
-            //{
-            //    cbStatutError.Visibility = Visibility.Visible;
-            //    cbStatutError.Text = "Le statut est obligatoire";
-            //    formValid = formValid & false;
-            //}
-            //else
-            //{
-            //    cbStatutError.Visibility = Visibility.Collapsed;
-            //    formValid = formValid & true;
-            //}
+            if (client.Text == "")
+            {
+                clientRequisError.Visibility = Visibility.Visible;
+                clientRequisError.Text = "Le client est obligatoire";
+                formValid = formValid & false;
+            }
+            else
+            {
+                clientRequisError.Visibility = Visibility.Collapsed;
+                formValid = formValid & true;
+            }
 
 
-            //if (formValid == true)
-            //{
 
-            //    Debug.WriteLine("cool");
+            if (formValid == true)
+            {
 
-            //    EmployeC employe = new EmployeC
-            //    {
-            //        Nom = tbNom.Text,
-            //        Prenom = tbPrenom.Text,
-            //        DateNaissance = dpDateNaissance.Date.DateTime,
-            //        Email = tbEmail.Text,
-            //        Adresse = tbAdresse.Text,
-            //        DateEmbauche = dpDateEmbauche.Date.DateTime,
-            //        TauxHoraire = Convert.ToInt32(nbTauxHorraire.Text),
-            //        PhotoIdentite = tbPhotoIdentite.Text,
-            //        Statut = statut
-            //    };
+                Projet projet = new Projet
+                {
+                    Titre = tbTitre.Text,
+                    DateDebut = dpDateDebut.Date.DateTime,
+                    Description = tbDescription.Text,
+                    Budget =  Convert.ToInt32(nbBudget.Text),
+                    EmployesRequis = Convert.ToInt32(nbEmployeRequis.Text),
+                    ClientIdentifiant = Convert.ToInt32(idClient),
+                };
 
-            //    SingletonEmploye.GetInstance().AjouterEmploye(employe);
 
-            //    this.Hide();
+                SingletonProjet.GetInstance().AjouterProjet(projet);
 
-            //    ContentDialog dialog = new ContentDialog();
+                this.Hide();
 
-            //    dialog.XamlRoot = mainpanel.XamlRoot;
-            //    dialog.Title = "Information";
-            //    dialog.CloseButtonText = "OK";
-            //    dialog.Content = "Employe ajouter avec success";
+                ContentDialog dialog = new ContentDialog();
 
-            //    var result = await dialog.ShowAsync();
+                dialog.XamlRoot = mainpanel.XamlRoot;
+                dialog.Title = "Information";
+                dialog.CloseButtonText = "OK";
+                dialog.Content = "Projet ajouter avec success";
 
-            //}
+                var result = await dialog.ShowAsync();
+
+            }
         }
 
         private void dpDateDebut_DateChanged(object sender, DatePickerValueChangedEventArgs e)
@@ -236,6 +235,12 @@ namespace Projet_Final.ModuleProjet
         private void client_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
         {
             //SuggestionOutput.Text = args.SelectedItem.ToString();
+
+            Client clientRecherche = listeClients.FirstOrDefault(client => client.Nom == args.SelectedItem.ToString());
+
+            idClient = Convert.ToInt32(clientRecherche.Id);
+
+            Debug.WriteLine(idClient);
 
         }
     }

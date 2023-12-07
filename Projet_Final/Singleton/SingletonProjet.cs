@@ -75,5 +75,36 @@ namespace Projet_Final.Singleton
 
             return liste;
         }
+
+        // Ajoute un Projet dans la BD
+        public void AjouterProjet(Projet projet)
+        {
+            try
+            {
+                MySqlCommand commande = new MySqlCommand("CreerProjet");
+                commande.Connection = con;
+                commande.CommandType = System.Data.CommandType.StoredProcedure;
+
+                commande.Parameters.AddWithValue("@p_Titre", projet.Titre);
+                commande.Parameters.AddWithValue("@p_DateDebut", projet.DateDebut);
+                commande.Parameters.AddWithValue("@p_Description", projet.Description);
+                commande.Parameters.AddWithValue("@p_Budget", projet.Budget);
+                commande.Parameters.AddWithValue("@p_EmployesRequis", projet.EmployesRequis);
+                commande.Parameters.AddWithValue("@p_ClientIdentifiant", projet.ClientIdentifiant);
+                
+
+                con.Open();
+                commande.Prepare();
+                commande.ExecuteNonQuery();
+                con.Close();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                con.Close();
+            }
+
+            liste.Add(projet);
+        }
     }
 }

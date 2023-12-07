@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,9 +14,9 @@ namespace Projet_Final
         public ObservableCollection<Client> liste;
         static SingletonClient instance = null;
 
-        MySqlConnection con = new MySqlConnection("Server=cours.cegep3r.info;Database=a2023_420325ri_fabeq23;Uid=2130649;Pwd=2130649;");
+        //MySqlConnection con = new MySqlConnection("Server=cours.cegep3r.info;Database=a2023_420325ri_fabeq23;Uid=2130649;Pwd=2130649;");
 
-        //MySqlConnection con = new MySqlConnection("Server=cours.cegep3r.info;Database=a2023_420326_gr01_2204989-yousouf-esdras-manefa;Uid=2204989;Pwd=2204989;");
+        MySqlConnection con = new MySqlConnection("Server=cours.cegep3r.info;Database=a2023_420326_gr01_2204989-yousouf-esdras-manefa;Uid=2204989;Pwd=2204989;");
         
 
         public SingletonClient()
@@ -98,17 +99,22 @@ namespace Projet_Final
         /*--------------------------Retourne la liste des Clients------------------------*/
         public ObservableCollection<Client> afficher_Client()
         {
+            Debug.WriteLine("uuuuuu");
 
             try
             {
+                Debug.WriteLine("aaaa");
                 ObservableCollection<Client> liste2 = new ObservableCollection<Client>();
-                MySqlCommand commande = new MySqlCommand();
+                MySqlCommand commande = new MySqlCommand("GetClientList");
                 commande.Connection = con;
-                commande.CommandText = "CALL GetClientList()";
+                commande.CommandType = System.Data.CommandType.StoredProcedure;
                 con.Open();
                 MySqlDataReader r = commande.ExecuteReader();
+
                 while (r.Read())
                 {
+
+                    Debug.WriteLine("bbbbb");
 
                     liste2.Add(new Client { Id =  int.Parse(r["Identifiant"].ToString()), Nom = r["Nom"].ToString(), Adresse = r["Adresse"].ToString(), Num = r["NumeroTelephone"].ToString(), Email = r["Email"].ToString() });
                 }
