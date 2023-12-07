@@ -25,6 +25,8 @@ namespace Projet_Final.EmployeModule
     /// </summary>
     public sealed partial class DetailEmploye : Page
     {
+
+        string MatriculeEmploye = "";
         public DetailEmploye()
         {
             this.InitializeComponent();
@@ -35,11 +37,35 @@ namespace Projet_Final.EmployeModule
             if (e.Parameter is not null)
             {
 
-                EmployeC employe = SingletonListeBD.GetInstance().RetourneUnEmploye(e.Parameter as String);
+                EmployeC employe = SingletonEmploye.GetInstance().RetourneUnEmploye(e.Parameter as String);
 
+                MatriculeEmploye = employe.Matricule;
+                imgPhotoIdentite.Source = new BitmapImage(new Uri(employe.PhotoIdentite));
                 tbNom.Text = employe.Nom;
+                tbPrenom.Text = employe.Prenom;
+                tbDateNaissance.Text = employe.DateNaissance.ToString();
+                tbEmail.Text = employe.Email;
+                tbAdresse.Text = employe.Adresse;   
+                tbDateEmbauche.Text =  employe.DateEmbauche.ToString();
+                tbTauxHorraire.Text = employe.TauxHoraire.ToString();
+                tbStatut.Text = employe.Statut;
 
             }
+        }
+
+        private async void modifierEmployer_Click(object sender, RoutedEventArgs e)
+        {
+            EmployeC employe = SingletonEmploye.GetInstance().RetourneUnEmploye(MatriculeEmploye);
+            FormulaireModifier dialog = new FormulaireModifier();
+            dialog.XamlRoot = mainGrid.XamlRoot;
+            dialog.SetData(employe);
+
+            var result = await dialog.ShowAsync();
+        }
+
+        private void AssocierAProjet_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

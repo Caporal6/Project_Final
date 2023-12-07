@@ -5,9 +5,12 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using Projet_Final.Employe;
 using Projet_Final.EmployeModule;
+using Projet_Final.Singleton;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -17,34 +20,36 @@ using Windows.Foundation.Collections;
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
-namespace Projet_Final.Employe
+namespace Projet_Final.ModuleProjet
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MenuGestionEmploye : Page
+    public sealed partial class ListeProjet : Page
     {
-        public MenuGestionEmploye()
+        ObservableCollection<Projet> listeProjets = SingletonProjet.GetInstance().ListeProjets();
+        int index = 0;
+        Boolean cliked = false;
+
+        public ListeProjet()
         {
             this.InitializeComponent();
         }
 
-        private void listEmploye_Tapped(object sender, TappedRoutedEventArgs e)
+        private void gvListeProjet_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            this.Frame.Navigate(typeof(ListeEmploye));
+            if (cliked)
+            {
+                index = gvListeProjet.SelectedIndex;
+                this.Frame.Navigate(typeof(Afficher_Projet), listeProjets[index].NumeroProjet);
+
+            }
+            cliked = false;
         }
 
-        private async void ajouterEmploye_Tapped(object sender, TappedRoutedEventArgs e)
+        private void gvListeProjet_ItemClick(object sender, ItemClickEventArgs e)
         {
-            FourmulaireAjout dialog = new FourmulaireAjout();
-            dialog.XamlRoot = mainGrid.XamlRoot;
-           
-            var result = await dialog.ShowAsync();
-        }
-
-        private void listEmployeBorder_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-
+            cliked = true;
         }
     }
 }

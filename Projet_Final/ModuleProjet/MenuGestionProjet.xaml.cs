@@ -5,6 +5,7 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using Projet_Final.Employe;
 using Projet_Final.EmployeModule;
 using System;
 using System.Collections.Generic;
@@ -17,34 +18,29 @@ using Windows.Foundation.Collections;
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
-namespace Projet_Final.Employe
+namespace Projet_Final.ModuleProjet
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MenuGestionEmploye : Page
+    public sealed partial class MenuGestionProjet : Page
     {
-        public MenuGestionEmploye()
+        public MenuGestionProjet()
         {
             this.InitializeComponent();
         }
 
-        private void listEmploye_Tapped(object sender, TappedRoutedEventArgs e)
+        private void listProjet_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(ListeEmploye));
+            this.Frame.Navigate(typeof(ListeProjet));
         }
 
-        private async void ajouterEmploye_Tapped(object sender, TappedRoutedEventArgs e)
+        private async void ajouterProjet_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            FourmulaireAjout dialog = new FourmulaireAjout();
+            FormulaireAjoutProjet dialog = new FormulaireAjoutProjet();
             dialog.XamlRoot = mainGrid.XamlRoot;
-           
+
             var result = await dialog.ShowAsync();
-        }
-
-        private void listEmployeBorder_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-
         }
     }
 }
