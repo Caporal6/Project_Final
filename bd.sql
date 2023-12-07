@@ -8,6 +8,10 @@ DROP PROCEDURE IF EXISTS GetEmployeeList;
 DROP PROCEDURE IF EXISTS AjouterClient;
 DROP PROCEDURE IF EXISTS ModifierInformationsClient;
 DROP PROCEDURE IF EXISTS GetClientList;
+DROP PROCEDURE IF EXISTS GetAllProjects;
+DROP PROCEDURE IF EXISTS CreerProjet;
+DROP PROCEDURE IF EXISTS ObtenirIdClientParNom;
+DROP PROCEDURE  IF EXISTS GetProjectsAndClientsWithDetails;
 
 -- DROP DES FONCTIONS
 DROP FUNCTION IF EXISTS CalculerCoutTotalProjet;
@@ -80,9 +84,8 @@ CREATE TABLE Projet
     Description TEXT,
     Budget DECIMAL(10, 2),
     EmployesRequis INT,
-    TotalSalaires DECIMAL(10, 2),
+    TotalSalaires DECIMAL(10, 2) default 0,
     ClientIdentifiant INT,
-    test INT(32) DEFAULT 20,
     Statut VARCHAR(20) DEFAULT 'En cours',
     CONSTRAINT CK_NombreEmploye CHECK (EmployesRequis <= 5),
     CONSTRAINT Pk_Projet PRIMARY KEY (NumeroProjet),
@@ -184,9 +187,9 @@ BEGIN
 
     -- Vérifier si la valeur aléatoire est déjà utilisée
     WHILE EXISTS (SELECT 1 FROM Client WHERE Identifiant = random_id)
-    DO
-        SET random_id = FLOOR(RAND() * (999 - 100 + 1) + 100);
-    END WHILE;
+        DO
+            SET random_id = FLOOR(RAND() * (999 - 100 + 1) + 100);
+        END WHILE;
 
     -- Affecter la valeur aléatoire à l'Identifiant
     SET NEW.Identifiant = random_id;
@@ -258,17 +261,17 @@ BEGIN
         Statut,
         ProjetId
     ) VALUES (
-        p_Nom,
-        p_Prenom,
-        p_DateNaissance,
-        p_Email,
-        p_Adresse,
-        p_DateEmbauche,
-        p_TauxHoraire,
-        p_PhotoIdentite,
-        p_Statut,
-        NULL
-    );
+                 p_Nom,
+                 p_Prenom,
+                 p_DateNaissance,
+                 p_Email,
+                 p_Adresse,
+                 p_DateEmbauche,
+                 p_TauxHoraire,
+                 p_PhotoIdentite,
+                 p_Statut,
+                 NULL
+             );
 END;
 
 -- Procédure pour modifier les informations d'un employé
@@ -307,20 +310,6 @@ BEGIN
 END //
 DELIMITER ;
 
--- Création de la table Client
-DROP TABLE IF EXISTS Client;
-
-CREATE TABLE Client
-(
-    Identifiant INT,
-    Nom VARCHAR(50),
-    Adresse VARCHAR(200),
-    NumeroTelephone VARCHAR(15),
-    Email VARCHAR(100),
-    CONSTRAINT Pk_Client PRIMARY KEY (Identifiant)
-);
-
-
 -- Procédure pour retourner la liste des clients
 CREATE PROCEDURE GetClientList()
 BEGIN
@@ -343,12 +332,12 @@ BEGIN
         NumeroTelephone,
         Email
     ) VALUES (
-        c_Identifiant,
-        c_Nom,
-        c_Adresse,
-        c_NumeroTelephone,
-        c_Email
-    );
+                 c_Identifiant,
+                 c_Nom,
+                 c_Adresse,
+                 c_NumeroTelephone,
+                 c_Email
+             );
 END;
 
 -- Procédure pour modifier les informations d'un client
@@ -370,6 +359,110 @@ BEGIN
     WHERE Identifiant = c_Identifiant;
 END;
 
+-- Procédure qui retourne la liste de tous les projets
+
+CREATE PROCEDURE GetAllProjects()
+BEGIN
+    SELECT * FROM Projet;
+END;
+
+-- Procédure qui ajoute un projet
+
+DELIMITER //
+
+CREATE PROCEDURE CreerProjet(
+    IN p_Titre VARCHAR(100),
+    IN p_DateDebut DATE,
+    IN p_Description TEXT,
+    IN p_Budget DECIMAL(10, 2),
+    IN p_EmployesRequis INT,
+    IN p_ClientIdentifiant INT
+)
+BEGIN
+
+    -- Insérer le nouveau projet
+    INSERT INTO Projet (
+        Titre,
+        DateDebut,
+        Description,
+        Budget,
+        EmployesRequis,
+        ClientIdentifiant
+    ) VALUES (
+                 p_Titre,
+                 p_DateDebut,
+                 p_Description,
+                 p_Budget,
+                 p_EmployesRequis,
+                 p_ClientIdentifiant
+             );
+END //
+
+DELIMITER ;
+
+-- Procedure qui retoure l'id d'un client grace a son nom
+
+DELIMITER //
+
+CREATE PROCEDURE ObtenirIdClientParNom(
+    IN p_NomClient VARCHAR(50),
+    OUT p_IdentifiantClient INT
+)
+BEGIN
+    -- Initialiser l'identifiant à null
+    SET p_IdentifiantClient = NULL;
+
+    -- Rechercher l'identifiant du client par son nom
+    SELECT Identifiant INTO p_IdentifiantClient
+    FROM Client
+    WHERE Nom = p_NomClient;
+
+    -- Vérifier si le client a été trouvé
+    IF p_IdentifiantClient IS NULL THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Aucun client trouvé avec ce nom.';
+    END IF;
+END //
+
+DELIMITER ;
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS ObtenirClientParNom;
+//
+CREATE PROCEDURE ObtenirClientParNom(IN NomParam VARCHAR(20))
+BEGIN
+    SELECT *
+    FROM Client
+    WHERE Nom = NomParam;
+END //
+DELIMITER ;
+
+-- Procedure stocker qui retourne les projets et le nom du client qui est associer au projet
+
+DELIMITER //
+
+CREATE PROCEDURE GetProjectsAndClientsWithDetails()
+BEGIN
+    SELECT
+        P.NumeroProjet,
+        P.Titre AS TitreProjet,
+        P.DateDebut,
+        P.Description,
+        P.Budget,
+        P.EmployesRequis,
+        P.TotalSalaires,
+        P.Statut,
+        C.*
+    FROM
+        Projet P
+            LEFT JOIN
+        Client C ON P.ClientIdentifiant = C.Identifiant;
+END //
+
+DELIMITER ;
+
+CALL GetProjectsAndClientsWithDetails();
+
 
 -- CREATION DES FONCTIONS STOCKEES
 
@@ -382,7 +475,7 @@ BEGIN
     SELECT SUM(E.TauxHoraire * A.NbreHeures)
     INTO coutTotal
     FROM Assignation A
-         JOIN Employe E ON A.EmployeId = E.Matricule
+             JOIN Employe E ON A.EmployeId = E.Matricule
     WHERE A.ProjetId = numeroProjet;
 
     RETURN coutTotal;
@@ -429,7 +522,7 @@ BEGIN
 
     SELECT SUM(E.TauxHoraire * A.NbreHeures) INTO totalSalaire
     FROM Assignation A
-         JOIN Employe E ON A.EmployeId = E.Matricule
+             JOIN Employe E ON A.EmployeId = E.Matricule
     WHERE A.EmployeId = matricule;
 
     RETURN totalSalaire;
@@ -480,6 +573,77 @@ FROM Assignation;
 CREATE VIEW VueEmployesProjets AS
 SELECT E.Matricule, E.Nom, E.Prenom, E.ProjetId, P.Titre AS TitreProjet
 FROM Employe E
-LEFT JOIN Assignation A ON E.Matricule = A.EmployeId
-LEFT JOIN Projet P ON A.ProjetId = P.NumeroProjet;
+         LEFT JOIN Assignation A ON E.Matricule = A.EmployeId
+         LEFT JOIN Projet P ON A.ProjetId = P.NumeroProjet;
+
+-- Insertion dans la table client
+
+INSERT INTO Client (Identifiant, Nom, Adresse, NumeroTelephone, Email)
+VALUES (1, 'Client1', 'Adresse1', '1234567890', 'client1@email.com');
+
+INSERT INTO Client (Identifiant, Nom, Adresse, NumeroTelephone, Email)
+VALUES (2, 'Client2', 'Adresse2', '9876543210', 'client2@email.com');
+
+INSERT INTO Client (Identifiant, Nom, Adresse, NumeroTelephone, Email)
+VALUES (3, 'Client3', 'Adresse3', '1112233445', 'client3@email.com');
+
+INSERT INTO Client (Identifiant, Nom, Adresse, NumeroTelephone, Email)
+VALUES (4, 'Client4', 'Adresse4', '5544332211', 'client4@email.com');
+
+INSERT INTO Client (Identifiant, Nom, Adresse, NumeroTelephone, Email)
+VALUES (5, 'Client5', 'Adresse5', '9876543210', 'client5@email.com');
+
+
+-- Insertion dans la table Projet
+
+INSERT INTO Projet (NumeroProjet, Titre, DateDebut, Description, Budget, EmployesRequis, TotalSalaires, ClientIdentifiant, Statut)
+VALUES ('P1', 'Projet1', '2023-01-01', 'Description1', 5000.00, 3, 0.00, 255, 'En cours');
+
+INSERT INTO Projet (NumeroProjet, Titre, DateDebut, Description, Budget, EmployesRequis, TotalSalaires, ClientIdentifiant, Statut)
+VALUES ('P2', 'Projet2', '2023-02-01', 'Description2', 8000.00, 5, 0.00, 255, 'En cours');
+
+INSERT INTO Projet (NumeroProjet, Titre, DateDebut, Description, Budget, EmployesRequis, TotalSalaires, ClientIdentifiant, Statut)
+VALUES ('P3', 'Projet3', '2023-03-01', 'Description3', 10000.00, 4, 0.00, 255, 'En cours');
+
+INSERT INTO Projet (NumeroProjet, Titre, DateDebut, Description, Budget, EmployesRequis, TotalSalaires, ClientIdentifiant, Statut)
+VALUES ('P4', 'Projet4', '2023-04-01', 'Description4', 12000.00, 2, 0.00, 255, 'En cours');
+
+INSERT INTO Projet (NumeroProjet, Titre, DateDebut, Description, Budget, EmployesRequis, TotalSalaires, ClientIdentifiant, Statut)
+VALUES ('P5', 'Projet5', '2023-05-01', 'Description5', 15000.00, 5, 0.00, 255, 'En cours');
+
+-- Insertion dans la table employe
+
+INSERT INTO Employe (Matricule, Nom, Prenom, DateNaissance, Email, Adresse, DateEmbauche, TauxHoraire, PhotoIdentite, Statut, ProjetId)
+VALUES ('E1', 'Nom1', 'Prenom1', '1990-01-01', 'email1@email.com', 'Adresse1', '2022-01-01', 20.00, 'photo1.jpg', 'Permanent', 'P1');
+
+INSERT INTO Employe (Matricule, Nom, Prenom, DateNaissance, Email, Adresse, DateEmbauche, TauxHoraire, PhotoIdentite, Statut, ProjetId)
+VALUES ('E2', 'Nom2', 'Prenom2', '1995-02-01', 'email2@email.com', 'Adresse2', '2021-02-01', 18.50, 'photo2.jpg', 'Journalier', NULL);
+
+INSERT INTO Employe (Matricule, Nom, Prenom, DateNaissance, Email, Adresse, DateEmbauche, TauxHoraire, PhotoIdentite, Statut, ProjetId)
+VALUES ('E3', 'Nom3', 'Prenom3', '1988-03-15', 'email3@email.com', 'Adresse3', '2020-03-15', 22.00, 'photo3.jpg', 'Permanent', 'P2');
+
+INSERT INTO Employe (Matricule, Nom, Prenom, DateNaissance, Email, Adresse, DateEmbauche, TauxHoraire, PhotoIdentite, Statut, ProjetId)
+VALUES ('E4', 'Nom4', 'Prenom4', '1992-04-20', 'email4@email.com', 'Adresse4', '2019-04-20', 19.75, 'photo4.jpg', 'Journalier', NULL);
+
+INSERT INTO Employe (Matricule, Nom, Prenom, DateNaissance, Email, Adresse, DateEmbauche, TauxHoraire, PhotoIdentite, Statut, ProjetId)
+VALUES ('E5', 'Nom5', 'Prenom5', '1997-05-10', 'email5@email.com', 'Adresse5', '2018-05-10', 21.50, 'photo5.jpg', 'Permanent', 'P3');
+
+-- Manage DB
+
+select  * from client;
+select  * from employe;
+select  * from projet;
+
+
+
+
+
+
+
+
+
+
+
+
+
 
