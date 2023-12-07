@@ -12,6 +12,7 @@ namespace Projet_Final
     class SingletonClient
     {
         public ObservableCollection<Client> liste;
+        //MySqlConnection con;
         static SingletonClient instance = null;
 
         //MySqlConnection con = new MySqlConnection("Server=cours.cegep3r.info;Database=a2023_420325ri_fabeq23;Uid=2130649;Pwd=2130649;");
@@ -22,6 +23,7 @@ namespace Projet_Final
         public SingletonClient()
         {
             liste = new ObservableCollection<Client>();
+            //con = new MySqlConnection("Server=cours.cegep3r.info;Database=a2023_420326_gr01_2204989-yousouf-esdras-manefa;Uid=2204989;Pwd=2204989;");
         }
 
         public static SingletonClient getInstance()
@@ -135,18 +137,6 @@ namespace Projet_Final
             return liste;
 
         }
-
-
-
-
-
-
-
-
-
-
-
-
 
     }
 }
