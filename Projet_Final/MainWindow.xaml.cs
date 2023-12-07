@@ -6,6 +6,7 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Projet_Final.Employe;
+using Projet_Final.EmployeModule;
 using Projet_Final.ModuleProjet;
 using System;
 using System.Collections.Generic;
@@ -56,6 +57,9 @@ namespace Projet_Final
                     break;
                 case "gestionProjet":
                     mainFrame.Navigate(typeof(MenuGestionProjet));
+                    break;
+                case "gestionClient":
+                    mainFrame.Navigate(typeof(MenuGestionClient));
                     break;
                 default:
                     break;

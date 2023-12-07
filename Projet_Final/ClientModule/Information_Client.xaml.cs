@@ -49,8 +49,8 @@ namespace Projet_Final
             Modifier_Client dialog = new Modifier_Client();
             dialog.XamlRoot = stkpnl.XamlRoot;
             dialog.Title = "Modifier un client";
-            dialog.PrimaryButtonText = "Oui";
-            dialog.CloseButtonText = "Modifier";
+            dialog.PrimaryButtonText = "Modifier";
+            dialog.CloseButtonText = "Annuler";
             dialog.DefaultButton = ContentDialogButton.Primary;
 
             ContentDialogResult result = await dialog.ShowAsync();

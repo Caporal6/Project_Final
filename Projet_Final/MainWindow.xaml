@@ -16,6 +16,7 @@
     <NavigationView PaneDisplayMode="Left" PaneTitle="Joueur" x:Name="navView" SelectionChanged="navView_SelectionChanged" BackRequested="navView_BackRequested" IsBackEnabled="True" >
         <NavigationView.MenuItems>
             <NavigationViewItemHeader Content="Gestion des employees"/>
+            <NavigationViewItem Content="Gestion des Client" x:Name="gestionClient" Icon="People"/>
             <NavigationViewItem Content="Gestion des employees" x:Name="gestionEmploye" Icon="OtherUser"/>
             <NavigationViewItem Content="Gestion des projets" x:Name="gestionProjet" Icon="Folder"/>
 
