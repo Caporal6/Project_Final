@@ -11,12 +11,12 @@
 
     <StackPanel x:Name="stkpnl">
 
-        <TextBlock x:Name="tbId"></TextBlock>
-        <TextBlock x:Name="tbNom"></TextBlock>
-        <TextBlock x:Name="tbAdresse"></TextBlock>
-        <TextBlock x:Name="tbNum"></TextBlock>
-        <TextBlock x:Name="tbEmail"></TextBlock>
-        <TextBlock x:Name="tbxText" />
+        <TextBlock x:Name="tbId" FontSize="60"></TextBlock>
+        <TextBlock x:Name="tbNom" FontSize="60"></TextBlock>
+        <TextBlock x:Name="tbAdresse" FontSize="60"></TextBlock>
+        <TextBlock x:Name="tbNum" FontSize="60"></TextBlock>
+        <TextBlock x:Name="tbEmail" FontSize="60"></TextBlock>
+        <TextBlock x:Name="tbxText" FontSize="60" />
         
         <Button Click="Button_Click">Modifier</Button>
         <Button Click="Button_Click">Supprimez</Button>
