@@ -1,4 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
+using Projet_Final.Classes;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -107,5 +108,55 @@ namespace Projet_Final.Singleton
 
             liste.Add(projet);
         }
+
+
+        // Retourne un projet grace a son numero de projet
+        public Projet RetourneProjetParNumero(String NumeroProjet)
+        {
+            Projet projet = new Projet();
+
+            try
+            {
+                MySqlCommand commande = new MySqlCommand("GetProjetByNumero");
+                commande.Connection = con;
+                commande.CommandType = System.Data.CommandType.StoredProcedure;
+
+                commande.Parameters.AddWithValue("@p_NumeroProjet", NumeroProjet);
+
+                con.Open();
+                commande.Prepare();
+                MySqlDataReader r = commande.ExecuteReader();
+
+                while (r.Read())
+                {
+                    projet = new Projet
+                    {
+                        NumeroProjet = r["NumeroProjet"] as String,
+                        Titre = r["Titre"] as String,
+                        DateDebut = Convert.ToDateTime(r["DateDebut"]),
+                        Description = r["Description"] as String,
+                        Budget = Convert.ToDouble(r["Budget"], CultureInfo.InvariantCulture),
+                        EmployesRequis = Convert.ToInt32(r["EmployesRequis"]),
+                        TotalSalaires = Convert.ToDouble(r["TotalSalaires"], CultureInfo.InvariantCulture),
+                        ClientIdentifiant = Convert.ToInt32(r["ClientIdentifiant"]),
+                        Statut = r["Statut"] as String
+                    };
+                }
+
+                r.Close();
+                con.Close();
+            }
+            catch (MySqlException ex)
+            {
+                Debug.WriteLine(ex.Message);
+                if (con.State == System.Data.ConnectionState.Open)
+                {
+                    con.Close();
+                }
+            }
+
+            return projet;
+        }
+
     }
 }

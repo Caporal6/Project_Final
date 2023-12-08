@@ -9,12 +9,9 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid Background="Blue">
+    <Grid Background="White">
 
-        <TextBlock>Afficher Projets</TextBlock>
-        
-        
-        
-        
+        <TextBlock x:Name="titre"></TextBlock>
+
     </Grid>
 </Page>

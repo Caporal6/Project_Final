@@ -37,22 +37,48 @@
 
                                     <!--<Image Source="{x:Bind PhotoIdentite}" Stretch="UniformToFill" Height="120" />-->
 
-                                    <!--Nom de l'employe-->
-                                    <TextBlock x:Name="tbNumeroProjet" Text="{x:Bind NumeroProjet}" FontSize="20" FontWeight="Bold" Margin="12,8,12,0" />
+                                    <!--Numero du projet-->
+                                    <StackPanel Orientation="Vertical">
+                                        <TextBlock Text="Numero du projet" Foreground="Gray" FontSize="12" Margin="12,4,12,0" Grid.Row="2" />
+                                        <TextBlock x:Name="tbNumeroProjet" Text="{x:Bind NumeroProjet}" FontSize="20" FontWeight="Bold" Margin="12,2,12,0" />
+                                    </StackPanel>
+                                    
 
-                                    <!--Nom de l'employe-->
-                                    <TextBlock x:Name="tbTitre" Text="{x:Bind Titre}" FontSize="20" FontWeight="Bold" Margin="12,8,12,0" />
+                                    <!--Titre du projet-->
+                                    <StackPanel Orientation="Vertical">
+                                        <TextBlock Text="Titre" Foreground="Gray" FontSize="12" Margin="12,8,12,0" Grid.Row="2" />
+                                        <TextBlock x:Name="tbTitre" Text="{x:Bind Titre}" FontSize="20" FontWeight="Bold" Margin="12,2,12,0" />
+                                    </StackPanel>
+                                    
 
-                                    <!--Lieu de l'événement-->
-                                    <TextBlock x:Name="tbDescription" Text="{x:Bind Description}" FontSize="15" Margin="12,4,12,0" Grid.Row="1" />
+                                    <!--Description du projet-->
+                                    <StackPanel Orientation="Vertical">
+                                        <TextBlock Text="Description" Foreground="Gray" FontSize="12" Margin="12,8,12,0" Grid.Row="2" />
+                                        <TextBlock x:Name="tbDescription" Text="{x:Bind Description}" FontSize="15" Margin="12,2,12,0" Grid.Row="1" />
+                                    </StackPanel>
 
                                     
-                                    <TextBlock x:Name="tbBudget" Text="{x:Bind Budget}" FontSize="15" Margin="12,4,12,12" Grid.Row="2" />
 
+                                    <!--Budget du projet-->
+                                    <StackPanel Orientation="Vertical">
+                                        <TextBlock Text="Budget" Foreground="Gray" FontSize="12" Margin="12,8,12,0" Grid.Row="2" />
+                                        <TextBlock x:Name="tbBudget" Text="{x:Bind BudgetString}" FontSize="15" Margin="12,2,12,12" Grid.Row="2" />
+                                    </StackPanel>
                                     
-                                    <TextBlock x:Name="tbDateDebut" Text="{x:Bind DateDebutString}" FontSize="15" Margin="12,4,12,12" Grid.Row="2" />
 
-                                    <TextBlock x:Name="tbNomClient" Text="{x:Bind NomClient}" FontSize="15" Margin="12,4,12,12" Grid.Row="2" />
+                                    <!--Date du projet-->
+                                    <StackPanel Orientation="Vertical">
+                                        <TextBlock Text="Date de sebut" Foreground="Gray" FontSize="12" Margin="12,8,12,0" Grid.Row="2" />
+                                        <TextBlock x:Name="tbDateDebut" Text="{x:Bind DateDebutString}" FontSize="15" Margin="12,2,12,12" Grid.Row="2" />
+                                    </StackPanel>
+                                    
+
+                                    <!--Nom du client-->
+                                    <StackPanel Orientation="Vertical">
+                                        <TextBlock Text="Nom du client" Foreground="Gray" FontSize="12" Margin="12,4,12,0" Grid.Row="2" />
+                                        <TextBlock x:Name="tbNomClient" Text="{x:Bind NomClient}" FontSize="15" Margin="12,2,12,12" Grid.Row="2" />
+                                    </StackPanel>
+                                    
 
                                 </StackPanel>
 

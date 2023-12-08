@@ -30,6 +30,11 @@ namespace Projet_Final.Classes
             get { return DateDebut.ToString("dd MMMM yyyy"); }
         }
 
+        public string BudgetString
+        {
+            get { return Budget.ToString()+"$"; }
+        }
+
         public override string ToString()
         {
             return $"NumeroProjet: {NumeroProjet} - Titre: {Titre} - DateDebut: {DateDebut} - Description: {Description} - Budget: {Budget} - EmployesRequis: {EmployesRequis} - TotalSalaires: {TotalSalaires} - Statut: {Statut}\nClient - Identifiant: {IdentifiantClient} - Nom: {NomClient} - Adresse: {AdresseClient} - NumeroTelephone: {NumeroTelephoneClient} - Email: {EmailClient}";
