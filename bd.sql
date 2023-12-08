@@ -11,7 +11,9 @@ DROP PROCEDURE IF EXISTS GetClientList;
 DROP PROCEDURE IF EXISTS GetAllProjects;
 DROP PROCEDURE IF EXISTS CreerProjet;
 DROP PROCEDURE IF EXISTS ObtenirIdClientParNom;
-DROP PROCEDURE  IF EXISTS GetProjectsAndClientsWithDetails;
+DROP PROCEDURE IF EXISTS GetProjectsAndClientsWithDetails;
+DROP PROCEDURE IF EXISTS GetEmployesProjetDetails;
+DROP PROCEDURE IF EXISTS GetProjetByNumero;
 
 -- DROP DES FONCTIONS
 DROP FUNCTION IF EXISTS CalculerCoutTotalProjet;
@@ -27,6 +29,7 @@ DROP TRIGGER IF EXISTS before_update_statut_check_anciennete;
 DROP TRIGGER IF EXISTS before_insert_client_set_identifiant;
 DROP TRIGGER IF EXISTS before_insert_projet_set_numeroprojet;
 DROP TRIGGER IF EXISTS after_insert_assignation_attribute_to_employe;
+DROP TRIGGER IF EXISTS after_insert_assignation_update_totalsalaires;
 
 -- DROP DES VUES
 DROP VIEW IF EXISTS VueEmployeDetails;
@@ -213,6 +216,7 @@ END;
 DELIMITER ;
 
 -- Trigger après insertion sur la table Assignation
+
 DELIMITER //
 CREATE TRIGGER after_insert_assignation_attribute_to_employe
     AFTER INSERT
@@ -225,6 +229,29 @@ END;
 
 //
 DELIMITER ;
+
+-- Trigger qui va mettre a jour la colone totalsalaire de la table projet apres l'assignation d'un employer a un projet
+
+DELIMITER //
+
+CREATE TRIGGER after_insert_assignation_update_totalsalaires
+    AFTER INSERT
+    ON Assignation
+    FOR EACH ROW
+BEGIN
+    DECLARE salaire DECIMAL(10, 2);
+
+    -- Calculer le salaire pour la nouvelle assignation
+    SET salaire = NEW.NbreHeures * (SELECT TauxHoraire FROM Employe WHERE Matricule = NEW.EmployeId);
+
+    -- Mettre à jour le TotalSalaires dans la table Projet
+    UPDATE Projet
+    SET TotalSalaires = TotalSalaires + salaire
+    WHERE NumeroProjet = NEW.ProjetId;
+END //
+
+DELIMITER ;
+
 
 
 -- CREATION PROCEDURES STOCKEES
@@ -461,7 +488,62 @@ END //
 
 DELIMITER ;
 
-CALL GetProjectsAndClientsWithDetails();
+
+-- Procedure stocker qui retourne tous les employes lier a un projet
+
+DELIMITER //
+
+CREATE PROCEDURE GetEmployesProjetDetails(
+    IN p_NumeroProjet VARCHAR(20)
+)
+BEGIN
+    SELECT
+        E.Matricule,
+        E.Nom,
+        E.Prenom,
+        E.TauxHoraire,
+        E.PhotoIdentite,
+        E.Statut,
+        A.NbreHeures,
+        E.TauxHoraire * A.NbreHeures AS Salaire
+    FROM
+        Employe E
+            JOIN
+        Assignation A ON E.Matricule = A.EmployeId
+    WHERE
+            A.ProjetId = p_NumeroProjet;
+END //
+
+DELIMITER ;
+
+-- Procedure stocker qui retourne un projet en le cherchant par le numero de projet
+
+DELIMITER //
+
+CREATE PROCEDURE GetProjetByNumero(
+    IN p_NumeroProjet VARCHAR(20)
+)
+BEGIN
+    SELECT
+        NumeroProjet,
+        Titre,
+        DateDebut,
+        Description,
+        Budget,
+        EmployesRequis,
+        TotalSalaires,
+        ClientIdentifiant,
+        Statut
+    FROM
+        Projet
+    WHERE
+            NumeroProjet = p_NumeroProjet;
+END //
+
+DELIMITER ;
+
+
+
 
 
 -- CREATION DES FONCTIONS STOCKEES
