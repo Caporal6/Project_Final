@@ -14,6 +14,7 @@ DROP PROCEDURE IF EXISTS ObtenirIdClientParNom;
 DROP PROCEDURE IF EXISTS GetProjectsAndClientsWithDetails;
 DROP PROCEDURE IF EXISTS GetEmployesProjetDetails;
 DROP PROCEDURE IF EXISTS GetProjetByNumero;
+DROP PROCEDURE IF EXISTS AssignerEmployeAProjet;
 
 -- DROP DES FONCTIONS
 DROP FUNCTION IF EXISTS CalculerCoutTotalProjet;
@@ -542,6 +543,47 @@ END //
 
 DELIMITER ;
 
+-- Procédure pour assigner un employé à un projet
+DELIMITER //
+
+CREATE PROCEDURE AssignerEmployeAProjet(
+    IN p_MatriculeEmploye VARCHAR(20),
+    IN p_NumeroProjet VARCHAR(20),
+    IN p_NbreHeures INT
+)
+BEGIN
+    -- Vérifier si l'employé existe
+    IF NOT EXISTS (SELECT 1 FROM Employe WHERE Matricule = p_MatriculeEmploye) THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'L''employé spécifié n''existe pas.';
+    END IF;
+
+    -- Vérifier si le projet existe
+    IF NOT EXISTS (SELECT 1 FROM Projet WHERE NumeroProjet = p_NumeroProjet) THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Le projet spécifié n''existe pas.';
+    END IF;
+
+    -- Vérifier si l'employé a déjà été assigné à un projet
+    IF EXISTS (SELECT 1 FROM Assignation WHERE EmployeId = p_MatriculeEmploye AND ProjetId = p_NumeroProjet) THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'L''employé est déjà assigné à ce projet.';
+    END IF;
+
+    -- Vérifier si l'employé a déjà été assigné à un projet
+    IF (SELECT ProjetId FROM Employe WHERE Matricule = p_MatriculeEmploye) IS NOT NULL THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'L''employé est déjà assigné à un projet.';
+    END IF;
+
+    -- Insérer l'assignation
+    INSERT INTO Assignation (EmployeId, ProjetId, NbreHeures)
+    VALUES (p_MatriculeEmploye, p_NumeroProjet, p_NbreHeures);
+END //
+
+DELIMITER ;
+
+
 
 
 
@@ -715,6 +757,7 @@ VALUES ('E5', 'Nom5', 'Prenom5', '1997-05-10', 'email5@email.com', 'Adresse5', '
 select  * from client;
 select  * from employe;
 select  * from projet;
+select  * from assignation;
 
 
 
