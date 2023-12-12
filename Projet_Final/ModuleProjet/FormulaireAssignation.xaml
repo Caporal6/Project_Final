@@ -10,7 +10,7 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <StackPanel>
+        <StackPanel x:Name="mainStack">
             <Button x:Name="fermer" Click="fermer_Click">Fermer le formulaire</Button>
             <AutoSuggestBox x:Name="Employe" Margin="0 10 0 0" Header="Client" TextChanged="Employe_TextChanged" Height="70" Width="400" Grid.Row="13" Grid.Column="1" SuggestionChosen="Employe_SuggestionChosen" AutomationProperties.Name="Basic AutoSuggestBox"/>
             <TextBlock x:Name="employeRequisError" Visibility="Collapsed" Foreground="Red"  Grid.Row="14" Grid.Column="1" FontSize="12" Margin="0 10 0 0"></TextBlock>

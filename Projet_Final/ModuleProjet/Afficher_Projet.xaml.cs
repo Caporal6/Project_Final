@@ -61,6 +61,7 @@ namespace Projet_Final
         {
             FormulaireAssignation dialog = new FormulaireAssignation();
             dialog.XamlRoot = mainStack.XamlRoot;
+            dialog.SetData(NumeroProjetTextBlock.Text);
 
             var result = await dialog.ShowAsync();
         }

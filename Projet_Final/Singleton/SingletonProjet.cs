@@ -166,8 +166,8 @@ namespace Projet_Final.Singleton
                 commande.Connection = con;
                 commande.CommandType = System.Data.CommandType.StoredProcedure;
 
-                commande.Parameters.AddWithValue("@p_EmployeId", matriculeEmploye);
-                commande.Parameters.AddWithValue("@p_ProjetId", numeroProjet);
+                commande.Parameters.AddWithValue("@p_MatriculeEmploye", matriculeEmploye);
+                commande.Parameters.AddWithValue("@p_NumeroProjet", numeroProjet);
                 commande.Parameters.AddWithValue("@p_NbreHeures", nbreHeures);
 
                 con.Open();
@@ -178,10 +178,12 @@ namespace Projet_Final.Singleton
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
+                
                 if (con.State == System.Data.ConnectionState.Open)
                 {
                     con.Close();
                 }
+                throw new Exception(ex.Message);
             }
         }
 
