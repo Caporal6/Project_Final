@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentDialog
+    x:Class="Projet_Final.ModuleProjet.FormulaireAssignation"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Projet_Final.ModuleProjet"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <StackPanel>
+            <Button x:Name="fermer" Click="fermer_Click">Fermer le formulaire</Button>
+            <AutoSuggestBox x:Name="Employe" Margin="0 10 0 0" Header="Client" TextChanged="Employe_TextChanged" Height="70" Width="400" Grid.Row="13" Grid.Column="1" SuggestionChosen="Employe_SuggestionChosen" AutomationProperties.Name="Basic AutoSuggestBox"/>
+            <TextBlock x:Name="employeRequisError" Visibility="Collapsed" Foreground="Red"  Grid.Row="14" Grid.Column="1" FontSize="12" Margin="0 10 0 0"></TextBlock>
+            <TextBox Header="Nombre d'heures" x:Name="tbHeures"></TextBox>
+            <TextBlock x:Name="tbHeuresError" Visibility="Collapsed" Foreground="Red"  Grid.Row="14" Grid.Column="1" FontSize="12" Margin="0 10 0 0"></TextBlock>
+            <Button HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="assigner" Click="assigner_Click">Assigner</Button>
+        </StackPanel>
+    </Grid>
+</ContentDialog>

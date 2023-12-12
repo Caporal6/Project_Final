@@ -240,8 +240,6 @@ namespace Projet_Final.ModuleProjet
 
             idClient = Convert.ToInt32(clientRecherche.Id);
 
-            Debug.WriteLine(idClient);
-
         }
     }
 }

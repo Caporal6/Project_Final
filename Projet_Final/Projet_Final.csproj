@@ -33,6 +33,7 @@
     <None Remove="Information_Client.xaml" />
     <None Remove="Modifier_Client.xaml" />
     <None Remove="ModuleProjet\FormulaireAjoutProjet.xaml" />
+    <None Remove="ModuleProjet\FormulaireAssignation.xaml" />
     <None Remove="ModuleProjet\ListeProjet.xaml" />
     <None Remove="ModuleProjet\MenuGestionProjet.xaml" />
 
@@ -67,6 +68,9 @@
     <None Update="Assets\Add.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="ModuleProjet\FormulaireAssignation.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="ModuleProjet\FormulaireAjoutProjet.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

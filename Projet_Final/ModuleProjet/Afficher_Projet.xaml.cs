@@ -6,9 +6,12 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Navigation;
+using Projet_Final.Classes;
+using Projet_Final.ModuleProjet;
 using Projet_Final.Singleton;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -25,6 +28,8 @@ namespace Projet_Final
     /// </summary>
     public sealed partial class Afficher_Projet : Page
     {
+        ObservableCollection<EmployeProjet> listeEmployeProjet;
+        ObservableCollection<ProjetClient> listeProjetClient;
         public Afficher_Projet()
         {
             this.InitializeComponent();
@@ -36,10 +41,28 @@ namespace Projet_Final
             {
 
                 Projet projet = SingletonProjet.GetInstance().RetourneProjetParNumero(e.Parameter as String);
+                listeEmployeProjet = SingletonEmployeProjet.GetInstance().RetournelesEmployeLierAuProjet(e.Parameter as String);
+                listeProjetClient = SingletonProjetClient.GetInstance().ListeProjetsAvecClients();
 
-                titre.Text = projet.Titre.ToString();
+                NumeroProjetTextBlock.Text = projet.NumeroProjet;
+                TitreTextBlock.Text = projet.Titre;
+                DateDebutTextBlock.Text = "Date de Début: " + projet.DateDebut.ToString("dd MMMM yyyy");
+                DescriptionTextBlock.Text = projet.Description;
+                BudgetTextBlock.Text = projet.Budget.ToString();
+                EmployesRequisTextBlock.Text = projet.EmployesRequis.ToString();
+                TotalSalairesTextBlock.Text = projet.TotalSalaires.ToString();
+                ClientIdentifiantTextBlock.Text = projet.ClientIdentifiant.ToString();
+                StatutTextBlock.Text = projet.Statut.ToString();
 
             }
+        }
+
+        private async void assigner_Click(object sender, RoutedEventArgs e)
+        {
+            FormulaireAssignation dialog = new FormulaireAssignation();
+            dialog.XamlRoot = mainStack.XamlRoot;
+
+            var result = await dialog.ShowAsync();
         }
     }
 }

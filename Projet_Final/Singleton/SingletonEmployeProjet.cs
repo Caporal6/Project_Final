@@ -33,9 +33,9 @@ namespace Projet_Final.Singleton
             return instance;
         }
 
-        public List<EmployeProjet> RetournelesEmployeLierAuProjet(String NumeroProjet)
+        public ObservableCollection<EmployeProjet> RetournelesEmployeLierAuProjet(String NumeroProjet)
         {
-            List<EmployeProjet> listeEmployes = new List<EmployeProjet>();
+            ObservableCollection<EmployeProjet> listeEmployes = new ObservableCollection<EmployeProjet>();
 
             try
             {

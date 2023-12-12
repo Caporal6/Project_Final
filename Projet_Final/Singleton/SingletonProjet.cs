@@ -158,5 +158,32 @@ namespace Projet_Final.Singleton
             return projet;
         }
 
+        public void AssignerEmployeAProjet(string matriculeEmploye, string numeroProjet, int nbreHeures)
+        {
+            try
+            {
+                MySqlCommand commande = new MySqlCommand("AssignerEmployeAProjet");
+                commande.Connection = con;
+                commande.CommandType = System.Data.CommandType.StoredProcedure;
+
+                commande.Parameters.AddWithValue("@p_EmployeId", matriculeEmploye);
+                commande.Parameters.AddWithValue("@p_ProjetId", numeroProjet);
+                commande.Parameters.AddWithValue("@p_NbreHeures", nbreHeures);
+
+                con.Open();
+                commande.Prepare();
+                commande.ExecuteNonQuery();
+                con.Close();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                if (con.State == System.Data.ConnectionState.Open)
+                {
+                    con.Close();
+                }
+            }
+        }
+
     }
 }
