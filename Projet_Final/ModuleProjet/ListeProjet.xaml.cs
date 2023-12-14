@@ -34,6 +34,8 @@ namespace Projet_Final.ModuleProjet
 
         public ListeProjet()
         {
+            listeProjetsClient.Clear();
+            listeProjetsClient = SingletonProjetClient.GetInstance().ListeProjetsAvecClients();
             this.InitializeComponent();
         }
 

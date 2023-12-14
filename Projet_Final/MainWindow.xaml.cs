@@ -7,6 +7,8 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Projet_Final.Employe;
 using Projet_Final.ModuleProjet;
+using Projet_Final.Singleton;
+using Projet_Final.Connexion;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -29,10 +31,20 @@ namespace Projet_Final
         public MainWindow()
         {
             this.InitializeComponent();
-            mainFrame.Navigate(typeof(Afficher_Projet));
+            if (SingletonAdministrateur.GetInstance().online())
+            {
+                connexionProjet.Content = "Deconnexion";
+            }
+            else
+            {
+                connexionProjet.Content = "Connexion";
+            }
+            mainFrame.Navigate(typeof(ListeProjet));
         }
 
-        private void navView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+
+
+        private async void navView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
 
             var item = (NavigationViewItem)args.SelectedItem;
@@ -56,6 +68,15 @@ namespace Projet_Final
                     break;
                 case "gestionProjet":
                     mainFrame.Navigate(typeof(MenuGestionProjet));
+                    break;
+                case "connexionProjet":
+                    {
+
+                        ConnexionProjet dialog = new ConnexionProjet();
+                        dialog.XamlRoot = navView.XamlRoot;
+
+                        var result = await dialog.ShowAsync();
+                    }
                     break;
                 default:
                     break;

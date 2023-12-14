@@ -158,7 +158,7 @@ namespace Projet_Final.Singleton
             return projet;
         }
 
-        public void AssignerEmployeAProjet(string matriculeEmploye, string numeroProjet, int nbreHeures)
+        public string AssignerEmployeAProjet(string matriculeEmploye, string numeroProjet, int nbreHeures)
         {
             try
             {
@@ -174,6 +174,8 @@ namespace Projet_Final.Singleton
                 commande.Prepare();
                 commande.ExecuteNonQuery();
                 con.Close();
+
+                return "Employer lier au projet avec succeess";
             }
             catch (Exception ex)
             {
@@ -183,7 +185,7 @@ namespace Projet_Final.Singleton
                 {
                     con.Close();
                 }
-                throw new Exception(ex.Message);
+                return ex.Message;
             }
         }
 

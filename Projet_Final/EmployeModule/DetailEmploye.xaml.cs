@@ -6,6 +6,7 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Navigation;
+using Projet_Final.Employe;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -66,6 +67,11 @@ namespace Projet_Final.EmployeModule
         private void AssocierAProjet_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void retour_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(ListeEmploye));
         }
     }
 }

@@ -60,7 +60,7 @@
             <Button Margin="12 20 0 0" x:Name="assigner" Click="assigner_Click">Lier un employer au projet</Button>
 
 
-            <GridView  x:Name="gvListeProjet"  IsItemClickEnabled="True" ItemsSource="{x:Bind listeEmployeProjet}">
+            <GridView  x:Name="gvListeEmployeProjet"  IsItemClickEnabled="True" ItemsSource="{x:Bind listeEmployeProjet}">
                 <GridView.ItemTemplate>
                     <DataTemplate x:DataType="local:EmployeProjet">
                         <GridViewItem>

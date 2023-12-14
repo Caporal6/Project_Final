@@ -63,7 +63,20 @@ namespace Projet_Final
             dialog.XamlRoot = mainStack.XamlRoot;
             dialog.SetData(NumeroProjetTextBlock.Text);
 
+            dialog.ParentPageReference = this;
+
             var result = await dialog.ShowAsync();
+        }
+
+        public void RefreshEmployeeList()
+        {
+            // Mettez à jour la liste des employés liés au projet
+            listeEmployeProjet = SingletonEmployeProjet.GetInstance().RetournelesEmployeLierAuProjet(NumeroProjetTextBlock.Text);
+
+            // Mettez à jour votre interface utilisateur, par exemple, en réassignant la source de données
+            // pour la ListView ou tout autre contrôle que vous utilisez pour afficher la liste des employés.
+            // Exemple hypothétique :
+            gvListeEmployeProjet.ItemsSource = listeEmployeProjet;
         }
     }
 }

@@ -28,6 +28,9 @@ namespace Projet_Final.ModuleProjet
         ObservableCollection<EmployeC> listeEmployes = SingletonEmploye.GetInstance().ListeEmployees();
         string idEmploye = "";
         string numeroProjet = "";
+
+        public Afficher_Projet ParentPageReference { get; internal set; }
+
         public FormulaireAssignation()
         {
             this.InitializeComponent();
@@ -111,36 +114,25 @@ namespace Projet_Final.ModuleProjet
 
             if(formValid)
             {
-                try
-                {
-                    SingletonProjet.GetInstance().AssignerEmployeAProjet(idEmploye, numeroProjet, Convert.ToInt32(tbHeures.Text));
 
-                    this.Hide();
+                    string message = SingletonProjet.GetInstance().AssignerEmployeAProjet(idEmploye, numeroProjet, Convert.ToInt32(tbHeures.Text));
+
+                if (this.Parent is Afficher_Projet parentPage)
+                {
+                    parentPage.RefreshEmployeeList();
+                }
+
+                this.Hide();
 
                     ContentDialog dialog = new ContentDialog();
 
                     dialog.XamlRoot = mainStack.XamlRoot;
                     dialog.Title = "Information";
                     dialog.CloseButtonText = "OK";
-                    dialog.Content = "Association effectuer avec success";
+                    dialog.Content = message;
 
                     var result = await dialog.ShowAsync();
-                }
-                catch (Exception ex)
-                {
-                    this.Hide();
 
-                    ContentDialog dialog = new ContentDialog();
-
-                    dialog.XamlRoot = mainStack.XamlRoot;
-                    dialog.Title = "Information";
-                    dialog.CloseButtonText = "OK";
-                    dialog.Content = ex.Message;
-
-                    var result = await dialog.ShowAsync();
-                    Console.WriteLine($"Une erreur s'est produite : {ex.Message}");
-                    throw;
-                }
 
             }
         }

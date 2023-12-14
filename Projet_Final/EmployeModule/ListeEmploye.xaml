@@ -11,6 +11,8 @@
 
     <Grid Background="White">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -18,7 +20,11 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <GridView  x:Name="gvListeEmploye" ItemClick="gvListeEmploye_ItemClick" SelectionChanged="gvListeEmploye_SelectionChanged" IsItemClickEnabled="True" ItemsSource="{x:Bind listeEmployes}">
+        <Button Grid.Row="0" Grid.Column="0" x:Name="retour" Click="retour_Click" Background="Gray" Foreground="White" FontWeight="Bold" Margin="10 10 0 0">Retour</Button>
+
+        <TextBlock Text="Liste d'Employes" Grid.Row="1" Grid.Column="0" Style="{StaticResource SubheaderTextBlockStyle}" Margin="10"/>
+
+        <GridView  x:Name="gvListeEmploye" Grid.Row="2" Grid.Column="0" ItemClick="gvListeEmploye_ItemClick" SelectionChanged="gvListeEmploye_SelectionChanged" IsItemClickEnabled="True" ItemsSource="{x:Bind listeEmployes}" Margin="0 10 0 0">
             <GridView.ItemTemplate>
                 <DataTemplate x:DataType="local:EmployeC">
                     <GridViewItem>

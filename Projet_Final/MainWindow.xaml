@@ -13,11 +13,11 @@
     
     
     
-    <NavigationView PaneDisplayMode="Left" PaneTitle="Joueur" x:Name="navView" SelectionChanged="navView_SelectionChanged" BackRequested="navView_BackRequested" IsBackEnabled="True" >
+    <NavigationView PaneDisplayMode="Left" PaneTitle="Projet Manage" x:Name="navView" SelectionChanged="navView_SelectionChanged" BackRequested="navView_BackRequested" IsBackEnabled="True" >
         <NavigationView.MenuItems>
-            <NavigationViewItemHeader Content="Gestion des employees"/>
             <NavigationViewItem Content="Gestion des employees" x:Name="gestionEmploye" Icon="OtherUser"/>
             <NavigationViewItem Content="Gestion des projets" x:Name="gestionProjet" Icon="Folder"/>
+            <NavigationViewItem Content="" x:Name="connexionProjet" Icon="Folder"/>
 
             <NavigationViewItemHeader Content="Zone 1"/>
             <NavigationViewItem Content="Ajouter Projet" x:Name="AjProjet" Icon="People"/>
