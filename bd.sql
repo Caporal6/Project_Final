@@ -750,7 +750,7 @@ INSERT INTO Employe (Matricule, Nom, Prenom, DateNaissance, Email, Adresse, Date
 VALUES ('E4', 'Nom4', 'Prenom4', '1992-04-20', 'email4@email.com', 'Adresse4', '2019-04-20', 19.75, 'photo4.jpg', 'Journalier', NULL);
 
 INSERT INTO Employe (Matricule, Nom, Prenom, DateNaissance, Email, Adresse, DateEmbauche, TauxHoraire, PhotoIdentite, Statut, ProjetId)
-VALUES ('E5', 'Nom5', 'Prenom5', '1997-05-10', 'email5@email.com', 'Adresse5', '2018-05-10', 21.50, 'photo5.jpg', 'Permanent', 'P3');
+VALUES ('E5', 'Nom5', 'Prenom5', '1997-05-10', 'email5@email.com', 'Adresse5', '2018-05-10', 21.50, 'photo5.jpg', 'Permanent', NULL);
 
 -- Manage DB
 
@@ -764,7 +764,52 @@ select  * from assignation;
 
 
 
+drop TABLE IF EXISTS Administrateur;
+-- Création de la table Administrateur
+CREATE TABLE IF NOT EXISTS Administrateur (
+                                              Id INT AUTO_INCREMENT PRIMARY KEY,
+                                              NomUtilisateur VARCHAR(50) NOT NULL UNIQUE,
+                                              MotDePasseHash VARCHAR(64) NOT NULL -- Stocker le hachage du mot de passe (SHA-256)
+);
 
+
+DROP PROCEDURE IF EXISTS VerifierAdministrateur;
+-- Procédure stockée pour vérifier le nom d'utilisateur et le mot de passe
+DELIMITER //
+CREATE PROCEDURE VerifierAdministrateur(
+    IN p_NomUtilisateur VARCHAR(50),
+    IN p_MotDePasse VARCHAR(255)
+)
+BEGIN
+    -- Hacher le mot de passe avec SHA-256
+    SET p_MotDePasse = SHA2(p_MotDePasse, 256);
+
+    -- Sélectionner la ligne correspondant aux identifiants fournis
+    SELECT *
+    FROM Administrateur
+    WHERE NomUtilisateur = p_NomUtilisateur AND MotDePasseHash = p_MotDePasse;
+END //
+DELIMITER ;
+
+
+
+
+-- Remplacez ces valeurs par celles que vous souhaitez insérer
+SET @nomUtilisateur = 'admin';
+SET @motDePasse = 'motDePasseSecret';
+
+-- Hacher le mot de passe avec SHA-256
+SET @motDePasseHash = SHA2(@motDePasse, 256);
+
+-- Insérer dans la table Administrateur
+INSERT INTO Administrateur (NomUtilisateur, MotDePasseHash) VALUES (@nomUtilisateur, @motDePasseHash);
+
+
+
+
+
+
+select * from  administrateur;
 
 
 
