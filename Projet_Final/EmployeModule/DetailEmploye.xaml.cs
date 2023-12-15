@@ -10,6 +10,7 @@ using Projet_Final.Employe;
 using Projet_Final.Singleton;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -71,7 +72,38 @@ namespace Projet_Final.EmployeModule
             dialog.XamlRoot = mainGrid.XamlRoot;
             dialog.SetData(employe);
 
+            Debug.WriteLine("test1");
+
             var result = await dialog.ShowAsync();
+
+            Debug.WriteLine("test2");
+
+            // Accédez à la valeur retournée après la fermeture du ContentDialog
+            if (result == ContentDialogResult.Primary)
+            {
+                Debug.WriteLine("test3");
+                bool returnedValue = dialog.ReturnValue;
+                Debug.WriteLine("test4");
+                if (returnedValue) {
+                    Debug.WriteLine("test5");
+                    this.Frame.Navigate(typeof(DetailEmploye), MatriculeEmploye);
+                    Debug.WriteLine("test6");
+                }
+                Debug.WriteLine("test7");
+            }
+            else
+            {
+                Debug.WriteLine("test8");
+                bool returnedValue = dialog.ReturnValue;
+                Debug.WriteLine("test9");
+                if (returnedValue)
+                {
+                    Debug.WriteLine("test10");
+                    this.Frame.Navigate(typeof(DetailEmploye), MatriculeEmploye);
+                    Debug.WriteLine("test11");
+                }
+                Debug.WriteLine("test12");
+            }
         }
 
         private void AssocierAProjet_Click(object sender, RoutedEventArgs e)

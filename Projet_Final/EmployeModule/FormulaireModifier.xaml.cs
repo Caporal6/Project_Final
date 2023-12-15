@@ -29,10 +29,13 @@ namespace Projet_Final.EmployeModule
         String ancienStatut = "";
         DateTime dateEmbauche = DateTime.MinValue;
         String Matricule = "";
+        
         public FormulaireModifier()
         {
             this.InitializeComponent();
         }
+
+        public bool ReturnValue { get; set; }
 
         internal void SetData(EmployeC employe)
         {
@@ -267,7 +270,11 @@ namespace Projet_Final.EmployeModule
                 dialog.CloseButtonText = "OK";
                 dialog.Content = "Modification effectuer avec success";
 
+                ReturnValue = true;
+
                 var result = await dialog.ShowAsync();              
+
+                
 
             }
         }

@@ -17,7 +17,8 @@
         <NavigationView.MenuItems>
             <NavigationViewItem Content="Gestion des employees" x:Name="gestionEmploye" Icon="OtherUser"/>
             <NavigationViewItem Content="Gestion des projets" x:Name="gestionProjet" Icon="Folder"/>
-            <NavigationViewItem Content="" x:Name="connexionProjet" Icon="Folder"/>
+            <NavigationViewItem Content="" x:Name="connexionProjet" Icon="OpenLocal"/>
+            <NavigationViewItem Content="Exporter" x:Name="sauvegarder" Icon="Save"/>
 
             <NavigationViewItemHeader Content="Zone 1"/>
             <NavigationViewItem Content="Ajouter Projet" x:Name="AjProjet" Icon="People"/>

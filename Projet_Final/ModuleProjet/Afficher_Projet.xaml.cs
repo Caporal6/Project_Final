@@ -51,6 +51,8 @@ namespace Projet_Final
 
                 Projet projet = SingletonProjet.GetInstance().RetourneProjetParNumero(e.Parameter as String);
                 listeEmployeProjet = SingletonEmployeProjet.GetInstance().RetournelesEmployeLierAuProjet(e.Parameter as String);
+
+                
                 listeProjetClient = SingletonProjetClient.GetInstance().ListeProjetsAvecClients();
 
                 NumeroProjetTextBlock.Text = projet.NumeroProjet;

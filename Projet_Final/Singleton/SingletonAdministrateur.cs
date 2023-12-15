@@ -102,5 +102,10 @@ namespace Projet_Final.Singleton
         {
             return Statut;
         }
+
+        public void deconnexion()
+        {
+            Statut = false;
+        }
     }
 }

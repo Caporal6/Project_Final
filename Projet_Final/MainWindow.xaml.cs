@@ -17,6 +17,9 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Devices.Enumeration;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using MySqlX.XDevAPI.Common;
+using Projet_Final.EmployeModule;
+using System.Diagnostics;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -73,15 +76,56 @@ namespace Projet_Final
                 case "connexionProjet":
                     {
 
-                        ConnexionProjet dialog = new ConnexionProjet();
-                        dialog.XamlRoot = navView.XamlRoot;
-                        //dialog.PrimaryButtonText = "Connexion";
+                        if(SingletonAdministrateur.GetInstance().online() == false)
+                        {
+                            ConnexionProjet dialog = new ConnexionProjet();
+                            dialog.XamlRoot = navView.XamlRoot;
+                            //dialog.PrimaryButtonText = "Connexion";
 
-                        var resultat = await dialog.ShowAsync();
+                            var resultat = await dialog.ShowAsync();
+
+                            // Accédez à la valeur retournée après la fermeture du ContentDialog
+                            if (resultat == ContentDialogResult.Primary)
+                            {
+                                bool returnedValue = dialog.ReturnValue;
+                                if (returnedValue)
+                                {
+                                    mainFrame.Navigate(typeof(ListeProjet));
+                                }
+                            }
+                            else
+                            {
+                                bool returnedValue = dialog.ReturnValue;
+                                if (returnedValue)
+                                {
+                                    ChangerElementSelectionne("gestionProjet");
+                                    connexionProjet.Content = "Deconnexion";
+                                    
+                                }
+                            }
+                        }
+                        else
+                        {
+                            SingletonAdministrateur.GetInstance().deconnexion();
+                            ContentDialog dialog2 = new ContentDialog();
+                            dialog2.XamlRoot = navView.XamlRoot;
+                            dialog2.Title = "Information";
+                            dialog2.CloseButtonText = "OK";
+                            dialog2.Content = "Deconnexion réussi!";
+
+                            var result = await dialog2.ShowAsync();
+
+                            connexionProjet.Content = "Connexion";
+                            ChangerElementSelectionne("gestionProjet");
+
+
+                        }
+
+
 
                         //if (resultat == ContentDialogResult.Primary)
                         //{
-                            
+
 
                         //    ContentDialog dialog2 = new ContentDialog();
                         //    dialog.XamlRoot = navView.XamlRoot;
@@ -103,6 +147,22 @@ namespace Projet_Final
 
 
         }
+
+        // Supposez que "navView" est votre NavigationView
+
+        private void ChangerElementSelectionne(string nomElement)
+        {
+            foreach (var item in navView.MenuItems.OfType<NavigationViewItem>())
+            {
+                if (item.Name == nomElement)
+                {
+                    // Sélectionnez manuellement l'élément de menu
+                    navView.SelectedItem = item;
+                    break;
+                }
+            }
+        }
+
 
         private void navView_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
         {
