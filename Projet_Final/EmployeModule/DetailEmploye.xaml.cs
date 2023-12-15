@@ -7,6 +7,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Navigation;
 using Projet_Final.Employe;
+using Projet_Final.Singleton;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -31,6 +32,15 @@ namespace Projet_Final.EmployeModule
         public DetailEmploye()
         {
             this.InitializeComponent();
+
+            if (SingletonAdministrateur.GetInstance().online())
+            {
+                modifierEmployer.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                modifierEmployer.Visibility = Visibility.Collapsed;
+            }
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -44,11 +54,11 @@ namespace Projet_Final.EmployeModule
                 imgPhotoIdentite.Source = new BitmapImage(new Uri(employe.PhotoIdentite));
                 tbNom.Text = employe.Nom;
                 tbPrenom.Text = employe.Prenom;
-                tbDateNaissance.Text = employe.DateNaissance.ToString();
+                tbDateNaissance.Text = employe.DateNaissance.ToString("dd MMMM yyyy");
                 tbEmail.Text = employe.Email;
                 tbAdresse.Text = employe.Adresse;   
-                tbDateEmbauche.Text =  employe.DateEmbauche.ToString();
-                tbTauxHorraire.Text = employe.TauxHoraire.ToString();
+                tbDateEmbauche.Text =  employe.DateEmbauche.ToString("dd MMMM yyyy");
+                tbTauxHorraire.Text = employe.TauxHoraire.ToString()+"$";
                 tbStatut.Text = employe.Statut;
 
             }

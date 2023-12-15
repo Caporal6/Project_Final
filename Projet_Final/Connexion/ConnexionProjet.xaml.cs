@@ -36,7 +36,7 @@ namespace Projet_Final.Connexion
             this.Hide();
         }
 
-        private void connexion_Click(object sender, RoutedEventArgs e)
+        private async void connexion_Click(object sender, RoutedEventArgs e)
         {
             Boolean formValid = true;
 
@@ -72,8 +72,17 @@ namespace Projet_Final.Connexion
 
                 if (login)
                 {
-                    this.Hide();
                     connexionFrame.Navigate(typeof(ListeProjet));
+                    this.Hide();
+
+                    ContentDialog dialog2 = new ContentDialog();
+                    dialog2.XamlRoot = mainGrid.XamlRoot;
+                    dialog2.Title = "Information";
+                    dialog2.CloseButtonText = "OK";
+                    dialog2.Content = "connexion réussi!";
+
+                    var result = await dialog2.ShowAsync();
+
                 }
                 else
                 {
@@ -82,6 +91,54 @@ namespace Projet_Final.Connexion
                 }
             }
 
+        }
+
+        private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+        {
+        //    Boolean formValid = true;
+
+        //    // Vérifier le nom d'utilisateur
+        //    if (NomUtilisateurTextBox.Text == "")
+        //    {
+        //        tbUsernameError.Text = "Le nom d'utilisateur est obligatoire";
+        //        tbUsernameError.Visibility = Visibility.Visible;
+        //        formValid = formValid & false;
+        //    }
+        //    else
+        //    {
+        //        tbUsernameError.Visibility = Visibility.Collapsed;
+        //        formValid = formValid & true;
+        //    }
+
+        //    // Vérifier le mot de passe
+        //    if (MotDePassePasswordBox.Password == "")
+        //    {
+        //        tbPasswordError.Text = "Le mot de passe est obligatoire";
+        //        tbPasswordError.Visibility = Visibility.Visible;
+        //        formValid = formValid & false;
+        //    }
+        //    else
+        //    {
+        //        tbPasswordError.Visibility = Visibility.Collapsed;
+        //        formValid = formValid & true;
+        //    }
+
+        //    if (false)
+        //    {
+        //        bool login = SingletonAdministrateur.GetInstance().VerifierAdministrateur(NomUtilisateurTextBox.Text, MotDePassePasswordBox.Password);
+
+        //        if (login)
+        //        {
+        //            //this.Frame.Navigate(typeof(ListeProjet));
+        //            this.Hide();
+
+        //        }
+        //        else
+        //        {
+        //            tbPasswordError.Text = "Nom d'utilisateur ou mot de passe incorrect";
+        //            tbPasswordError.Visibility = Visibility.Visible;
+        //        }
+        //    }
         }
     }
 }

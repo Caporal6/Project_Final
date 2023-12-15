@@ -39,6 +39,7 @@ namespace Projet_Final
             {
                 connexionProjet.Content = "Connexion";
             }
+
             mainFrame.Navigate(typeof(ListeProjet));
         }
 
@@ -74,8 +75,25 @@ namespace Projet_Final
 
                         ConnexionProjet dialog = new ConnexionProjet();
                         dialog.XamlRoot = navView.XamlRoot;
+                        //dialog.PrimaryButtonText = "Connexion";
 
-                        var result = await dialog.ShowAsync();
+                        var resultat = await dialog.ShowAsync();
+
+                        //if (resultat == ContentDialogResult.Primary)
+                        //{
+                            
+
+                        //    ContentDialog dialog2 = new ContentDialog();
+                        //    dialog.XamlRoot = navView.XamlRoot;
+                        //    dialog.Title = "Information";
+                        //    dialog.CloseButtonText = "OK";
+                        //    dialog.Content = "connexion réussi!";
+
+                        //    var result = await dialog2.ShowAsync();
+
+                        //    mainFrame.Navigate(typeof(ListeProjet));
+                        //}
+
                     }
                     break;
                 default:

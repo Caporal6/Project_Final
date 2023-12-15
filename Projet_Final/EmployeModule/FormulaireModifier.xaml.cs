@@ -267,7 +267,7 @@ namespace Projet_Final.EmployeModule
                 dialog.CloseButtonText = "OK";
                 dialog.Content = "Modification effectuer avec success";
 
-                var result = await dialog.ShowAsync();
+                var result = await dialog.ShowAsync();              
 
             }
         }

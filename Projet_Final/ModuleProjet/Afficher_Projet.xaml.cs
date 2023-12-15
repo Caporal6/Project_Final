@@ -33,6 +33,15 @@ namespace Projet_Final
         public Afficher_Projet()
         {
             this.InitializeComponent();
+
+            if (SingletonAdministrateur.GetInstance().online())
+            {
+                assigner.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                assigner.Visibility = Visibility.Collapsed;
+            }
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -77,6 +86,11 @@ namespace Projet_Final
             // pour la ListView ou tout autre contrôle que vous utilisez pour afficher la liste des employés.
             // Exemple hypothétique :
             gvListeEmployeProjet.ItemsSource = listeEmployeProjet;
+        }
+
+        private void retour_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(ListeProjet));
         }
     }
 }

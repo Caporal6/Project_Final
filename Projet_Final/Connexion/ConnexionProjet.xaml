@@ -7,21 +7,23 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" 
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+    >
 
-    <Grid>
+    <Grid x:Name="mainGrid">
         <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                 <Button Content="Fermer" x:Name="fermer" Click="fermer_Click" />
                 <TextBlock Text="Nom d'utilisateur"  Margin="0,0,0,10"/>
-                <TextBox x:Name="NomUtilisateurTextBox"  PlaceholderText="Saisissez votre nom d'utilisateur" Margin="0,0,0,20"/>
+                <TextBox x:Name="NomUtilisateurTextBox" Width="400"  PlaceholderText="Saisissez votre nom d'utilisateur" Margin="0,0,0,20"/>
                 <TextBlock x:Name="tbUsernameError" Visibility="Collapsed" Foreground="Red"  Margin="0,0,0,10"/>
                 <TextBlock Text="Mot de passe"  Margin="0,0,0,10"/>
-                <PasswordBox x:Name="MotDePassePasswordBox"  PlaceholderText="Saisissez votre mot de passe" Margin="0,0,0,20"/>
+                <PasswordBox x:Name="MotDePassePasswordBox" Width="400"  PlaceholderText="Saisissez votre mot de passe" Margin="0,0,0,20"/>
                 <TextBlock x:Name="tbPasswordError" Visibility="Collapsed" Foreground="Red"  Margin="0,0,0,10"/>
                 <Button Content="Connexion" x:Name="connexion" Click="connexion_Click" />
             </StackPanel>
         </Grid>
-        <Frame Name="connexionFrame"></Frame>
+        <Frame Name="connexionFrame"/>
     </Grid>
 </ContentDialog>
