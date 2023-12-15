@@ -15,6 +15,7 @@ DROP PROCEDURE IF EXISTS GetProjectsAndClientsWithDetails;
 DROP PROCEDURE IF EXISTS GetEmployesProjetDetails;
 DROP PROCEDURE IF EXISTS GetProjetByNumero;
 DROP PROCEDURE IF EXISTS AssignerEmployeAProjet;
+DROP PROCEDURE IF EXISTS VerifierAdministrateur;
 
 -- DROP DES FONCTIONS
 DROP FUNCTION IF EXISTS CalculerCoutTotalProjet;
@@ -44,6 +45,7 @@ DROP TABLE IF EXISTS Assignation;
 DROP TABLE IF EXISTS Employe;
 DROP TABLE IF EXISTS Projet;
 DROP TABLE IF EXISTS Client;
+drop TABLE IF EXISTS Administrateur;
 
 -- CREATION DES TABLES
 
@@ -94,6 +96,14 @@ CREATE TABLE Projet
     CONSTRAINT CK_NombreEmploye CHECK (EmployesRequis <= 5),
     CONSTRAINT Pk_Projet PRIMARY KEY (NumeroProjet),
     CONSTRAINT Fk_Projet_Client FOREIGN KEY (ClientIdentifiant) REFERENCES Client (Identifiant)
+);
+
+
+-- Création de la table Administrateur
+CREATE TABLE IF NOT EXISTS Administrateur (
+                                              Id INT AUTO_INCREMENT PRIMARY KEY,
+                                              NomUtilisateur VARCHAR(50) NOT NULL UNIQUE,
+                                              MotDePasseHash VARCHAR(64) NOT NULL -- Stocker le hachage du mot de passe (SHA-256)
 );
 
 -- Création de la table Assignation
@@ -256,6 +266,25 @@ DELIMITER ;
 
 
 -- CREATION PROCEDURES STOCKEES
+
+
+-- Procédure stockée pour vérifier le nom d'utilisateur et le mot de passe
+DELIMITER //
+CREATE PROCEDURE VerifierAdministrateur(
+    IN p_NomUtilisateur VARCHAR(50),
+    IN p_MotDePasse VARCHAR(255)
+)
+BEGIN
+    -- Hacher le mot de passe avec SHA-256
+    SET p_MotDePasse = SHA2(p_MotDePasse, 256);
+
+    -- Sélectionner la ligne correspondant aux identifiants fournis
+    SELECT *
+    FROM Administrateur
+    WHERE NomUtilisateur = p_NomUtilisateur AND MotDePasseHash = p_MotDePasse;
+END //
+DELIMITER ;
+
 
 -- Procédure pour retourner la liste des employés
 CREATE PROCEDURE GetEmployeeList()
@@ -721,36 +750,39 @@ VALUES (5, 'Client5', 'Adresse5', '9876543210', 'client5@email.com');
 -- Insertion dans la table Projet
 
 INSERT INTO Projet (NumeroProjet, Titre, DateDebut, Description, Budget, EmployesRequis, TotalSalaires, ClientIdentifiant, Statut)
-VALUES ('P1', 'Projet1', '2023-01-01', 'Description1', 5000.00, 3, 0.00, 255, 'En cours');
+VALUES ('P1', 'Projet1', '2023-01-01', 'Description1', 5000.00, 3, 0.00, 221, 'En cours');
 
 INSERT INTO Projet (NumeroProjet, Titre, DateDebut, Description, Budget, EmployesRequis, TotalSalaires, ClientIdentifiant, Statut)
-VALUES ('P2', 'Projet2', '2023-02-01', 'Description2', 8000.00, 5, 0.00, 255, 'En cours');
+VALUES ('P2', 'Projet2', '2023-02-01', 'Description2', 8000.00, 5, 0.00, 285, 'En cours');
 
 INSERT INTO Projet (NumeroProjet, Titre, DateDebut, Description, Budget, EmployesRequis, TotalSalaires, ClientIdentifiant, Statut)
-VALUES ('P3', 'Projet3', '2023-03-01', 'Description3', 10000.00, 4, 0.00, 255, 'En cours');
+VALUES ('P3', 'Projet3', '2023-03-01', 'Description3', 10000.00, 4, 0.00, 392, 'En cours');
 
 INSERT INTO Projet (NumeroProjet, Titre, DateDebut, Description, Budget, EmployesRequis, TotalSalaires, ClientIdentifiant, Statut)
-VALUES ('P4', 'Projet4', '2023-04-01', 'Description4', 12000.00, 2, 0.00, 255, 'En cours');
+VALUES ('P4', 'Projet4', '2023-04-01', 'Description4', 12000.00, 2, 0.00, 665, 'En cours');
 
 INSERT INTO Projet (NumeroProjet, Titre, DateDebut, Description, Budget, EmployesRequis, TotalSalaires, ClientIdentifiant, Statut)
-VALUES ('P5', 'Projet5', '2023-05-01', 'Description5', 15000.00, 5, 0.00, 255, 'En cours');
+VALUES ('P5', 'Projet5', '2023-05-01', 'Description5', 15000.00, 5, 0.00, 839, 'En cours');
 
 -- Insertion dans la table employe
 
 INSERT INTO Employe (Matricule, Nom, Prenom, DateNaissance, Email, Adresse, DateEmbauche, TauxHoraire, PhotoIdentite, Statut, ProjetId)
-VALUES ('E1', 'Nom1', 'Prenom1', '1990-01-01', 'email1@email.com', 'Adresse1', '2022-01-01', 20.00, 'photo1.jpg', 'Permanent', 'P1');
+VALUES ('E1', 'Nom1', 'Prenom1', '1990-01-01', 'email1@email.com', 'Adresse1', '2022-01-01', 20.00, 'https://this-person-does-not-exist.com/img/avatar-gen1127327022fdaf218d25ad38bf43ceb9.jpg', 'Permanent', null);
 
 INSERT INTO Employe (Matricule, Nom, Prenom, DateNaissance, Email, Adresse, DateEmbauche, TauxHoraire, PhotoIdentite, Statut, ProjetId)
-VALUES ('E2', 'Nom2', 'Prenom2', '1995-02-01', 'email2@email.com', 'Adresse2', '2021-02-01', 18.50, 'photo2.jpg', 'Journalier', NULL);
+VALUES ('E2', 'Nom2', 'Prenom2', '1995-02-01', 'email2@email.com', 'Adresse2', '2021-02-01', 18.50, 'https://this-person-does-not-exist.com/img/avatar-gendbd5b847626d8e5d7a87c1d9dbe31f8f.jpg', 'Journalier', NULL);
 
 INSERT INTO Employe (Matricule, Nom, Prenom, DateNaissance, Email, Adresse, DateEmbauche, TauxHoraire, PhotoIdentite, Statut, ProjetId)
-VALUES ('E3', 'Nom3', 'Prenom3', '1988-03-15', 'email3@email.com', 'Adresse3', '2020-03-15', 22.00, 'photo3.jpg', 'Permanent', 'P2');
+VALUES ('E3', 'Nom3', 'Prenom3', '1988-03-15', 'email3@email.com', 'Adresse3', '2020-03-15', 22.00, 'https://this-person-does-not-exist.com/img/avatar-gen11941bb5663cdff6cb47ca1a14afcf77.jpg', 'Permanent', null);
 
 INSERT INTO Employe (Matricule, Nom, Prenom, DateNaissance, Email, Adresse, DateEmbauche, TauxHoraire, PhotoIdentite, Statut, ProjetId)
-VALUES ('E4', 'Nom4', 'Prenom4', '1992-04-20', 'email4@email.com', 'Adresse4', '2019-04-20', 19.75, 'photo4.jpg', 'Journalier', NULL);
+VALUES ('E4', 'Nom4', 'Prenom4', '1992-04-20', 'email4@email.com', 'Adresse4', '2019-04-20', 19.75, 'https://this-person-does-not-exist.com/img/avatar-gen6fd598bdedea19322695ecbe422429e6.jpg', 'Journalier', NULL);
 
 INSERT INTO Employe (Matricule, Nom, Prenom, DateNaissance, Email, Adresse, DateEmbauche, TauxHoraire, PhotoIdentite, Statut, ProjetId)
-VALUES ('E5', 'Nom5', 'Prenom5', '1997-05-10', 'email5@email.com', 'Adresse5', '2018-05-10', 21.50, 'photo5.jpg', 'Permanent', NULL);
+VALUES ('E5', 'Nom5', 'Prenom5', '1997-05-10', 'email5@email.com', 'Adresse5', '2018-05-10', 21.50, 'https://this-person-does-not-exist.com/img/avatar-genc761d7f546238d5d5728e951bb10820f.jpg', 'Permanent', NULL);
+
+INSERT INTO Employe (Matricule, Nom, Prenom, DateNaissance, Email, Adresse, DateEmbauche, TauxHoraire, PhotoIdentite, Statut, ProjetId)
+VALUES ('E5', 'Nom6', 'Prenom6', '1997-05-10', 'email5@email.com', 'Adresse5', '2018-05-10', 21.50, 'https://this-person-does-not-exist.com/img/avatar-genc761d7f546238d5d5728e951bb10820f.jpg', 'Permanent', NULL);
 
 -- Manage DB
 
@@ -758,50 +790,16 @@ select  * from client;
 select  * from employe;
 select  * from projet;
 select  * from assignation;
+select * from  administrateur;
 
+delete  from employe;
 
-
-
-
-
-drop TABLE IF EXISTS Administrateur;
--- Création de la table Administrateur
-CREATE TABLE IF NOT EXISTS Administrateur (
-                                              Id INT AUTO_INCREMENT PRIMARY KEY,
-                                              NomUtilisateur VARCHAR(50) NOT NULL UNIQUE,
-                                              MotDePasseHash VARCHAR(64) NOT NULL -- Stocker le hachage du mot de passe (SHA-256)
-);
-
-
-DROP PROCEDURE IF EXISTS VerifierAdministrateur;
--- Procédure stockée pour vérifier le nom d'utilisateur et le mot de passe
-DELIMITER //
-CREATE PROCEDURE VerifierAdministrateur(
-    IN p_NomUtilisateur VARCHAR(50),
-    IN p_MotDePasse VARCHAR(255)
-)
-BEGIN
-    -- Hacher le mot de passe avec SHA-256
-    SET p_MotDePasse = SHA2(p_MotDePasse, 256);
-
-    -- Sélectionner la ligne correspondant aux identifiants fournis
-    SELECT *
-    FROM Administrateur
-    WHERE NomUtilisateur = p_NomUtilisateur AND MotDePasseHash = p_MotDePasse;
-END //
-DELIMITER ;
-
-
-
-
--- Remplacez ces valeurs par celles que vous souhaitez insérer
+-- insertion d'un administrateur
 SET @nomUtilisateur = 'admin';
 SET @motDePasse = 'motDePasseSecret';
 
--- Hacher le mot de passe avec SHA-256
 SET @motDePasseHash = SHA2(@motDePasse, 256);
 
--- Insérer dans la table Administrateur
 INSERT INTO Administrateur (NomUtilisateur, MotDePasseHash) VALUES (@nomUtilisateur, @motDePasseHash);
 
 
@@ -809,7 +807,7 @@ INSERT INTO Administrateur (NomUtilisateur, MotDePasseHash) VALUES (@nomUtilisat
 
 
 
-select * from  administrateur;
+
 
 
 
