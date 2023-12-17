@@ -9,123 +9,127 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-        <StackPanel x:Name="mainStack">
-            <Button Grid.Row="0" Grid.Column="0" x:Name="retour" Click="retour_Click" Background="Gray" Foreground="White" FontWeight="Bold" Margin="10 10 0 0">Retour</Button>
-            <TextBlock Text="Détails du Projet" Style="{StaticResource SubheaderTextBlockStyle}" Margin="10"/>
-            <StackPanel Orientation="Vertical">
-                <TextBlock Text="Numero du projet" Foreground="Gray" FontSize="12" Margin="12,4,12,0"  />
-                <TextBlock x:Name="NumeroProjetTextBlock"  FontSize="20" FontWeight="Bold" Margin="12,2,12,0" />
-            </StackPanel>
+    <ScrollView>
+        <Grid>
+            <StackPanel x:Name="mainStack">
+                <Button Grid.Row="0" Grid.Column="0" x:Name="retour" Click="retour_Click" Background="Gray" Foreground="White" FontWeight="Bold" Margin="10 10 0 0">Retour</Button>
+                <TextBlock Text="Détails du Projet" Style="{StaticResource SubheaderTextBlockStyle}" Margin="10"/>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Numero du projet" Foreground="Gray" FontSize="12" Margin="12,4,12,0"  />
+                    <TextBlock x:Name="NumeroProjetTextBlock"  FontSize="20" FontWeight="Bold" Margin="12,2,12,0" />
+                </StackPanel>
 
-            <StackPanel Orientation="Vertical">
-                <TextBlock Text="Titre du projet" Foreground="Gray" FontSize="12" Margin="12,4,12,0"  />
-                <TextBlock x:Name="TitreTextBlock"  FontSize="20" FontWeight="Bold" Margin="12,2,12,0" />
-            </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Titre du projet" Foreground="Gray" FontSize="12" Margin="12,4,12,0"  />
+                    <TextBlock x:Name="TitreTextBlock"  FontSize="20" FontWeight="Bold" Margin="12,2,12,0" />
+                </StackPanel>
 
-            <StackPanel Orientation="Vertical">
-                <TextBlock Text="Date de debut projet" Foreground="Gray" FontSize="12" Margin="12,4,12,0"  />
-                <TextBlock x:Name="DateDebutTextBlock"  FontSize="20" FontWeight="Bold" Margin="12,2,12,0" />
-            </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Date de debut projet" Foreground="Gray" FontSize="12" Margin="12,4,12,0"  />
+                    <TextBlock x:Name="DateDebutTextBlock"  FontSize="20" FontWeight="Bold" Margin="12,2,12,0" />
+                </StackPanel>
 
-            <StackPanel Orientation="Vertical">
-                <TextBlock Text="Description du projet" Foreground="Gray" FontSize="12" Margin="12,4,12,0"  />
-                <TextBlock x:Name="DescriptionTextBlock" FontSize="20" FontWeight="Bold" Margin="12,2,12,0" />
-            </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Description du projet" Foreground="Gray" FontSize="12" Margin="12,4,12,0"  />
+                    <TextBlock x:Name="DescriptionTextBlock" FontSize="20" FontWeight="Bold" Margin="12,2,12,0" />
+                </StackPanel>
 
-            <StackPanel Orientation="Vertical">
-                <TextBlock Text="Budget du projet" Foreground="Gray" FontSize="12" Margin="12,4,12,0"  />
-                <TextBlock x:Name="BudgetTextBlock"  FontSize="20" FontWeight="Bold" Margin="12,2,12,0" />
-            </StackPanel>
-            
-            <StackPanel Orientation="Vertical">
-                <TextBlock Text="Nombres employees requis pour le projet" Foreground="Gray" FontSize="12" Margin="12,4,12,0"  />
-                <TextBlock x:Name="EmployesRequisTextBlock" FontSize="20" FontWeight="Bold" Margin="12,2,12,0" />
-            </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Budget du projet" Foreground="Gray" FontSize="12" Margin="12,4,12,0"  />
+                    <TextBlock x:Name="BudgetTextBlock"  FontSize="20" FontWeight="Bold" Margin="12,2,12,0" />
+                </StackPanel>
 
-            <StackPanel Orientation="Vertical">
-                <TextBlock Text="Total des salaires du projet" Foreground="Gray" FontSize="12" Margin="12,4,12,0"  />
-                <TextBlock x:Name="TotalSalairesTextBlock" FontSize="20" FontWeight="Bold" Margin="12,2,12,0" />
-            </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Nombres employees requis pour le projet" Foreground="Gray" FontSize="12" Margin="12,4,12,0"  />
+                    <TextBlock x:Name="EmployesRequisTextBlock" FontSize="20" FontWeight="Bold" Margin="12,2,12,0" />
+                </StackPanel>
 
-            <StackPanel Orientation="Vertical">
-                <TextBlock Text="Client du projet" Foreground="Gray" FontSize="12" Margin="12,4,12,0"  />
-                <TextBlock x:Name="ClientIdentifiantTextBlock"  FontSize="20" FontWeight="Bold" Margin="12,2,12,0" />
-            </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Total des salaires du projet" Foreground="Gray" FontSize="12" Margin="12,4,12,0"  />
+                    <TextBlock x:Name="TotalSalairesTextBlock" FontSize="20" FontWeight="Bold" Margin="12,2,12,0" />
+                </StackPanel>
 
-            <StackPanel Orientation="Vertical">
-                <TextBlock Text="Statut du projet" Foreground="Gray" FontSize="12" Margin="12,4,12,0"  />
-                <TextBlock x:Name="StatutTextBlock"  FontSize="20" FontWeight="Bold" Margin="12,2,12,0" />
-            </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Client du projet" Foreground="Gray" FontSize="12" Margin="12,4,12,0"  />
+                    <TextBlock x:Name="ClientIdentifiantTextBlock"  FontSize="20" FontWeight="Bold" Margin="12,2,12,0" />
+                </StackPanel>
 
-            <Button Margin="12 20 0 0" x:Name="assigner" Click="assigner_Click">Lier un employer au projet</Button>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Statut du projet" Foreground="Gray" FontSize="12" Margin="12,4,12,0"  />
+                    <TextBlock x:Name="StatutTextBlock"  FontSize="20" FontWeight="Bold" Margin="12,2,12,0" />
+                </StackPanel>
 
-            <TextBlock Text="Liste des employees du projet" Style="{StaticResource SubheaderTextBlockStyle}" Margin="10"/>
+                <Button Margin="12 20 0 0" x:Name="assigner" Click="assigner_Click">Lier un employer au projet</Button>
 
+                <Button Margin="12 20 0 0" x:Name="modifierProjet" Click="modifierProjet_Click">Modifier projet</Button>
 
-            <GridView  x:Name="gvListeEmployeProjet"  IsItemClickEnabled="True" ItemsSource="{x:Bind listeEmployeProjet}">
-                <GridView.ItemTemplate>
-                    <DataTemplate x:DataType="local:EmployeProjet">
-                        <GridViewItem>
-                            <Border BorderBrush="LightGray" Background="White" BorderThickness="2" CornerRadius="4" Margin="5">
-                                <Grid Width="300" Background="White" CornerRadius="8" Margin="16">
-
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
-
-                                    <StackPanel Background="White">
+                <TextBlock Text="Liste des employees du projet" Style="{StaticResource SubheaderTextBlockStyle}" Margin="10"/>
 
 
-                                        <!--<Image Source="{x:Bind PhotoIdentite}" Stretch="UniformToFill" Height="120" />-->
+                <GridView  x:Name="gvListeEmployeProjet"  IsItemClickEnabled="True" ItemsSource="{x:Bind listeEmployeProjet}">
+                    <GridView.ItemTemplate>
+                        <DataTemplate x:DataType="local:EmployeProjet">
+                            <GridViewItem>
+                                <Border BorderBrush="LightGray" Background="White" BorderThickness="2" CornerRadius="4" Margin="5">
+                                    <Grid Width="300" Background="White" CornerRadius="8" Margin="16">
 
-                                        <!--Nom-->
-                                        <StackPanel Orientation="Vertical">
-                                            <TextBlock Text="Nom de l'employe" Foreground="Gray" FontSize="12" Margin="12,4,12,0" Grid.Row="2" />
-                                            <TextBlock x:Name="tbNomEmploye" Text="{x:Bind Nom}" FontSize="20" FontWeight="Bold" Margin="12,2,12,0" />
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+
+                                        <StackPanel Background="White">
+
+
+                                            <!--<Image Source="{x:Bind PhotoIdentite}" Stretch="UniformToFill" Height="120" />-->
+
+                                            <!--Nom-->
+                                            <StackPanel Orientation="Vertical">
+                                                <TextBlock Text="Nom de l'employe" Foreground="Gray" FontSize="12" Margin="12,4,12,0" Grid.Row="2" />
+                                                <TextBlock x:Name="tbNomEmploye" Text="{x:Bind Nom}" FontSize="20" FontWeight="Bold" Margin="12,2,12,0" />
+                                            </StackPanel>
+
+
+                                            <!--Prenom -->
+                                            <StackPanel Orientation="Vertical">
+                                                <TextBlock Text="Prenom de l'employe" Foreground="Gray" FontSize="12" Margin="12,8,12,0" Grid.Row="2" />
+                                                <TextBlock x:Name="tbPrenom" Text="{x:Bind Prenom}" FontSize="20" FontWeight="Bold" Margin="12,2,12,0" />
+                                            </StackPanel>
+
+
+                                            <!--TauxHoraire-->
+                                            <StackPanel Orientation="Vertical">
+                                                <TextBlock Text="Taux horraire" Foreground="Gray" FontSize="12" Margin="12,8,12,0" Grid.Row="2" />
+                                                <TextBlock x:Name="tbTauxHorraire" Text="{x:Bind TauxHoraire}" FontSize="15" Margin="12,2,12,0" Grid.Row="1" />
+                                            </StackPanel>
+
+
+
+                                            <!--Budget du projet-->
+                                            <StackPanel Orientation="Vertical">
+                                                <TextBlock Text="Nombre d'heures travaillées" Foreground="Gray" FontSize="12" Margin="12,8,12,0" Grid.Row="2" />
+                                                <TextBlock x:Name="tbNbreHeures" Text="{x:Bind NbreHeures}" FontSize="15" Margin="12,2,12,12" Grid.Row="2" />
+                                            </StackPanel>
+
+
+                                            <!--Date du projet-->
+                                            <StackPanel Orientation="Vertical">
+                                                <TextBlock Text="Salaire" Foreground="Gray" FontSize="12" Margin="12,8,12,0" Grid.Row="2" />
+                                                <TextBlock x:Name="tbSalaire" Text="{x:Bind Salaire}" FontSize="15" Margin="12,2,12,12" Grid.Row="2" />
+                                            </StackPanel>
+
                                         </StackPanel>
 
-
-                                        <!--Prenom -->
-                                        <StackPanel Orientation="Vertical">
-                                            <TextBlock Text="Prenom de l'employe" Foreground="Gray" FontSize="12" Margin="12,8,12,0" Grid.Row="2" />
-                                            <TextBlock x:Name="tbPrenom" Text="{x:Bind Prenom}" FontSize="20" FontWeight="Bold" Margin="12,2,12,0" />
-                                        </StackPanel>
-
-
-                                        <!--TauxHoraire-->
-                                        <StackPanel Orientation="Vertical">
-                                            <TextBlock Text="Taux horraire" Foreground="Gray" FontSize="12" Margin="12,8,12,0" Grid.Row="2" />
-                                            <TextBlock x:Name="tbTauxHorraire" Text="{x:Bind TauxHoraire}" FontSize="15" Margin="12,2,12,0" Grid.Row="1" />
-                                        </StackPanel>
-
-
-
-                                        <!--Budget du projet-->
-                                        <StackPanel Orientation="Vertical">
-                                            <TextBlock Text="Nombre d'heures travaillées" Foreground="Gray" FontSize="12" Margin="12,8,12,0" Grid.Row="2" />
-                                            <TextBlock x:Name="tbNbreHeures" Text="{x:Bind NbreHeures}" FontSize="15" Margin="12,2,12,12" Grid.Row="2" />
-                                        </StackPanel>
-
-
-                                        <!--Date du projet-->
-                                        <StackPanel Orientation="Vertical">
-                                            <TextBlock Text="Salaire" Foreground="Gray" FontSize="12" Margin="12,8,12,0" Grid.Row="2" />
-                                            <TextBlock x:Name="tbSalaire" Text="{x:Bind Salaire}" FontSize="15" Margin="12,2,12,12" Grid.Row="2" />
-                                        </StackPanel>
-
-                                    </StackPanel>
-
-                                </Grid>
-                            </Border>
-                        </GridViewItem>
-                    </DataTemplate>
-                </GridView.ItemTemplate>
-            </GridView>
-        </StackPanel>
-    </Grid>
+                                    </Grid>
+                                </Border>
+                            </GridViewItem>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                </GridView>
+            </StackPanel>
+        </Grid>
+    </ScrollView>
 </Page>

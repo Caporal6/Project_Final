@@ -72,11 +72,7 @@ namespace Projet_Final.EmployeModule
             dialog.XamlRoot = mainGrid.XamlRoot;
             dialog.SetData(employe);
 
-            Debug.WriteLine("test1");
-
             var result = await dialog.ShowAsync();
-
-            Debug.WriteLine("test2");
 
             // Accédez à la valeur retournée après la fermeture du ContentDialog
             if (result == ContentDialogResult.Primary)

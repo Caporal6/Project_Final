@@ -189,5 +189,49 @@ namespace Projet_Final.Singleton
             }
         }
 
+        public string ModifierProjet(Projet projet)
+        {
+            try
+            {
+                MySqlCommand commande = new MySqlCommand("ModifierProjet");
+                Debug.WriteLine("test1");
+                commande.Connection = con;
+                Debug.WriteLine("test2");
+                commande.CommandType = System.Data.CommandType.StoredProcedure;
+                Debug.WriteLine("test3");
+
+                Debug.WriteLine(projet.NumeroProjet);
+                Debug.WriteLine(projet.Titre);
+
+                commande.Parameters.AddWithValue("@p_NumeroProjet", projet.NumeroProjet);
+                commande.Parameters.AddWithValue("@p_Titre", projet.Titre);
+                commande.Parameters.AddWithValue("@p_Description", projet.Description);
+                commande.Parameters.AddWithValue("@p_Budget", projet.Budget);
+                commande.Parameters.AddWithValue("@p_Statut", projet.Statut);
+                Debug.WriteLine("test4");
+                con.Open();
+                Debug.WriteLine("test5");
+                commande.Prepare();
+                Debug.WriteLine("test5");
+                commande.ExecuteNonQuery();
+                Debug.WriteLine("test6");
+                con.Close();
+                Debug.WriteLine("test7");
+
+                return "Projet modifié avec succès";
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+
+                if (con.State == System.Data.ConnectionState.Open)
+                {
+                    con.Close();
+                }
+                return ex.Message;
+            }
+        }
+
+
     }
 }

@@ -7,13 +7,16 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Navigation;
 using Projet_Final.Classes;
+using Projet_Final.EmployeModule;
 using Projet_Final.ModuleProjet;
 using Projet_Final.Singleton;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -42,6 +45,15 @@ namespace Projet_Final
             {
                 assigner.Visibility = Visibility.Collapsed;
             }
+
+            if (SingletonAdministrateur.GetInstance().online())
+            {
+                modifierProjet.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                modifierProjet.Visibility = Visibility.Collapsed;
+            }
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -55,6 +67,10 @@ namespace Projet_Final
                 
                 listeProjetClient = SingletonProjetClient.GetInstance().ListeProjetsAvecClients();
 
+                ProjetClient projetClient =  listeProjetClient.FirstOrDefault(p => p.IdentifiantClient == projet.ClientIdentifiant);
+
+                Debug.WriteLine(listeProjetClient[0].ToString());
+
                 NumeroProjetTextBlock.Text = projet.NumeroProjet;
                 TitreTextBlock.Text = projet.Titre;
                 DateDebutTextBlock.Text = "Date de Début: " + projet.DateDebut.ToString("dd MMMM yyyy");
@@ -62,7 +78,7 @@ namespace Projet_Final
                 BudgetTextBlock.Text = projet.Budget.ToString();
                 EmployesRequisTextBlock.Text = projet.EmployesRequis.ToString();
                 TotalSalairesTextBlock.Text = projet.TotalSalaires.ToString();
-                ClientIdentifiantTextBlock.Text = projet.ClientIdentifiant.ToString();
+                ClientIdentifiantTextBlock.Text = projetClient.NomClient.ToString();
                 StatutTextBlock.Text = projet.Statut.ToString();
 
             }
@@ -70,13 +86,28 @@ namespace Projet_Final
 
         private async void assigner_Click(object sender, RoutedEventArgs e)
         {
-            FormulaireAssignation dialog = new FormulaireAssignation();
-            dialog.XamlRoot = mainStack.XamlRoot;
-            dialog.SetData(NumeroProjetTextBlock.Text);
+            if(listeEmployeProjet.Count <= Convert.ToInt32(EmployesRequisTextBlock.Text)) {
 
-            dialog.ParentPageReference = this;
+                FormulaireAssignation dialog = new FormulaireAssignation();
+                dialog.XamlRoot = mainStack.XamlRoot;
+                dialog.SetData(NumeroProjetTextBlock.Text);
 
-            var result = await dialog.ShowAsync();
+                dialog.ParentPageReference = this;
+
+                var result = await dialog.ShowAsync();
+            }
+            else
+            {
+                ContentDialog dialog = new ContentDialog();
+
+                dialog.XamlRoot = mainStack.XamlRoot;
+                dialog.Title = "Information";
+                dialog.CloseButtonText = "OK";
+                dialog.Content = "La limite d'employer a ete atteinte";
+
+                var result = await dialog.ShowAsync();
+            }
+            
         }
 
         public void RefreshEmployeeList()
@@ -93,6 +124,42 @@ namespace Projet_Final
         private void retour_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(ListeProjet));
+        }
+
+        private async void modifierProjet_Click(object sender, RoutedEventArgs e)
+        {
+            Projet projet = SingletonProjet.GetInstance().RetourneProjetParNumero(NumeroProjetTextBlock.Text);
+            FormulaireModificationProjet dialog = new FormulaireModificationProjet();
+            dialog.XamlRoot = mainStack.XamlRoot;
+            dialog.SetData(projet);
+
+            var result = await dialog.ShowAsync();
+
+            // Accédez à la valeur retournée après la fermeture du ContentDialog
+            if (result == ContentDialogResult.Primary)
+            {
+                
+                bool returnedValue = dialog.ReturnValue;
+               
+                if (returnedValue)
+                {
+
+                    this.Frame.Navigate(typeof(Afficher_Projet), NumeroProjetTextBlock.Text);
+
+                }
+
+            }
+            else
+            {
+                bool returnedValue = dialog.ReturnValue;
+
+                if (returnedValue)
+                {
+                    this.Frame.Navigate(typeof(Afficher_Projet), NumeroProjetTextBlock.Text);
+
+                }
+
+            }
         }
     }
 }

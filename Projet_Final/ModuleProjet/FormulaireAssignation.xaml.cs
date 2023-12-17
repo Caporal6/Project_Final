@@ -36,6 +36,8 @@ namespace Projet_Final.ModuleProjet
             this.InitializeComponent();
         }
 
+        public bool ReturnValue { get; set; }
+
         internal void SetData(String NumeroProjet)
         {
             numeroProjet = NumeroProjet;
@@ -115,7 +117,7 @@ namespace Projet_Final.ModuleProjet
             if(formValid)
             {
 
-                    string message = SingletonProjet.GetInstance().AssignerEmployeAProjet(idEmploye, numeroProjet, Convert.ToInt32(tbHeures.Text));
+                 string message = SingletonProjet.GetInstance().AssignerEmployeAProjet(idEmploye, numeroProjet, Convert.ToInt32(tbHeures.Text));
 
                 if (this.Parent is Afficher_Projet parentPage)
                 {
@@ -135,6 +137,11 @@ namespace Projet_Final.ModuleProjet
 
 
             }
+        }
+
+        private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+        {
+
         }
     }
 }

@@ -20,6 +20,7 @@ using Windows.Foundation.Collections;
 using MySqlX.XDevAPI.Common;
 using Projet_Final.EmployeModule;
 using System.Diagnostics;
+using TravailDeux;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -34,6 +35,9 @@ namespace Projet_Final
         public MainWindow()
         {
             this.InitializeComponent();
+
+            SingletonFenetre.GetInstance().Fenetre = this;
+
             if (SingletonAdministrateur.GetInstance().online())
             {
                 connexionProjet.Content = "Deconnexion";
@@ -55,6 +59,53 @@ namespace Projet_Final
 
             switch (item.Name)
             {
+                case "sauvegarder":
+                    {
+
+                        try
+                        {
+                            var picker = new Windows.Storage.Pickers.FileSavePicker();
+
+                            var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(SingletonFenetre.GetInstance().Fenetre);
+                            WinRT.Interop.InitializeWithWindow.Initialize(picker, hWnd);
+
+                            picker.SuggestedFileName = "Liste de projets";
+                            picker.FileTypeChoices.Add("Fichier texte", new List<string>() { ".csv" });
+
+                            // Demandez à l'utilisateur de choisir un emplacement pour enregistrer le fichier
+                            Windows.Storage.StorageFile monFichier = await picker.PickSaveFileAsync();
+
+                            if (monFichier != null)
+                            {
+                                List<Projet> liste = new List<Projet>();
+                                foreach (Projet projet in SingletonProjet.GetInstance().ListeProjets())
+                                {
+                                    liste.Add(projet);
+                                }
+
+                                // La fonction ToString de la classe Client retourne: nom + ";" + prenom
+                                await Windows.Storage.FileIO.WriteLinesAsync(monFichier, liste.ConvertAll(x => x.ToStringCSV()), Windows.Storage.Streams.UnicodeEncoding.Utf8);
+
+                                ContentDialog dialog = new ContentDialog();
+                                dialog.XamlRoot = navView.XamlRoot;
+                                dialog.Title = "Information";
+                                dialog.CloseButtonText = "OK";
+                                dialog.Content = "Fichier sauvegarder avec success";
+
+                                var result = await dialog.ShowAsync();
+                            }
+                            else
+                            {
+
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.WriteLine(ex.ToString()); 
+                        }
+
+                    }
+                    break;
                 case "AjProjet":
                     mainFrame.Navigate(typeof(Ajouter_Projet));
                     break;
