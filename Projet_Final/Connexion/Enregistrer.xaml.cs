@@ -1,3 +1,10 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.Foundation;
+using Windows.Foundation.Collections;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -5,16 +12,7 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
-using Projet_Final.ModuleProjet;
 using Projet_Final.Singleton;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -24,9 +22,9 @@ namespace Projet_Final.Connexion
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class ConnexionProjet : ContentDialog
+    public sealed partial class Enregistrer : ContentDialog
     {
-        public ConnexionProjet()
+        public Enregistrer()
         {
             this.InitializeComponent();
         }
@@ -38,7 +36,7 @@ namespace Projet_Final.Connexion
             this.Hide();
         }
 
-        private async void connexion_Click(object sender, RoutedEventArgs e)
+        private async void enregistrer_Click(object sender, RoutedEventArgs e)
         {
             Boolean formValid = true;
 
@@ -70,18 +68,18 @@ namespace Projet_Final.Connexion
 
             if (formValid)
             {
-                bool login = SingletonAdministrateur.GetInstance().VerifierAdministrateur(NomUtilisateurTextBox.Text, MotDePassePasswordBox.Password);
+                bool login = SingletonAdministrateur.GetInstance().AjouterAdministrateur(NomUtilisateurTextBox.Text, MotDePassePasswordBox.Password);
 
                 if (login)
                 {
-                   
+
                     this.Hide();
 
                     ContentDialog dialog2 = new ContentDialog();
                     dialog2.XamlRoot = mainGrid.XamlRoot;
                     dialog2.Title = "Information";
                     dialog2.CloseButtonText = "OK";
-                    dialog2.Content = "connexion réussi!";
+                    dialog2.Content = "enregistrement réussi!";
 
                     ReturnValue = true;
 
@@ -94,12 +92,6 @@ namespace Projet_Final.Connexion
                     tbPasswordError.Visibility = Visibility.Visible;
                 }
             }
-
-        }
-
-        private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
-        {
-        
         }
     }
 }

@@ -23,6 +23,7 @@
     <None Remove="Ajouter_Client.xaml" />
     <None Remove="Ajouter_Projet.xaml" />
     <None Remove="Connexion\ConnexionProjet.xaml" />
+    <None Remove="Connexion\Enregistrer.xaml" />
 
     <None Remove="EmployeModule\DetailEmploye.xaml" />
 
@@ -70,6 +71,9 @@
     <None Update="Assets\Add.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="Connexion\Enregistrer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="ModuleProjet\FormulaireModificationProjet.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

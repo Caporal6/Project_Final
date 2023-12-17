@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using Projet_Final.Classes;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Security.Cryptography;
@@ -79,6 +80,84 @@ namespace Projet_Final.Singleton
                 return false;
             }
         }
+
+        public bool AjouterAdministrateur(string nomUtilisateur, string motDePasse)
+        {
+            try
+            {
+                MySqlCommand commande = new MySqlCommand("AjouterAdministrateur");
+                commande.Connection = con;
+                commande.CommandType = System.Data.CommandType.StoredProcedure;
+
+                // Paramètres
+                commande.Parameters.AddWithValue("@p_NomUtilisateur", nomUtilisateur);
+                commande.Parameters.AddWithValue("@p_MotDePasse", motDePasse);
+
+                con.Open();
+                commande.ExecuteNonQuery();
+                con.Close();
+
+                // Le nouvel administrateur a été ajouté avec succès
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+
+                if (con.State == System.Data.ConnectionState.Open)
+                {
+                    con.Close();
+                }
+
+                // En cas d'erreur, renvoyer false
+                return false;
+            }
+        }
+
+        public List<Administrateur> ObtenirAdministrateurs()
+        {
+            List<Administrateur> administrateurs = new List<Administrateur>();
+
+            try
+            {
+                MySqlCommand commande = new MySqlCommand("ObtenirAdministrateurs");
+                commande.Connection = con;
+                commande.CommandType = System.Data.CommandType.StoredProcedure;
+
+                con.Open();
+
+                using (MySqlDataReader reader = commande.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Administrateur administrateur = new Administrateur
+                        {
+                            Id = Convert.ToInt32(reader["Id"]),
+                            NomUtilisateur = reader["NomUtilisateur"].ToString(),
+                            MotDePasseHash = reader["MotDePasseHash"].ToString()
+                            // Ajoutez d'autres propriétés si nécessaire
+                        };
+
+                        administrateurs.Add(administrateur);
+                    }
+                }
+
+                con.Close();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+
+                if (con.State == System.Data.ConnectionState.Open)
+                {
+                    con.Close();
+                }
+            }
+
+            return administrateurs;
+        }
+
+
 
 
         //private string HashMotDePasse(string motDePasse)

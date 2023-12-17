@@ -38,13 +38,19 @@ namespace Projet_Final
 
             SingletonFenetre.GetInstance().Fenetre = this;
 
-            if (SingletonAdministrateur.GetInstance().online())
+            if (SingletonAdministrateur.GetInstance().ObtenirAdministrateurs().Count > 0)
             {
-                connexionProjet.Content = "Deconnexion";
+                if (SingletonAdministrateur.GetInstance().online())
+                {
+                    connexionProjet.Content = "Deconnexion";
+                }
+                else
+                {
+                    connexionProjet.Content = "Connexion";
+                }
             }
-            else
-            {
-                connexionProjet.Content = "Connexion";
+            else {
+                connexionProjet.Content = "S'enregistrer";
             }
 
             mainFrame.Navigate(typeof(ListeProjet));
@@ -129,31 +135,65 @@ namespace Projet_Final
 
                         if(SingletonAdministrateur.GetInstance().online() == false)
                         {
-                            ConnexionProjet dialog = new ConnexionProjet();
-                            dialog.XamlRoot = navView.XamlRoot;
-                            //dialog.PrimaryButtonText = "Connexion";
-
-                            var resultat = await dialog.ShowAsync();
-
-                            // Accédez à la valeur retournée après la fermeture du ContentDialog
-                            if (resultat == ContentDialogResult.Primary)
+                            if(SingletonAdministrateur.GetInstance().ObtenirAdministrateurs().Count > 0)
                             {
-                                bool returnedValue = dialog.ReturnValue;
-                                if (returnedValue)
+                                ConnexionProjet dialog = new ConnexionProjet();
+                                dialog.XamlRoot = navView.XamlRoot;
+                                //dialog.PrimaryButtonText = "Connexion";
+
+                                var resultat = await dialog.ShowAsync();
+
+                                // Accédez à la valeur retournée après la fermeture du ContentDialog
+                                if (resultat == ContentDialogResult.Primary)
                                 {
-                                    mainFrame.Navigate(typeof(ListeProjet));
+                                    bool returnedValue = dialog.ReturnValue;
+                                    if (returnedValue)
+                                    {
+                                        mainFrame.Navigate(typeof(ListeProjet));
+                                    }
+                                }
+                                else
+                                {
+                                    bool returnedValue = dialog.ReturnValue;
+                                    if (returnedValue)
+                                    {
+                                        ChangerElementSelectionne("gestionProjet");
+                                        connexionProjet.Content = "Deconnexion";
+
+                                    }
                                 }
                             }
                             else
                             {
-                                bool returnedValue = dialog.ReturnValue;
-                                if (returnedValue)
+
+                                Enregistrer dialog = new Enregistrer();
+                                dialog.XamlRoot = navView.XamlRoot;
+                                //dialog.PrimaryButtonText = "Connexion";
+
+                                var resultat = await dialog.ShowAsync();
+
+                                // Accédez à la valeur retournée après la fermeture du ContentDialog
+                                if (resultat == ContentDialogResult.Primary)
                                 {
-                                    ChangerElementSelectionne("gestionProjet");
-                                    connexionProjet.Content = "Deconnexion";
-                                    
+                                    bool returnedValue = dialog.ReturnValue;
+                                    if (returnedValue)
+                                    {
+                                        mainFrame.Navigate(typeof(ListeProjet));
+                                    }
+                                }
+                                else
+                                {
+                                    bool returnedValue = dialog.ReturnValue;
+                                    if (returnedValue)
+                                    {
+                                        ChangerElementSelectionne("gestionProjet");
+                                        connexionProjet.Content = "Connexion";
+
+                                    }
                                 }
                             }
+
+                            
                         }
                         else
                         {
