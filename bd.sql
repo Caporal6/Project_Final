@@ -16,6 +16,9 @@ DROP PROCEDURE IF EXISTS GetEmployesProjetDetails;
 DROP PROCEDURE IF EXISTS GetProjetByNumero;
 DROP PROCEDURE IF EXISTS AssignerEmployeAProjet;
 DROP PROCEDURE IF EXISTS VerifierAdministrateur;
+DROP PROCEDURE IF EXISTS ModifierProjet;
+DROP PROCEDURE IF EXISTS AjouterAdministrateur;
+DROP PROCEDURE IF EXISTS ObtenirAdministrateurs;
 
 -- DROP DES FONCTIONS
 DROP FUNCTION IF EXISTS CalculerCoutTotalProjet;
@@ -614,6 +617,56 @@ DELIMITER ;
 
 
 
+DELIMITER //
+
+CREATE PROCEDURE ModifierProjet(
+    IN p_NumeroProjet VARCHAR(20),
+    IN p_Titre VARCHAR(100),
+    IN p_Description TEXT,
+    IN p_Budget DECIMAL(10, 2),
+    IN p_Statut VARCHAR(20)
+)
+BEGIN
+    UPDATE Projet
+    SET
+        Titre = p_Titre,
+        Description = p_Description,
+        Budget = p_Budget,
+        Statut = p_Statut
+    WHERE NumeroProjet = p_NumeroProjet;
+END //
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE PROCEDURE AjouterAdministrateur(
+    IN p_NomUtilisateur VARCHAR(50),
+    IN p_MotDePasse VARCHAR(255)
+)
+BEGIN
+    -- Hachage du mot de passe avec SHA-256
+    DECLARE p_MotDePasseHash VARCHAR(64);
+    SET p_MotDePasseHash = SHA2(p_MotDePasse, 256);
+
+    -- Insertion dans la table
+    INSERT INTO Administrateur (NomUtilisateur, MotDePasseHash)
+    VALUES (p_NomUtilisateur, p_MotDePasseHash);
+END //
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE PROCEDURE ObtenirAdministrateurs()
+BEGIN
+    SELECT * FROM Administrateur;
+END //
+
+DELIMITER ;
+
+
+
 
 
 
@@ -793,6 +846,8 @@ select  * from assignation;
 select * from  administrateur;
 
 delete  from employe;
+
+delete  from administrateur;
 
 -- insertion d'un administrateur
 SET @nomUtilisateur = 'admin';
