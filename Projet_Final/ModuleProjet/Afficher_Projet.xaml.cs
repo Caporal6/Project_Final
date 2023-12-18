@@ -95,6 +95,32 @@ namespace Projet_Final
                 dialog.ParentPageReference = this;
 
                 var result = await dialog.ShowAsync();
+
+                // Accédez à la valeur retournée après la fermeture du ContentDialog
+                if (result == ContentDialogResult.Primary)
+                {
+
+                    bool returnedValue = dialog.ReturnValue;
+
+                    if (returnedValue)
+                    {
+
+                        this.Frame.Navigate(typeof(Afficher_Projet), NumeroProjetTextBlock.Text);
+
+                    }
+
+                }
+                else
+                {
+                    bool returnedValue = dialog.ReturnValue;
+
+                    if (returnedValue)
+                    {
+                        this.Frame.Navigate(typeof(Afficher_Projet), NumeroProjetTextBlock.Text);
+
+                    }
+
+                }
             }
             else
             {

@@ -126,6 +126,9 @@ namespace Projet_Final.ModuleProjet
 
                 this.Hide();
 
+
+                ReturnValue = true;
+
                     ContentDialog dialog = new ContentDialog();
 
                     dialog.XamlRoot = mainStack.XamlRoot;
