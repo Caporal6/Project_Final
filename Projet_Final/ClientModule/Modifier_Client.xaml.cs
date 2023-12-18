@@ -1,3 +1,4 @@
+using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -12,6 +13,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -35,17 +37,31 @@ namespace Projet_Final
         public string Num { get => num;}
         public string Email { get => email;}
 
+        internal void SetData(Client client)
+        {
+            tbxNom.Text = client.Nom;
+            tbxAdresse.Text = client.Adresse;
+            tbxNum.Text = client.Num;
+            tbxEmail.Text = client.Email;
+        }
+
         private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
+
+            SolidColorBrush errorColor = new SolidColorBrush(Colors.Red);
+
             args.Cancel = true;
 
             if (tbxNom.Text == "")
             {
+                
                 tbxNomErr.Text = "Erreur: Entrez un nom";
+                tbxNomErr.Foreground = errorColor;
             }
             else if (tbxAdresse.Text == "")
             {
                 tbxAdresseErr.Text = "Erreur: Entrez une adresse";
+               
             }
             else if (tbxNum.Text == "")
             {

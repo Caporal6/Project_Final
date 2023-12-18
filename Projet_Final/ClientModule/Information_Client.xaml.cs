@@ -5,6 +5,7 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using Projet_Final.EmployeModule;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -52,6 +53,13 @@ namespace Projet_Final
             dialog.PrimaryButtonText = "Modifier";
             dialog.CloseButtonText = "Annuler";
             dialog.DefaultButton = ContentDialogButton.Primary;
+            Client client = new Client(
+                Convert.ToInt32(tbId.Text),
+            tbNom.Text,
+            tbAdresse.Text,
+            tbNum.Text,
+            tbEmail.Text );
+            dialog.SetData(client);
 
             ContentDialogResult result = await dialog.ShowAsync();
 
@@ -59,12 +67,16 @@ namespace Projet_Final
             {
 
               SingletonClient.getInstance().modifier_Client(tbId.Text,dialog.Nom, dialog.Adresse, dialog.Num, dialog.Email);
+
+                Client newClient = new Client(Convert.ToInt32(tbId.Text), dialog.Nom, dialog.Adresse, dialog.Num, dialog.Email);
+
+                Frame.Navigate(typeof(Information_Client), newClient);
             }
         }
 
-
-
-
-
+        private void retour_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(Afficher_Client));
+        }
     }
 }
