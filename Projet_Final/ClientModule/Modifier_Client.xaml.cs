@@ -37,23 +37,23 @@ namespace Projet_Final
 
         private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
-
+            args.Cancel = true;
 
             if (tbxNom.Text == "")
             {
-                tbxNom.Text = "Erreur: Entrez un nom";
+                tbxNomErr.Text = "Erreur: Entrez un nom";
             }
             else if (tbxAdresse.Text == "")
             {
-                tbxAdresse.Text = "Erreur: Entrez une adresse";
+                tbxAdresseErr.Text = "Erreur: Entrez une adresse";
             }
             else if (tbxNum.Text == "")
             {
-                tbxNum.Text = "Erreur: Entrez un numero de Telephone";
+                tbxNumErr.Text = "Erreur: Entrez un numero de Telephone";
             }
             else if (tbxEmail.Text == "")
             {
-                tbxEmail.Text = "Erreur: Entrez un email";
+                tbxEmailErr.Text = "Erreur: Entrez un email";
             }
             else
             {
@@ -62,7 +62,9 @@ namespace Projet_Final
                 adresse = tbxAdresse.Text;
                 num = tbxNum.Text;
                 email = tbxEmail.Text;
-                
+
+                args.Cancel = false;
+
             }
         }
     }
