@@ -38,6 +38,7 @@ namespace Projet_Final
         private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
 
+
             if (tbxNom.Text == "")
             {
                 tbxNom.Text = "Erreur: Entrez un nom";
@@ -56,12 +57,13 @@ namespace Projet_Final
             }
             else
             {
+                
                 nom = tbxNom.Text;
                 adresse = tbxAdresse.Text;
                 num = tbxNum.Text;
                 email = tbxEmail.Text;
+                
             }
-
         }
     }
 }

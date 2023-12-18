@@ -13,7 +13,7 @@
     
     
     
-    <NavigationView PaneDisplayMode="Left" PaneTitle="Joueur" x:Name="navView" SelectionChanged="navView_SelectionChanged" BackRequested="navView_BackRequested" IsBackEnabled="True" >
+    <NavigationView PaneDisplayMode="Left" PaneTitle="Menu" x:Name="navView" SelectionChanged="navView_SelectionChanged" BackRequested="navView_BackRequested" IsBackEnabled="True" >
         <NavigationView.MenuItems>
             <NavigationViewItemHeader Content="Gestion des employees"/>
             <NavigationViewItem Content="Gestion des Client" x:Name="gestionClient" Icon="People"/>

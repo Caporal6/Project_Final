@@ -54,9 +54,10 @@ namespace Projet_Final
             dialog.DefaultButton = ContentDialogButton.Primary;
 
             ContentDialogResult result = await dialog.ShowAsync();
-            
+
             if(result == ContentDialogResult.Primary)
             {
+
               SingletonClient.getInstance().modifier_Client(tbId.Text,dialog.Nom, dialog.Adresse, dialog.Num, dialog.Email);
             }
         }
