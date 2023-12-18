@@ -24,13 +24,7 @@
             <NavigationViewItem Content="" x:Name="connexionProjet" Icon="OpenLocal"/>
             <NavigationViewItem Content="Exporter" x:Name="sauvegarder" Icon="Save"/>
 
-            <NavigationViewItemHeader Content="Zone 1"/>
-            <NavigationViewItem Content="Ajouter Projet" x:Name="AjProjet" Icon="People"/>
-            <NavigationViewItem Content="Afficher Projet" x:Name="AfProjet" Icon="Calendar"/>
-            <NavigationViewItem Content="Ajouter Employer" x:Name="AjEmployer" Icon="Calendar"/>
-            <NavigationViewItem Content="Afficher Employer" x:Name="AfEmployer" Icon="Calendar"/>
-            <NavigationViewItem Content="Ajouter Clients" x:Name="AjClient" Icon="Calendar"/>
-            <NavigationViewItem Content="Afficher Clients" x:Name="AfClient" Icon="Calendar"/>
+
             
         </NavigationView.MenuItems>
 
