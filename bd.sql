@@ -818,10 +818,10 @@ INSERT INTO Client (Identifiant, Nom, Adresse, NumeroTelephone, Email)
 VALUES (5, 'Client10', 'Adresse10', '9876543211', 'client10@email.com');
 
 
--- Insertion dans la table Projet
+-- Insertion dans la table Projet ne pas oublier de changer les client identifiant pour les nouveaux
 
 INSERT INTO Projet (NumeroProjet, Titre, DateDebut, Description, Budget, EmployesRequis, TotalSalaires, ClientIdentifiant, Statut)
-VALUES ('P1', 'Projet1', '2023-01-01', 'Description1', 5000.00, 3, 0.00, 221, 'En cours');
+VALUES ('P1', 'Projet1', '2023-01-01', 'Description1', 5000.00, 3, 0.00, 143, 'En cours');
 
 INSERT INTO Projet (NumeroProjet, Titre, DateDebut, Description, Budget, EmployesRequis, TotalSalaires, ClientIdentifiant, Statut)
 VALUES ('P2', 'Projet2', '2023-02-01', 'Description2', 8000.00, 5, 0.00, 285, 'En cours');
@@ -835,7 +835,8 @@ VALUES ('P4', 'Projet4', '2023-04-01', 'Description4', 12000.00, 2, 0.00, 665, '
 INSERT INTO Projet (NumeroProjet, Titre, DateDebut, Description, Budget, EmployesRequis, TotalSalaires, ClientIdentifiant, Statut)
 VALUES ('P5', 'Projet5', '2023-05-01', 'Description5', 15000.00, 5, 0.00, 839, 'En cours');
 
--- Insertion dans la table employe
+-- Insertion dans la table employe 
+
 
 INSERT INTO Employe (Matricule, Nom, Prenom, DateNaissance, Email, Adresse, DateEmbauche, TauxHoraire, PhotoIdentite, Statut, ProjetId)
 VALUES ('E1', 'Nom1', 'Prenom1', '1990-01-01', 'email1@email.com', 'Adresse1', '2022-01-01', 20.00, 'https://this-person-does-not-exist.com/img/avatar-gen1127327022fdaf218d25ad38bf43ceb9.jpg', 'Permanent', null);
