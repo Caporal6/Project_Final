@@ -29,7 +29,7 @@
             </StackPanel>
         </Border>
 
-        <Border  BorderThickness="3" CornerRadius="8" Grid.Row="0" Grid.Column="1"  HorizontalAlignment="Left" VerticalAlignment="Center" Height="250" Width="250"  BorderBrush="LightGray" Background="#FFFFFFFF" Margin="0 2 0 0">
+        <Border x:Name="ajouterProjetBorder"  BorderThickness="3" CornerRadius="8" Grid.Row="0" Grid.Column="1"  HorizontalAlignment="Left" VerticalAlignment="Center" Height="250" Width="250"  BorderBrush="LightGray" Background="#FFFFFFFF" Margin="0 2 0 0">
             <StackPanel x:Name="ajouterProjet" Background="White" Height="250" Width="250"  IsTapEnabled="True" Tapped="ajouterProjet_Tapped">
                 <FontIcon FontSize="40"  FontFamily="Segoe MDL2 Assets"  Glyph="&#xE710;"/>
 

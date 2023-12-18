@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentDialog
+    x:Class="Projet_Final.ModuleProjet.FormulaireModificationProjet"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Projet_Final.ModuleProjet"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick">
+
+    <ScrollView>
+    <StackPanel  Orientation="Vertical" x:Name="mainpanel" HorizontalAlignment="Center" VerticalAlignment="Center" Width="Auto" Height="Auto">
+            <Button x:Name="fermer" HorizontalAlignment="Right" Click="fermer_Click">Fermer le formulaire</Button>
+            <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Row="1" Grid.Column="1" FontWeight="Bold" FontSize="25" HorizontalTextAlignment="Center" Margin="30 30 0 0">Ajouter un projet</TextBlock>
+            <TextBox x:Name="tbTitre" FontSize="16" PlaceholderText="Nom" Grid.Row="2" Grid.Column="1" Height="50" Width="400" HorizontalAlignment="Left" Margin="0 30 0 0"></TextBox>
+            <TextBlock x:Name="tbTitreError" Visibility="Collapsed" Foreground="Red"  Grid.Row="3" Grid.Column="1"  FontSize="12" Margin="0 10 0 0"></TextBlock>
+
+            <TextBox x:Name="tbDescription" FontSize="16" PlaceholderText="Description" Grid.Row="4" Grid.Column="1" Height="50" Width="400" HorizontalAlignment="Left" Margin="0 30 0 0"></TextBox>
+            <TextBlock x:Name="tbDescriptionError" Visibility="Collapsed" Foreground="Red"  Grid.Row="5" Grid.Column="1"  FontSize="12" Margin="0 10 0 0"></TextBlock>
+
+            <NumberBox x:Name="nbBudget" Margin="0 10 0 0" Header="Budget" Grid.Row="6" Grid.Column="1" Value="10" Height="70" Width="400" SpinButtonPlacementMode="Inline" SmallChange="10" LargeChange="500"  />
+            <TextBlock x:Name="nbBudgetError" Visibility="Collapsed" Foreground="Red"  Grid.Row="7" Grid.Column="1" FontSize="12" Margin="0 10 0 0"></TextBlock>
+
+                <ComboBox x:Name="cbStatut"  SelectionChanged="cbStatut_SelectionChanged" FontSize="16"  PlaceholderText="Selectionner une categorie" Grid.Row="8" Grid.Column="1" Height="50" Width="400" HorizontalAlignment="Left" Margin="0 30 0 0" >
+                    <x:String>En cours</x:String>
+                    <x:String>Terminé</x:String>
+                </ComboBox>
+                <TextBlock x:Name="cbStatutError" Visibility="Visible" Foreground ="Red"  Grid.Row="9" Grid.Column="1" FontSize="12" Margin="0 10 0 0"></TextBlock>
+
+                <Button x:Name="btnModifier" FontWeight="Bold" FontSize="20"  Grid.Row="20" Grid.Column="10" Height="50" Width="400" HorizontalAlignment="Left" Margin="0 30 0 0" Click="btnModifier_Click"   Background="#F4BC1C">Modifier !</Button>
+
+        </Grid>
+
+    </StackPanel>
+</ScrollView>
+</ContentDialog>

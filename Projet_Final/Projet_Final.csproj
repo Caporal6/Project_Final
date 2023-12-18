@@ -22,6 +22,8 @@
     <None Remove="Afficher_Projet.xaml" />
     <None Remove="Ajouter_Client.xaml" />
     <None Remove="Ajouter_Projet.xaml" />
+    <None Remove="Connexion\ConnexionProjet.xaml" />
+    <None Remove="Connexion\Enregistrer.xaml" />
 
     <None Remove="EmployeModule\DetailEmploye.xaml" />
 
@@ -34,6 +36,8 @@
     <None Remove="Information_Client.xaml" />
     <None Remove="Modifier_Client.xaml" />
     <None Remove="ModuleProjet\FormulaireAjoutProjet.xaml" />
+    <None Remove="ModuleProjet\FormulaireAssignation.xaml" />
+    <None Remove="ModuleProjet\FormulaireModificationProjet.xaml" />
     <None Remove="ModuleProjet\ListeProjet.xaml" />
     <None Remove="ModuleProjet\MenuGestionProjet.xaml" />
 
@@ -68,7 +72,22 @@
     <None Update="Assets\Add.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+
+    <Page Update="Connexion\Enregistrer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="ModuleProjet\FormulaireModificationProjet.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Connexion\ConnexionProjet.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="ModuleProjet\FormulaireAssignation.xaml">
+      <Generator>MSBuild:Compile</Generator>
+     </Page>
+
     <Page Update="EmployeModule\MenuGestionClient.xaml">
+
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="ModuleProjet\FormulaireAjoutProjet.xaml">

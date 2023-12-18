@@ -11,6 +11,8 @@
 
     <Grid Background="White">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -18,7 +20,11 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <GridView  x:Name="gvListeEmploye" ItemClick="gvListeEmploye_ItemClick" SelectionChanged="gvListeEmploye_SelectionChanged" IsItemClickEnabled="True" ItemsSource="{x:Bind listeEmployes}">
+        <Button Grid.Row="0" Grid.Column="0" x:Name="retour" Click="retour_Click" Background="Gray" Foreground="White" FontWeight="Bold" Margin="10 10 0 0">Retour</Button>
+
+        <TextBlock Text="Liste d'Employes" Grid.Row="1" Grid.Column="0" Style="{StaticResource SubheaderTextBlockStyle}" Margin="10"/>
+
+        <GridView  x:Name="gvListeEmploye" Grid.Row="2" Grid.Column="0" ItemClick="gvListeEmploye_ItemClick" SelectionChanged="gvListeEmploye_SelectionChanged" IsItemClickEnabled="True" ItemsSource="{x:Bind listeEmployes}" Margin="0 10 0 0">
             <GridView.ItemTemplate>
                 <DataTemplate x:DataType="local:EmployeC">
                     <GridViewItem>
@@ -36,17 +42,23 @@
                                 <StackPanel Background="White">
 
 
-                                    <!--<Image Source="{x:Bind PhotoIdentite}" Stretch="UniformToFill" Height="120" />-->
+                                    <Image Source="{x:Bind PhotoIdentite}" Stretch="Fill" Height="300" />
+                                    
 
-                                    <!--Nom de l'employe-->
-                                    <TextBlock x:Name="eventName" Text="{x:Bind Matricule}" FontSize="20" FontWeight="Bold" Margin="12,8,12,0" />
+                                    <StackPanel Orientation="Vertical">
+                                        <TextBlock Text="Matricule employe" Foreground="Gray" FontSize="12" Margin="12,4,12,0" Grid.Row="2" />
+                                        <TextBlock x:Name="eventName" Text="{x:Bind Matricule}" FontSize="20" FontWeight="Bold" Margin="12,2,12,0" />
+                                    </StackPanel>
 
-                                    <!--Lieu de l'événement-->
-                                    <TextBlock x:Name="eventDate" Text="{x:Bind Nom}" FontSize="15" Margin="12,4,12,0" Grid.Row="1" />
+                                    <StackPanel Orientation="Vertical">
+                                        <TextBlock Text="Nom employe" Foreground="Gray" FontSize="12" Margin="12,4,12,0" Grid.Row="2" />
+                                        <TextBlock x:Name="eventDate" Text="{x:Bind Nom}" FontWeight="Bold" FontSize="15" Margin="12,2,12,0" Grid.Row="1" />
+                                    </StackPanel>
 
-                                    <!--Date de l'événement-->
-
-                                    <TextBlock x:Name="eventTime" Text="{x:Bind Prenom}" FontSize="15" Margin="12,4,12,12" Grid.Row="2" />
+                                    <StackPanel Orientation="Vertical">
+                                        <TextBlock Text="Prenom employe" Foreground="Gray" FontSize="12" Margin="12,4,12,0" Grid.Row="2" />
+                                        <TextBlock x:Name="eventTime" Text="{x:Bind Prenom}" FontWeight="Bold" FontSize="15" Margin="12,4,12,12" Grid.Row="2" />
+                                    </StackPanel>
 
                                 </StackPanel>
 

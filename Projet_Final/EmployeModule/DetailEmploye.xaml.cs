@@ -6,8 +6,11 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Navigation;
+using Projet_Final.Employe;
+using Projet_Final.Singleton;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -30,6 +33,15 @@ namespace Projet_Final.EmployeModule
         public DetailEmploye()
         {
             this.InitializeComponent();
+
+            if (SingletonAdministrateur.GetInstance().online())
+            {
+                modifierEmployer.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                modifierEmployer.Visibility = Visibility.Collapsed;
+            }
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -43,11 +55,11 @@ namespace Projet_Final.EmployeModule
                 imgPhotoIdentite.Source = new BitmapImage(new Uri(employe.PhotoIdentite));
                 tbNom.Text = employe.Nom;
                 tbPrenom.Text = employe.Prenom;
-                tbDateNaissance.Text = employe.DateNaissance.ToString();
+                tbDateNaissance.Text = employe.DateNaissance.ToString("dd MMMM yyyy");
                 tbEmail.Text = employe.Email;
                 tbAdresse.Text = employe.Adresse;   
-                tbDateEmbauche.Text =  employe.DateEmbauche.ToString();
-                tbTauxHorraire.Text = employe.TauxHoraire.ToString();
+                tbDateEmbauche.Text =  employe.DateEmbauche.ToString("dd MMMM yyyy");
+                tbTauxHorraire.Text = employe.TauxHoraire.ToString()+"$";
                 tbStatut.Text = employe.Statut;
 
             }
@@ -61,11 +73,43 @@ namespace Projet_Final.EmployeModule
             dialog.SetData(employe);
 
             var result = await dialog.ShowAsync();
+
+            // Accédez à la valeur retournée après la fermeture du ContentDialog
+            if (result == ContentDialogResult.Primary)
+            {
+                Debug.WriteLine("test3");
+                bool returnedValue = dialog.ReturnValue;
+                Debug.WriteLine("test4");
+                if (returnedValue) {
+                    Debug.WriteLine("test5");
+                    this.Frame.Navigate(typeof(DetailEmploye), MatriculeEmploye);
+                    Debug.WriteLine("test6");
+                }
+                Debug.WriteLine("test7");
+            }
+            else
+            {
+                Debug.WriteLine("test8");
+                bool returnedValue = dialog.ReturnValue;
+                Debug.WriteLine("test9");
+                if (returnedValue)
+                {
+                    Debug.WriteLine("test10");
+                    this.Frame.Navigate(typeof(DetailEmploye), MatriculeEmploye);
+                    Debug.WriteLine("test11");
+                }
+                Debug.WriteLine("test12");
+            }
         }
 
         private void AssocierAProjet_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void retour_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(ListeEmploye));
         }
     }
 }

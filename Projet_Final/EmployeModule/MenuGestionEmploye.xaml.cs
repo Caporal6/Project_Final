@@ -6,6 +6,7 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Projet_Final.EmployeModule;
+using Projet_Final.Singleton;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -26,7 +27,17 @@ namespace Projet_Final.Employe
     {
         public MenuGestionEmploye()
         {
+            
             this.InitializeComponent();
+
+            if (SingletonAdministrateur.GetInstance().online())
+            {
+                ajouteEmploye.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                ajouteEmploye.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void listEmploye_Tapped(object sender, TappedRoutedEventArgs e)

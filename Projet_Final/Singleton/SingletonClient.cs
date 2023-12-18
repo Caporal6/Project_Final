@@ -16,9 +16,6 @@ namespace Projet_Final
 
         MySqlConnection con = new MySqlConnection("Server=cours.cegep3r.info;Database=a2023_420325ri_fabeq23;Uid=2130649;Pwd=2130649;");
 
-
-        
-
         public SingletonClient()
         {
             liste = new ObservableCollection<Client>();
@@ -99,11 +96,9 @@ namespace Projet_Final
         /*--------------------------Retourne la liste des Clients------------------------*/
         public ObservableCollection<Client> afficher_Client()
         {
-            Debug.WriteLine("uuuuuu");
 
             try
             {
-
                 ObservableCollection<Client> liste2 = new ObservableCollection<Client>();
                 MySqlCommand commande = new MySqlCommand();
                 commande.Connection = con;

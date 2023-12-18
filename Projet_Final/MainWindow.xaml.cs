@@ -8,6 +8,8 @@ using Microsoft.UI.Xaml.Navigation;
 using Projet_Final.Employe;
 using Projet_Final.EmployeModule;
 using Projet_Final.ModuleProjet;
+using Projet_Final.Singleton;
+using Projet_Final.Connexion;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,6 +18,10 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Devices.Enumeration;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using MySqlX.XDevAPI.Common;
+using Projet_Final.EmployeModule;
+using System.Diagnostics;
+using TravailDeux;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -30,16 +36,83 @@ namespace Projet_Final
         public MainWindow()
         {
             this.InitializeComponent();
-            mainFrame.Navigate(typeof(Afficher_Projet));
+
+            SingletonFenetre.GetInstance().Fenetre = this;
+
+            if (SingletonAdministrateur.GetInstance().ObtenirAdministrateurs().Count > 0)
+            {
+                if (SingletonAdministrateur.GetInstance().online())
+                {
+                    connexionProjet.Content = "Deconnexion";
+                }
+                else
+                {
+                    connexionProjet.Content = "Connexion";
+                }
+            }
+            else {
+                connexionProjet.Content = "S'enregistrer";
+            }
+
+            mainFrame.Navigate(typeof(ListeProjet));
         }
 
-        private void navView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+
+
+        private async void navView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
 
             var item = (NavigationViewItem)args.SelectedItem;
 
             switch (item.Name)
             {
+                case "sauvegarder":
+                    {
+
+                        try
+                        {
+                            var picker = new Windows.Storage.Pickers.FileSavePicker();
+
+                            var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(SingletonFenetre.GetInstance().Fenetre);
+                            WinRT.Interop.InitializeWithWindow.Initialize(picker, hWnd);
+
+                            picker.SuggestedFileName = "Liste de projets";
+                            picker.FileTypeChoices.Add("Fichier texte", new List<string>() { ".csv" });
+
+                            // Demandez � l'utilisateur de choisir un emplacement pour enregistrer le fichier
+                            Windows.Storage.StorageFile monFichier = await picker.PickSaveFileAsync();
+
+                            if (monFichier != null)
+                            {
+                                List<Projet> liste = new List<Projet>();
+                                foreach (Projet projet in SingletonProjet.GetInstance().ListeProjets())
+                                {
+                                    liste.Add(projet);
+                                }
+
+                                // La fonction ToString de la classe Client retourne: nom + ";" + prenom
+                                await Windows.Storage.FileIO.WriteLinesAsync(monFichier, liste.ConvertAll(x => x.ToStringCSV()), Windows.Storage.Streams.UnicodeEncoding.Utf8);
+
+                                ContentDialog dialog = new ContentDialog();
+                                dialog.XamlRoot = navView.XamlRoot;
+                                dialog.Title = "Information";
+                                dialog.CloseButtonText = "OK";
+                                dialog.Content = "Fichier sauvegarder avec success";
+
+                                var result = await dialog.ShowAsync();
+                            }
+                            else
+                            {
+
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.WriteLine(ex.ToString()); 
+                        }
+
+                    }
+                    break;
                 case "AjProjet":
                     mainFrame.Navigate(typeof(Ajouter_Projet));
                     break;
@@ -58,8 +131,111 @@ namespace Projet_Final
                 case "gestionProjet":
                     mainFrame.Navigate(typeof(MenuGestionProjet));
                     break;
+
+                case "connexionProjet":
+                    {
+
+                        if(SingletonAdministrateur.GetInstance().online() == false)
+                        {
+                            if(SingletonAdministrateur.GetInstance().ObtenirAdministrateurs().Count > 0)
+                            {
+                                ConnexionProjet dialog = new ConnexionProjet();
+                                dialog.XamlRoot = navView.XamlRoot;
+                                //dialog.PrimaryButtonText = "Connexion";
+
+                                var resultat = await dialog.ShowAsync();
+
+                                // Acc�dez � la valeur retourn�e apr�s la fermeture du ContentDialog
+                                if (resultat == ContentDialogResult.Primary)
+                                {
+                                    bool returnedValue = dialog.ReturnValue;
+                                    if (returnedValue)
+                                    {
+                                        mainFrame.Navigate(typeof(ListeProjet));
+                                    }
+                                }
+                                else
+                                {
+                                    bool returnedValue = dialog.ReturnValue;
+                                    if (returnedValue)
+                                    {
+                                        ChangerElementSelectionne("gestionProjet");
+                                        connexionProjet.Content = "Deconnexion";
+
+                                    }
+                                }
+                            }
+                            else
+                            {
+
+                                Enregistrer dialog = new Enregistrer();
+                                dialog.XamlRoot = navView.XamlRoot;
+                                //dialog.PrimaryButtonText = "Connexion";
+
+                                var resultat = await dialog.ShowAsync();
+
+                                // Acc�dez � la valeur retourn�e apr�s la fermeture du ContentDialog
+                                if (resultat == ContentDialogResult.Primary)
+                                {
+                                    bool returnedValue = dialog.ReturnValue;
+                                    if (returnedValue)
+                                    {
+                                        mainFrame.Navigate(typeof(ListeProjet));
+                                    }
+                                }
+                                else
+                                {
+                                    bool returnedValue = dialog.ReturnValue;
+                                    if (returnedValue)
+                                    {
+                                        ChangerElementSelectionne("gestionProjet");
+                                        connexionProjet.Content = "Connexion";
+
+                                    }
+                                }
+                            }
+
+                            
+                        }
+                        else
+                        {
+                            SingletonAdministrateur.GetInstance().deconnexion();
+                            ContentDialog dialog2 = new ContentDialog();
+                            dialog2.XamlRoot = navView.XamlRoot;
+                            dialog2.Title = "Information";
+                            dialog2.CloseButtonText = "OK";
+                            dialog2.Content = "Deconnexion r�ussi!";
+
+                            var result = await dialog2.ShowAsync();
+
+                            connexionProjet.Content = "Connexion";
+                            ChangerElementSelectionne("gestionProjet");
+
+
+                        }
+
+
+
+                        //if (resultat == ContentDialogResult.Primary)
+                        //{
+
+
+                        //    ContentDialog dialog2 = new ContentDialog();
+                        //    dialog.XamlRoot = navView.XamlRoot;
+                        //    dialog.Title = "Information";
+                        //    dialog.CloseButtonText = "OK";
+                        //    dialog.Content = "connexion r�ussi!";
+
+                        //    var result = await dialog2.ShowAsync();
+
+                        //    mainFrame.Navigate(typeof(ListeProjet));
+                        //}
+
+                    }
+                    break;
                 case "gestionClient":
                     mainFrame.Navigate(typeof(MenuGestionClient));
+
                     break;
                 default:
                     break;
@@ -68,6 +244,22 @@ namespace Projet_Final
 
 
         }
+
+        // Supposez que "navView" est votre NavigationView
+
+        private void ChangerElementSelectionne(string nomElement)
+        {
+            foreach (var item in navView.MenuItems.OfType<NavigationViewItem>())
+            {
+                if (item.Name == nomElement)
+                {
+                    // S�lectionnez manuellement l'�l�ment de menu
+                    navView.SelectedItem = item;
+                    break;
+                }
+            }
+        }
+
 
         private void navView_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
         {

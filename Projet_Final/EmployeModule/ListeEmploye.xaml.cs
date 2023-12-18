@@ -53,5 +53,10 @@ namespace Projet_Final.Employe
             }
             cliked = false;
         }
+
+        private void retour_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(MenuGestionEmploye));
+        }
     }
 }

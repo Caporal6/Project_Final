@@ -7,6 +7,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Projet_Final.Employe;
 using Projet_Final.EmployeModule;
+using Projet_Final.Singleton;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -28,6 +29,15 @@ namespace Projet_Final.ModuleProjet
         public MenuGestionProjet()
         {
             this.InitializeComponent();
+
+            if (SingletonAdministrateur.GetInstance().online())
+            {
+                ajouterProjetBorder.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                ajouterProjetBorder.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void listProjet_Tapped(object sender, TappedRoutedEventArgs e)
