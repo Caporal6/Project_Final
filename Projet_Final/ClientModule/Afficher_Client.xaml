@@ -9,25 +9,69 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <ScrollView>
+
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <ScrollView>
         <StackPanel>
 
-            <ListView x:Name="lvClients" SelectionChanged="lvClients_SelectionChanged">
-                <ListView.ItemTemplate>
+                <GridView x:Name="lvClients" SelectionChanged="lvClients_SelectionChanged">
+                    <GridView.ItemTemplate>
                     <DataTemplate x:DataType="local:Client">
-                        <StackPanel Orientation="Vertical"
-                                Margin="5" HorizontalAlignment="Stretch">
-                            <TextBlock Text="{x:Bind Id}" Margin="5,5,5,10" />
-                            <TextBlock Text="{x:Bind Nom}" Margin="5,5,5,10"/>
-                            <TextBlock Text="{x:Bind Adresse}" Margin="5,5,5,10"/>
-                            <TextBlock Text="{x:Bind Num}" Margin="5,5,5,10"/>
-                            <TextBlock Text="{x:Bind Email}" Margin="5,5,5,10"/>
-                        </StackPanel>
+                        <GridViewItem>
+                            <Border BorderBrush="LightGray" Background="White" BorderThickness="2" CornerRadius="4" Margin="5">
+                                <Grid Width="300" Background="White" CornerRadius="8" Margin="16">
+
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+
+                                    <StackPanel Background="White">
+
+
+                                        <!--<Image Source="{x:Bind PhotoIdentite}" Stretch="UniformToFill" Height="120" />-->
+
+                                        <!--Nom de l'employe-->
+                                        <TextBlock x:Name="eventName" Text="{x:Bind Id}" FontSize="20" FontWeight="Bold" Margin="12,8,12,0" />
+
+                                        <!--Lieu de l'événement-->
+
+                                        <TextBlock x:Name="eventDate" Text="{x:Bind Nom}" FontSize="15" Margin="12,4,12,0" Grid.Row="1" />
+                                        <!--Date de l'événement-->
+                                        <TextBlock Text="{x:Bind Adresse}" FontSize="15" Margin="12,4,12,12" Grid.Row="2"/>
+
+                                        <TextBlock Text="{x:Bind Num}" FontSize="15" Margin="12,4,12,12" Grid.Row="2"/>
+
+                                        <TextBlock Text="{x:Bind Email}" FontSize="15" Margin="12,4,12,12" Grid.Row="2"/>
+
+
+                                    </StackPanel>
+
+                                </Grid>
+                            </Border>
+                        </GridViewItem>
                     </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                </GridView.ItemTemplate>
+            </GridView>
            
         </StackPanel>
     </ScrollView>
+   </Grid>
+
+
+
+
+
 
 </Page>
