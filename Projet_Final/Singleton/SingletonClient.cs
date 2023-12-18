@@ -12,18 +12,13 @@ namespace Projet_Final
     class SingletonClient
     {
         public ObservableCollection<Client> liste;
-        //MySqlConnection con;
         static SingletonClient instance = null;
 
-        //MySqlConnection con = new MySqlConnection("Server=cours.cegep3r.info;Database=a2023_420325ri_fabeq23;Uid=2130649;Pwd=2130649;");
-
-        MySqlConnection con = new MySqlConnection("Server=cours.cegep3r.info;Database=a2023_420325ri_fabeq23;Uid=2204989;Pwd=2204989;");
-        
+        MySqlConnection con = new MySqlConnection("Server=cours.cegep3r.info;Database=a2023_420325ri_fabeq23;Uid=2130649;Pwd=2130649;");
 
         public SingletonClient()
         {
             liste = new ObservableCollection<Client>();
-            //con = new MySqlConnection("Server=cours.cegep3r.info;Database=a2023_420326_gr01_2204989-yousouf-esdras-manefa;Uid=2204989;Pwd=2204989;");
         }
 
         public static SingletonClient getInstance()
@@ -105,14 +100,15 @@ namespace Projet_Final
             try
             {
                 ObservableCollection<Client> liste2 = new ObservableCollection<Client>();
-                MySqlCommand commande = new MySqlCommand("GetClientList");
+                MySqlCommand commande = new MySqlCommand();
                 commande.Connection = con;
-                commande.CommandType = System.Data.CommandType.StoredProcedure;
+                commande.CommandText = "CALL GetClientList()";
                 con.Open();
                 MySqlDataReader r = commande.ExecuteReader();
 
                 while (r.Read())
                 {
+
 
                     liste2.Add(new Client { Id =  int.Parse(r["Identifiant"].ToString()), Nom = r["Nom"].ToString(), Adresse = r["Adresse"].ToString(), Num = r["NumeroTelephone"].ToString(), Email = r["Email"].ToString() });
                 }

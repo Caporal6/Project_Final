@@ -6,6 +6,7 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Projet_Final.Employe;
+using Projet_Final.EmployeModule;
 using Projet_Final.ModuleProjet;
 using Projet_Final.Singleton;
 using Projet_Final.Connexion;
@@ -78,7 +79,7 @@ namespace Projet_Final
                             picker.SuggestedFileName = "Liste de projets";
                             picker.FileTypeChoices.Add("Fichier texte", new List<string>() { ".csv" });
 
-                            // Demandez à l'utilisateur de choisir un emplacement pour enregistrer le fichier
+                            // Demandez ï¿½ l'utilisateur de choisir un emplacement pour enregistrer le fichier
                             Windows.Storage.StorageFile monFichier = await picker.PickSaveFileAsync();
 
                             if (monFichier != null)
@@ -130,6 +131,7 @@ namespace Projet_Final
                 case "gestionProjet":
                     mainFrame.Navigate(typeof(MenuGestionProjet));
                     break;
+
                 case "connexionProjet":
                     {
 
@@ -143,7 +145,7 @@ namespace Projet_Final
 
                                 var resultat = await dialog.ShowAsync();
 
-                                // Accédez à la valeur retournée après la fermeture du ContentDialog
+                                // Accï¿½dez ï¿½ la valeur retournï¿½e aprï¿½s la fermeture du ContentDialog
                                 if (resultat == ContentDialogResult.Primary)
                                 {
                                     bool returnedValue = dialog.ReturnValue;
@@ -172,7 +174,7 @@ namespace Projet_Final
 
                                 var resultat = await dialog.ShowAsync();
 
-                                // Accédez à la valeur retournée après la fermeture du ContentDialog
+                                // Accï¿½dez ï¿½ la valeur retournï¿½e aprï¿½s la fermeture du ContentDialog
                                 if (resultat == ContentDialogResult.Primary)
                                 {
                                     bool returnedValue = dialog.ReturnValue;
@@ -202,7 +204,7 @@ namespace Projet_Final
                             dialog2.XamlRoot = navView.XamlRoot;
                             dialog2.Title = "Information";
                             dialog2.CloseButtonText = "OK";
-                            dialog2.Content = "Deconnexion réussi!";
+                            dialog2.Content = "Deconnexion rï¿½ussi!";
 
                             var result = await dialog2.ShowAsync();
 
@@ -222,7 +224,7 @@ namespace Projet_Final
                         //    dialog.XamlRoot = navView.XamlRoot;
                         //    dialog.Title = "Information";
                         //    dialog.CloseButtonText = "OK";
-                        //    dialog.Content = "connexion réussi!";
+                        //    dialog.Content = "connexion rï¿½ussi!";
 
                         //    var result = await dialog2.ShowAsync();
 
@@ -230,6 +232,10 @@ namespace Projet_Final
                         //}
 
                     }
+                    break;
+                case "gestionClient":
+                    mainFrame.Navigate(typeof(MenuGestionClient));
+
                     break;
                 default:
                     break;
@@ -247,7 +253,7 @@ namespace Projet_Final
             {
                 if (item.Name == nomElement)
                 {
-                    // Sélectionnez manuellement l'élément de menu
+                    // Sï¿½lectionnez manuellement l'ï¿½lï¿½ment de menu
                     navView.SelectedItem = item;
                     break;
                 }

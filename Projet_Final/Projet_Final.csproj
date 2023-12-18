@@ -30,6 +30,7 @@
     <None Remove="EmployeModule\FormulaireModifier.xaml" />
     <None Remove="EmployeModule\FourmulaireAjout.xaml" />
     <None Remove="EmployeModule\ListeEmploye.xaml" />
+    <None Remove="EmployeModule\MenuGestionClient.xaml" />
     <None Remove="EmployeModule\MenuGestionEmploye.xaml" />
 
     <None Remove="Information_Client.xaml" />
@@ -71,6 +72,7 @@
     <None Update="Assets\Add.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+
     <Page Update="Connexion\Enregistrer.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -81,6 +83,11 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="ModuleProjet\FormulaireAssignation.xaml">
+      <Generator>MSBuild:Compile</Generator>
+     </Page>
+
+    <Page Update="EmployeModule\MenuGestionClient.xaml">
+
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Update="ModuleProjet\FormulaireAjoutProjet.xaml">

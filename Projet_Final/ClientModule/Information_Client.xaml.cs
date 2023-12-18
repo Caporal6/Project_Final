@@ -49,14 +49,15 @@ namespace Projet_Final
             Modifier_Client dialog = new Modifier_Client();
             dialog.XamlRoot = stkpnl.XamlRoot;
             dialog.Title = "Modifier un client";
-            dialog.PrimaryButtonText = "Oui";
-            dialog.CloseButtonText = "Modifier";
+            dialog.PrimaryButtonText = "Modifier";
+            dialog.CloseButtonText = "Annuler";
             dialog.DefaultButton = ContentDialogButton.Primary;
 
             ContentDialogResult result = await dialog.ShowAsync();
-            
+
             if(result == ContentDialogResult.Primary)
             {
+
               SingletonClient.getInstance().modifier_Client(tbId.Text,dialog.Nom, dialog.Adresse, dialog.Num, dialog.Email);
             }
         }
