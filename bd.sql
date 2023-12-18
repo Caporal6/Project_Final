@@ -799,6 +799,24 @@ VALUES (4, 'Client4', 'Adresse4', '5544332211', 'client4@email.com');
 INSERT INTO Client (Identifiant, Nom, Adresse, NumeroTelephone, Email)
 VALUES (5, 'Client5', 'Adresse5', '9876543210', 'client5@email.com');
 
+INSERT INTO Client (Identifiant, Nom, Adresse, NumeroTelephone, Email)
+VALUES (6, 'Client6', 'Adresse6', '9876543220', 'client6@email.com');
+
+INSERT INTO Client (Identifiant, Nom, Adresse, NumeroTelephone, Email)
+VALUES (5, 'Client7', 'Adresse7', '9876543230', 'client7@email.com');
+
+INSERT INTO Client (Identifiant, Nom, Adresse, NumeroTelephone, Email)
+VALUES (5, 'Client8', 'Adresse8', '9876543240', 'client7@email.com');
+
+INSERT INTO Client (Identifiant, Nom, Adresse, NumeroTelephone, Email)
+VALUES (5, 'Client8', 'Adresse8', '9876543280', 'client8@email.com');
+
+INSERT INTO Client (Identifiant, Nom, Adresse, NumeroTelephone, Email)
+VALUES (5, 'Client9', 'Adresse9', '9876543290', 'client9@email.com');
+
+INSERT INTO Client (Identifiant, Nom, Adresse, NumeroTelephone, Email)
+VALUES (5, 'Client10', 'Adresse10', '9876543211', 'client10@email.com');
+
 
 -- Insertion dans la table Projet
 
