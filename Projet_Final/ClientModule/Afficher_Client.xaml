@@ -19,6 +19,10 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
+        <Button Grid.Row="0" Grid.Column="0" x:Name="retour" Click="retour_Click" Background="Gray" Foreground="White" FontWeight="Bold" Margin="10 10 0 0">Retour</Button>
+
+        <TextBlock Text="Liste de clients" Grid.Row="1" Grid.Column="0" Style="{StaticResource SubheaderTextBlockStyle}" Margin="10"/>
+
         <ScrollView>
         <StackPanel>
 
@@ -40,23 +44,33 @@
                                     <StackPanel Background="White">
 
 
-                                        <!--<Image Source="{x:Bind PhotoIdentite}" Stretch="UniformToFill" Height="120" />-->
+                                            <StackPanel Orientation="Vertical">
+                                                <TextBlock Text="Identifiant du client" Foreground="Gray" FontSize="12" Margin="12,4,12,0" Grid.Row="2" />
+                                                <TextBlock x:Name="idClient" Text="{x:Bind Id}" FontSize="20" FontWeight="Bold" Margin="12,0,12,8" />
+                                            </StackPanel>
 
-                                        <!--Nom de l'employe-->
-                                        <TextBlock x:Name="eventName" Text="{x:Bind Id}" FontSize="20" FontWeight="Bold" Margin="12,8,12,0" />
+                                            <StackPanel Orientation="Vertical">
+                                                <TextBlock Text="nom du client" Foreground="Gray" FontSize="12" Margin="12,4,12,0" Grid.Row="2" />
+                                                <TextBlock x:Name="nameClient" Text="{x:Bind Nom}" FontSize="20" FontWeight="Bold" Margin="12,0,12,8" />
+                                            </StackPanel>
 
-                                        <!--Lieu de l'événement-->
+                                            <StackPanel Orientation="Vertical">
+                                                <TextBlock Text="adresse du client" Foreground="Gray" FontSize="12" Margin="12,4,12,0" Grid.Row="2" />
+                                                <TextBlock x:Name="addresseClient" Text="{x:Bind Adresse}" FontSize="20" FontWeight="Bold" Margin="12,0,12,8" />
+                                            </StackPanel>
 
-                                        <TextBlock x:Name="eventDate" Text="{x:Bind Nom}" FontSize="15" Margin="12,4,12,0" Grid.Row="1" />
-                                        <!--Date de l'événement-->
-                                        <TextBlock Text="{x:Bind Adresse}" FontSize="15" Margin="12,4,12,12" Grid.Row="2"/>
+                                            <StackPanel Orientation="Vertical">
+                                                <TextBlock Text="numero du client" Foreground="Gray" FontSize="12" Margin="12,4,12,0" Grid.Row="2" />
+                                                <TextBlock x:Name="numeroClient" Text="{x:Bind Num}" FontSize="20" FontWeight="Bold" Margin="12,0,12,8" />
+                                            </StackPanel>
 
-                                        <TextBlock Text="{x:Bind Num}" FontSize="15" Margin="12,4,12,12" Grid.Row="2"/>
+                                            <StackPanel Orientation="Vertical">
+                                                <TextBlock Text="email du client" Foreground="Gray" FontSize="12" Margin="12,4,12,0" Grid.Row="2" />
+                                                <TextBlock x:Name="emailClient" Text="{x:Bind Email}" FontSize="20" FontWeight="Bold" Margin="12,0,12,8" />
+                                            </StackPanel>
 
-                                        <TextBlock Text="{x:Bind Email}" FontSize="15" Margin="12,4,12,12" Grid.Row="2"/>
 
-
-                                    </StackPanel>
+                                        </StackPanel>
 
                                 </Grid>
                             </Border>
