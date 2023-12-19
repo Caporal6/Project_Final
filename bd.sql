@@ -75,11 +75,11 @@ CREATE TABLE Employe
 
 CREATE TABLE Client
 (
-    Identifiant INT,
-    Nom VARCHAR(50),
-    Adresse VARCHAR(200),
+    Identifiant     INT,
+    Nom             VARCHAR(50),
+    Adresse         VARCHAR(200),
     NumeroTelephone VARCHAR(15),
-    Email VARCHAR(100),
+    Email           VARCHAR(100),
     CONSTRAINT Pk_Client PRIMARY KEY (Identifiant)
 );
 
@@ -87,15 +87,15 @@ CREATE TABLE Client
 
 CREATE TABLE Projet
 (
-    NumeroProjet VARCHAR(20),
-    Titre VARCHAR(100),
-    DateDebut DATE,
-    Description TEXT,
-    Budget DECIMAL(10, 2),
-    EmployesRequis INT,
-    TotalSalaires DECIMAL(10, 2) default 0,
+    NumeroProjet      VARCHAR(20),
+    Titre             VARCHAR(100),
+    DateDebut         DATE,
+    Description       TEXT,
+    Budget            DECIMAL(10, 2),
+    EmployesRequis    INT,
+    TotalSalaires     DECIMAL(10, 2) default 0,
     ClientIdentifiant INT,
-    Statut VARCHAR(20) DEFAULT 'En cours',
+    Statut            VARCHAR(20)    DEFAULT 'En cours',
     CONSTRAINT CK_NombreEmploye CHECK (EmployesRequis <= 5),
     CONSTRAINT Pk_Projet PRIMARY KEY (NumeroProjet),
     CONSTRAINT Fk_Projet_Client FOREIGN KEY (ClientIdentifiant) REFERENCES Client (Identifiant)
@@ -103,10 +103,11 @@ CREATE TABLE Projet
 
 
 -- Création de la table Administrateur
-CREATE TABLE IF NOT EXISTS Administrateur (
-                                              Id INT AUTO_INCREMENT PRIMARY KEY,
-                                              NomUtilisateur VARCHAR(50) NOT NULL UNIQUE,
-                                              MotDePasseHash VARCHAR(64) NOT NULL -- Stocker le hachage du mot de passe (SHA-256)
+CREATE TABLE IF NOT EXISTS Administrateur
+(
+    Id             INT AUTO_INCREMENT PRIMARY KEY,
+    NomUtilisateur VARCHAR(50) NOT NULL UNIQUE,
+    MotDePasseHash VARCHAR(64) NOT NULL -- Stocker le hachage du mot de passe (SHA-256)
 );
 
 -- Création de la table Assignation
@@ -115,9 +116,9 @@ DROP TABLE IF EXISTS Assignation;
 CREATE TABLE Assignation
 (
     AssignationId INT(32) AUTO_INCREMENT,
-    EmployeId VARCHAR(20),
-    ProjetId VARCHAR(20),
-    NbreHeures INT(32),
+    EmployeId     VARCHAR(20),
+    ProjetId      VARCHAR(20),
+    NbreHeures    INT(32),
     CONSTRAINT Pk_Assignation PRIMARY KEY (AssignationId),
     CONSTRAINT Fk_Assignation_Employe FOREIGN KEY (EmployeId) REFERENCES Employe (Matricule),
     CONSTRAINT Fk_Assignation_Projet FOREIGN KEY (ProjetId) REFERENCES Projet (NumeroProjet)
@@ -134,7 +135,8 @@ CREATE TRIGGER before_insert_employe_set_matricule
     FOR EACH ROW
 BEGIN
     -- Générer le Matricule basé sur le nom, la date de naissance et une valeur aléatoire
-    SET NEW.Matricule = CONCAT(SUBSTRING(NEW.Nom, 1, 2), '-', YEAR(NEW.DateNaissance), '-', FLOOR(RAND() * (99 - 10 + 1) + 10));
+    SET NEW.Matricule =
+            CONCAT(SUBSTRING(NEW.Nom, 1, 2), '-', YEAR(NEW.DateNaissance), '-', FLOOR(RAND() * (99 - 10 + 1) + 10));
 END;
 
 //
@@ -267,7 +269,6 @@ END //
 DELIMITER ;
 
 
-
 -- CREATION PROCEDURES STOCKEES
 
 
@@ -284,7 +285,8 @@ BEGIN
     -- Sélectionner la ligne correspondant aux identifiants fournis
     SELECT *
     FROM Administrateur
-    WHERE NomUtilisateur = p_NomUtilisateur AND MotDePasseHash = p_MotDePasse;
+    WHERE NomUtilisateur = p_NomUtilisateur
+      AND MotDePasseHash = p_MotDePasse;
 END //
 DELIMITER ;
 
@@ -309,29 +311,26 @@ CREATE PROCEDURE AjouterEmploye(
     IN p_Statut VARCHAR(20)
 )
 BEGIN
-    INSERT INTO Employe (
-        Nom,
-        Prenom,
-        DateNaissance,
-        Email,
-        Adresse,
-        DateEmbauche,
-        TauxHoraire,
-        PhotoIdentite,
-        Statut,
-        ProjetId
-    ) VALUES (
-                 p_Nom,
-                 p_Prenom,
-                 p_DateNaissance,
-                 p_Email,
-                 p_Adresse,
-                 p_DateEmbauche,
-                 p_TauxHoraire,
-                 p_PhotoIdentite,
-                 p_Statut,
-                 NULL
-             );
+    INSERT INTO Employe (Nom,
+                         Prenom,
+                         DateNaissance,
+                         Email,
+                         Adresse,
+                         DateEmbauche,
+                         TauxHoraire,
+                         PhotoIdentite,
+                         Statut,
+                         ProjetId)
+    VALUES (p_Nom,
+            p_Prenom,
+            p_DateNaissance,
+            p_Email,
+            p_Adresse,
+            p_DateEmbauche,
+            p_TauxHoraire,
+            p_PhotoIdentite,
+            p_Statut,
+            NULL);
 END;
 
 -- Procédure pour modifier les informations d'un employé
@@ -347,14 +346,13 @@ CREATE PROCEDURE ModifierInformationsEmploye(
 )
 BEGIN
     UPDATE Employe
-    SET
-        Nom = p_Nom,
-        Prenom = p_Prenom,
-        Email = p_Email,
-        Adresse = p_Adresse,
-        TauxHoraire = p_TauxHoraire,
+    SET Nom           = p_Nom,
+        Prenom        = p_Prenom,
+        Email         = p_Email,
+        Adresse       = p_Adresse,
+        TauxHoraire   = p_TauxHoraire,
         PhotoIdentite = p_PhotoIdentite,
-        Statut = p_Statut
+        Statut        = p_Statut
     WHERE Matricule = p_Matricule;
 END;
 
@@ -385,19 +383,16 @@ CREATE PROCEDURE AjouterClient(
     IN c_Email VARCHAR(100)
 )
 BEGIN
-    INSERT INTO Client (
-        Identifiant,
-        Nom,
-        Adresse,
-        NumeroTelephone,
-        Email
-    ) VALUES (
-                 c_Identifiant,
-                 c_Nom,
-                 c_Adresse,
-                 c_NumeroTelephone,
-                 c_Email
-             );
+    INSERT INTO Client (Identifiant,
+                        Nom,
+                        Adresse,
+                        NumeroTelephone,
+                        Email)
+    VALUES (c_Identifiant,
+            c_Nom,
+            c_Adresse,
+            c_NumeroTelephone,
+            c_Email);
 END;
 
 -- Procédure pour modifier les informations d'un client
@@ -410,12 +405,11 @@ CREATE PROCEDURE ModifierInformationsClient(
 )
 BEGIN
     UPDATE Client
-    SET
-        Identifiant = c_Identifiant,
-        Nom = c_Nom,
-        Adresse = c_Adresse,
+    SET Identifiant     = c_Identifiant,
+        Nom             = c_Nom,
+        Adresse         = c_Adresse,
         NumeroTelephone = c_NumeroTelephone,
-        Email = c_Email
+        Email           = c_Email
     WHERE Identifiant = c_Identifiant;
 END;
 
@@ -441,21 +435,18 @@ CREATE PROCEDURE CreerProjet(
 BEGIN
 
     -- Insérer le nouveau projet
-    INSERT INTO Projet (
-        Titre,
-        DateDebut,
-        Description,
-        Budget,
-        EmployesRequis,
-        ClientIdentifiant
-    ) VALUES (
-                 p_Titre,
-                 p_DateDebut,
-                 p_Description,
-                 p_Budget,
-                 p_EmployesRequis,
-                 p_ClientIdentifiant
-             );
+    INSERT INTO Projet (Titre,
+                        DateDebut,
+                        Description,
+                        Budget,
+                        EmployesRequis,
+                        ClientIdentifiant)
+    VALUES (p_Titre,
+            p_DateDebut,
+            p_Description,
+            p_Budget,
+            p_EmployesRequis,
+            p_ClientIdentifiant);
 END //
 
 DELIMITER ;
@@ -473,7 +464,8 @@ BEGIN
     SET p_IdentifiantClient = NULL;
 
     -- Rechercher l'identifiant du client par son nom
-    SELECT Identifiant INTO p_IdentifiantClient
+    SELECT Identifiant
+    INTO p_IdentifiantClient
     FROM Client
     WHERE Nom = p_NomClient;
 
@@ -503,20 +495,18 @@ DELIMITER //
 
 CREATE PROCEDURE GetProjectsAndClientsWithDetails()
 BEGIN
-    SELECT
-        P.NumeroProjet,
-        P.Titre AS TitreProjet,
-        P.DateDebut,
-        P.Description,
-        P.Budget,
-        P.EmployesRequis,
-        P.TotalSalaires,
-        P.Statut,
-        C.*
-    FROM
-        Projet P
-            LEFT JOIN
-        Client C ON P.ClientIdentifiant = C.Identifiant;
+    SELECT P.NumeroProjet,
+           P.Titre AS TitreProjet,
+           P.DateDebut,
+           P.Description,
+           P.Budget,
+           P.EmployesRequis,
+           P.TotalSalaires,
+           P.Statut,
+           C.*
+    FROM Projet P
+             LEFT JOIN
+         Client C ON P.ClientIdentifiant = C.Identifiant;
 END //
 
 DELIMITER ;
@@ -530,21 +520,18 @@ CREATE PROCEDURE GetEmployesProjetDetails(
     IN p_NumeroProjet VARCHAR(20)
 )
 BEGIN
-    SELECT
-        E.Matricule,
-        E.Nom,
-        E.Prenom,
-        E.TauxHoraire,
-        E.PhotoIdentite,
-        E.Statut,
-        A.NbreHeures,
-        E.TauxHoraire * A.NbreHeures AS Salaire
-    FROM
-        Employe E
-            JOIN
-        Assignation A ON E.Matricule = A.EmployeId
-    WHERE
-            A.ProjetId = p_NumeroProjet;
+    SELECT E.Matricule,
+           E.Nom,
+           E.Prenom,
+           E.TauxHoraire,
+           E.PhotoIdentite,
+           E.Statut,
+           A.NbreHeures,
+           E.TauxHoraire * A.NbreHeures AS Salaire
+    FROM Employe E
+             JOIN
+         Assignation A ON E.Matricule = A.EmployeId
+    WHERE A.ProjetId = p_NumeroProjet;
 END //
 
 DELIMITER ;
@@ -557,20 +544,17 @@ CREATE PROCEDURE GetProjetByNumero(
     IN p_NumeroProjet VARCHAR(20)
 )
 BEGIN
-    SELECT
-        NumeroProjet,
-        Titre,
-        DateDebut,
-        Description,
-        Budget,
-        EmployesRequis,
-        TotalSalaires,
-        ClientIdentifiant,
-        Statut
-    FROM
-        Projet
-    WHERE
-            NumeroProjet = p_NumeroProjet;
+    SELECT NumeroProjet,
+           Titre,
+           DateDebut,
+           Description,
+           Budget,
+           EmployesRequis,
+           TotalSalaires,
+           ClientIdentifiant,
+           Statut
+    FROM Projet
+    WHERE NumeroProjet = p_NumeroProjet;
 END //
 
 DELIMITER ;
@@ -616,7 +600,6 @@ END //
 DELIMITER ;
 
 
-
 DELIMITER //
 
 CREATE PROCEDURE ModifierProjet(
@@ -628,11 +611,10 @@ CREATE PROCEDURE ModifierProjet(
 )
 BEGIN
     UPDATE Projet
-    SET
-        Titre = p_Titre,
+    SET Titre       = p_Titre,
         Description = p_Description,
-        Budget = p_Budget,
-        Statut = p_Statut
+        Budget      = p_Budget,
+        Statut      = p_Statut
     WHERE NumeroProjet = p_NumeroProjet;
 END //
 
@@ -664,10 +646,6 @@ BEGIN
 END //
 
 DELIMITER ;
-
-
-
-
 
 
 -- CREATION DES FONCTIONS STOCKEES
@@ -711,7 +689,8 @@ CREATE FUNCTION ObtenirNombreAssignationsEmploye(matricule VARCHAR(20)) RETURNS 
 BEGIN
     DECLARE nombreAssignations INT;
 
-    SELECT COUNT(*) INTO nombreAssignations
+    SELECT COUNT(*)
+    INTO nombreAssignations
     FROM Assignation
     WHERE EmployeId = matricule;
 
@@ -726,7 +705,8 @@ CREATE FUNCTION CalculerTotalSalaireEmploye(matricule VARCHAR(20)) RETURNS DECIM
 BEGIN
     DECLARE totalSalaire DECIMAL(10, 2);
 
-    SELECT SUM(E.TauxHoraire * A.NbreHeures) INTO totalSalaire
+    SELECT SUM(E.TauxHoraire * A.NbreHeures)
+    INTO totalSalaire
     FROM Assignation A
              JOIN Employe E ON A.EmployeId = E.Matricule
     WHERE A.EmployeId = matricule;
@@ -784,78 +764,186 @@ FROM Employe E
 
 -- Insertion dans la table client
 
-INSERT INTO Client (Identifiant, Nom, Adresse, NumeroTelephone, Email)
-VALUES (1, 'Client1', 'Adresse1', '1234567890', 'client1@email.com');
+-- Assurez-vous de remplacer "votre_table_clients" par le nom réel de votre table
 
-INSERT INTO Client (Identifiant, Nom, Adresse, NumeroTelephone, Email)
-VALUES (2, 'Client2', 'Adresse2', '9876543210', 'client2@email.com');
-
-INSERT INTO Client (Identifiant, Nom, Adresse, NumeroTelephone, Email)
-VALUES (3, 'Client3', 'Adresse3', '1112233445', 'client3@email.com');
-
-INSERT INTO Client (Identifiant, Nom, Adresse, NumeroTelephone, Email)
-VALUES (4, 'Client4', 'Adresse4', '5544332211', 'client4@email.com');
-
-INSERT INTO Client (Identifiant, Nom, Adresse, NumeroTelephone, Email)
-VALUES (5, 'Client5', 'Adresse5', '9876543210', 'client5@email.com');
+INSERT INTO Client (nom, adresse, NumeroTelephone, email)
+VALUES ('Doe', '123 Main St', '555-1234', 'john.doe@email.com'),
+       ('Smith', '456 Oak St', '555-5678', 'jane.smith@email.com'),
+       ('Brown', '789 Pine St', '555-9012', 'alice.brown@email.com'),
+       ('Johnson', '101 Elm St', '555-3456', 'bob.johnson@email.com'),
+       ('Williams', '202 Maple St', '555-7890', 'emily.williams@email.com'),
+       ('Jones', '303 Birch St', '555-2345', 'chris.jones@email.com'),
+       ('Miller', '404 Cedar St', '555-6789', 'jessica.miller@email.com'),
+       ('Davis', '505 Walnut St', '555-1239', 'michael.davis@email.com'),
+       ('Martinez', '606 Pineapple St', '555-5671', 'sophia.martinez@email.com'),
+       ('Taylor', '707 Peach St', '555-9102', 'william.taylor@email.com');
 
 
 -- Insertion dans la table Projet
 
-INSERT INTO Projet (NumeroProjet, Titre, DateDebut, Description, Budget, EmployesRequis, TotalSalaires, ClientIdentifiant, Statut)
-VALUES ('P1', 'Projet1', '2023-01-01', 'Description1', 5000.00, 3, 0.00, 221, 'En cours');
+INSERT INTO Projet (NumeroProjet, Titre, DateDebut, Description, Budget, EmployesRequis, ClientIdentifiant)
+VALUES ('P001', 'Construction du Pont de Montréal', '2023-01-01', 'Projet de construction du Pont de Montréal',
+        100000.00, 5, 495),
+       ('P002', 'Projet de la Grande Muraille', '2023-02-15', 'Projet de restauration de la Grande Muraille de Chine',
+        80000.00, 3, 513),
+       ('P003', 'Exploration de Mars', '2023-03-10', 'Mission d\'exploration de la planète Mars', 5000.00, 1, 520),
+       ('P004', 'Projet de Fusion Nucléaire', '2023-04-05', 'Recherche sur la fusion nucléaire pour une énergie propre',
+        120000.00, 4, 522),
+       ('P005', 'Projet de Ville Intelligente', '2023-05-20',
+        'Développement d\'une ville intelligente avec des technologies avancées', 15000.00, 4, 531);
 
-INSERT INTO Projet (NumeroProjet, Titre, DateDebut, Description, Budget, EmployesRequis, TotalSalaires, ClientIdentifiant, Statut)
-VALUES ('P2', 'Projet2', '2023-02-01', 'Description2', 8000.00, 5, 0.00, 285, 'En cours');
 
-INSERT INTO Projet (NumeroProjet, Titre, DateDebut, Description, Budget, EmployesRequis, TotalSalaires, ClientIdentifiant, Statut)
-VALUES ('P3', 'Projet3', '2023-03-01', 'Description3', 10000.00, 4, 0.00, 392, 'En cours');
+INSERT INTO Projet (NumeroProjet, Titre, DateDebut, Description, Budget, EmployesRequis, ClientIdentifiant)
+VALUES ('P006', 'Projet de Colonisation Lunaire', '2023-06-15', 'Mission de colonisation de la Lune', 2000.00, 1,
+        590),
+       ('P007', 'Projet de Tunnel sous la Manche 2', '2023-07-01', 'Construction d\'un deuxième tunnel sous la Manche',
+        5000.00, 5, 656),
+       ('P008', 'Projet de Parc Éolien Offshore', '2023-08-10', 'Installation d\'un parc éolien en mer', 80000.00,
+        2, 807),
+       ('P009', 'Projet de Réhabilitation des Forêts Amazoniennes', '2023-09-05',
+        'Restauration des forêts amazoniennes', 3000.00, 2, 838),
+       ('P010', 'Projet de Conquête de l\'Antarctique', '2023-10-20',
+        'Expédition scientifique et exploration de l\'Antarctique', 1500.00, 4, 978);
 
-INSERT INTO Projet (NumeroProjet, Titre, DateDebut, Description, Budget, EmployesRequis, TotalSalaires, ClientIdentifiant, Statut)
-VALUES ('P4', 'Projet4', '2023-04-01', 'Description4', 12000.00, 2, 0.00, 665, 'En cours');
-
-INSERT INTO Projet (NumeroProjet, Titre, DateDebut, Description, Budget, EmployesRequis, TotalSalaires, ClientIdentifiant, Statut)
-VALUES ('P5', 'Projet5', '2023-05-01', 'Description5', 15000.00, 5, 0.00, 839, 'En cours');
 
 -- Insertion dans la table employe
 
-INSERT INTO Employe (Matricule, Nom, Prenom, DateNaissance, Email, Adresse, DateEmbauche, TauxHoraire, PhotoIdentite, Statut, ProjetId)
-VALUES ('E1', 'Nom1', 'Prenom1', '1990-01-01', 'email1@email.com', 'Adresse1', '2022-01-01', 20.00, 'https://this-person-does-not-exist.com/img/avatar-gen1127327022fdaf218d25ad38bf43ceb9.jpg', 'Permanent', null);
+INSERT INTO Employe (Matricule, Nom, Prenom, DateNaissance, Email, Adresse, DateEmbauche, TauxHoraire, PhotoIdentite,
+                     Statut, ProjetId)
+VALUES ('E001', 'Dupont', 'Jean', '1980-03-15', 'jean.dupont@email.com', '123 Rue de la Paix, Ville', '2005-05-10',
+        25.50, 'https://this-person-does-not-exist.com/img/avatar-gen1188f4547f4194dd14c72d042450f56c.jpg', 'Permanent',
+        null),
+       ('E002', 'Martin', 'Sophie', '1985-07-20', 'sophie.martin@email.com', '456 Avenue du Bonheur, Ville',
+        '2010-02-18', 20.75,
+        'https://this-person-does-not-exist.com/img/avatar-gend0c90ca65328f06e6f61013008587267.jpg', 'Permanent', null),
+       ('E003', 'Dubois', 'Pierre', '1992-12-08', 'pierre.dubois@email.com', '789 Boulevard de l\'Avenir, Ville',
+        '2018-09-30', 18.00,
+        'https://this-person-does-not-exist.com/img/avatar-gen116a55d32b1b10e15bc98d31e8932164.jpg', 'Journalier',
+        null),
+       ('E004', 'Lefevre', 'Marie', '1988-05-22', 'marie.lefevre@email.com', '101 Rue de la Liberté, Ville',
+        '2013-11-05', 22.00,
+        'https://this-person-does-not-exist.com/img/avatar-gen11304603527c8e455108c2f7f48580b3.jpg', 'Permanent', null),
+       ('E005', 'Moreau', 'Thomas', '1995-08-17', 'thomas.moreau@email.com', '202 Avenue des Rêves, Ville',
+        '2020-04-12', 17.50,
+        'https://this-person-does-not-exist.com/img/avatar-gen11c0b5cdacc974362c8a820156ad5ee7.jpg', 'Journalier',
+        null),
+       ('E006', 'Roux', 'Julie', '1983-11-30', 'julie.roux@email.com', '303 Boulevard des Artistes, Ville',
+        '2007-07-22', 21.25,
+        'https://this-person-does-not-exist.com/img/avatar-genf6cc1c3ed1d56cc1282f661105bdb5ea.jpg', 'Permanent', null),
+       ('E007', 'Garcia', 'Antoine', '1990-04-05', 'antoine.garcia@email.com', '404 Rue de la Science, Ville',
+        '2015-09-15', 19.75,
+        'https://this-person-does-not-exist.com/img/avatar-gena73b3cc1c9d681add9efa722211f829d.jpg', 'Journalier',
+        null),
+       ('E008', 'Fournier', 'Camille', '1986-09-12', 'camille.fournier@email.com', '505 Avenue du Sport, Ville',
+        '2011-01-08', 24.00,
+        'https://this-person-does-not-exist.com/img/avatar-gen11c105feae581976833bf0fc32346b86.jpg', 'Journalier',
+        null),
+       ('E009', 'Lemoine', 'Luc', '1998-02-28', 'luc.lemoine@email.com', '606 Boulevard du Cinéma, Ville', '2021-06-25',
+        16.50, 'https://this-person-does-not-exist.com/img/avatar-gen22448aacd962bc19cb729989a32a4d69.jpg', 'Permanent',
+        null),
+       ('E010', 'Caron', 'Alice', '1981-06-10', 'alice.caron@email.com', '707 Rue de l\'Aventure, Ville', '2006-03-19',
+        23.50, 'https://this-person-does-not-exist.com/img/avatar-gene7d482174be4dbb9b4c980aa6ce05aa0.jpg',
+        'Journalier', null);
 
-INSERT INTO Employe (Matricule, Nom, Prenom, DateNaissance, Email, Adresse, DateEmbauche, TauxHoraire, PhotoIdentite, Statut, ProjetId)
-VALUES ('E2', 'Nom2', 'Prenom2', '1995-02-01', 'email2@email.com', 'Adresse2', '2021-02-01', 18.50, 'https://this-person-does-not-exist.com/img/avatar-gendbd5b847626d8e5d7a87c1d9dbe31f8f.jpg', 'Journalier', NULL);
+-- Insertion dans la table assignation
 
-INSERT INTO Employe (Matricule, Nom, Prenom, DateNaissance, Email, Adresse, DateEmbauche, TauxHoraire, PhotoIdentite, Statut, ProjetId)
-VALUES ('E3', 'Nom3', 'Prenom3', '1988-03-15', 'email3@email.com', 'Adresse3', '2020-03-15', 22.00, 'https://this-person-does-not-exist.com/img/avatar-gen11941bb5663cdff6cb47ca1a14afcf77.jpg', 'Permanent', null);
 
-INSERT INTO Employe (Matricule, Nom, Prenom, DateNaissance, Email, Adresse, DateEmbauche, TauxHoraire, PhotoIdentite, Statut, ProjetId)
-VALUES ('E4', 'Nom4', 'Prenom4', '1992-04-20', 'email4@email.com', 'Adresse4', '2019-04-20', 19.75, 'https://this-person-does-not-exist.com/img/avatar-gen6fd598bdedea19322695ecbe422429e6.jpg', 'Journalier', NULL);
+INSERT INTO Assignation (EmployeId, ProjetId, NbreHeures)
+VALUES ('Ca-1981-73', '495-13-2023', 20),
+       ('Du-1980-88', '513-93-2023', 30);
 
-INSERT INTO Employe (Matricule, Nom, Prenom, DateNaissance, Email, Adresse, DateEmbauche, TauxHoraire, PhotoIdentite, Statut, ProjetId)
-VALUES ('E5', 'Nom5', 'Prenom5', '1997-05-10', 'email5@email.com', 'Adresse5', '2018-05-10', 21.50, 'https://this-person-does-not-exist.com/img/avatar-genc761d7f546238d5d5728e951bb10820f.jpg', 'Permanent', NULL);
 
-INSERT INTO Employe (Matricule, Nom, Prenom, DateNaissance, Email, Adresse, DateEmbauche, TauxHoraire, PhotoIdentite, Statut, ProjetId)
-VALUES ('E5', 'Nom6', 'Prenom6', '1997-05-10', 'email5@email.com', 'Adresse5', '2018-05-10', 21.50, 'https://this-person-does-not-exist.com/img/avatar-genc761d7f546238d5d5728e951bb10820f.jpg', 'Permanent', NULL);
+-- Requete SQL
+
+-- Sélection des employés d'un projet spécifique :
+
+SELECT e.Nom, e.Prenom
+FROM Employe e
+         JOIN Projet p ON e.ProjetId = p.NumeroProjet
+WHERE p.NumeroProjet = 'VotreNumeroProjet';
+
+-- Liste des clients et de leurs projets associés :
+
+SELECT c.Nom AS Client, p.NumeroProjet, p.Titre
+FROM Client c
+         LEFT JOIN Projet p ON c.Identifiant = p.ClientIdentifiant;
+
+
+-- Calcul du budget total et des salaires totaux pour chaque projet :
+
+SELECT NumeroProjet, Titre, Budget, TotalSalaires
+FROM Projet;
+
+
+-- Liste des employés ayant un salaire supérieur à la moyenne :
+
+SELECT Nom, Prenom, TauxHoraire
+FROM Employe
+WHERE TauxHoraire > (SELECT AVG(TauxHoraire) FROM Employe);
+
+
+-- Insertion d'un nouveau client avec un projet associé :
+
+INSERT INTO Client (Nom, Adresse, NumeroTelephone, Email)
+VALUES ('NouveauClient', 'AdresseClient', '0123456789', 'client@example.com');
+
+INSERT INTO Projet (NumeroProjet, Titre, DateDebut, Description, Budget, EmployesRequis, ClientIdentifiant)
+VALUES ('NouveauProjet', 'TitreProjet', '2023-01-01', 'DescriptionProjet', 50000.00, 3,
+        (SELECT Identifiant FROM Client WHERE Nom = 'NouveauClient'));
+
+-- Suppression des employés qui ne sont pas assignés à un projet :
+
+DELETE
+FROM Employe
+WHERE ProjetId IS NULL;
+
+-- Liste des projets en cours avec le nombre d'employés affectés :
+
+SELECT p.NumeroProjet, p.Titre, COUNT(e.Matricule) AS NombreEmployes
+FROM Projet p
+         LEFT JOIN Employe e ON p.NumeroProjet = e.ProjetId
+WHERE p.Statut = 'En cours'
+GROUP BY p.NumeroProjet, p.Titre;
+
+-- Calcul du budget total pour tous les projets d'un client spécifique :
+
+SELECT c.Nom AS Client, SUM(p.Budget) AS BudgetTotal
+FROM Client c
+         JOIN Projet p ON c.Identifiant = p.ClientIdentifiant
+WHERE c.Nom = 'NomClient';
+
+-- Liste des employés avec leur âge :
+
+SELECT Nom,
+       Prenom,
+       DateNaissance,
+       YEAR(CURRENT_DATE) - YEAR(DateNaissance) - (RIGHT(CURRENT_DATE, 5) < RIGHT(DateNaissance, 5)) AS Age
+FROM Employe;
+
+-- obtenir une liste d'employés travaillant sur des projets dont le budget total est supérieur à la moyenne des budgets totaux de tous les projets
+
+SELECT e.Nom, e.Prenom, p.NumeroProjet, p.Titre, p.Budget
+FROM Employe e
+         JOIN Projet p ON e.ProjetId = p.NumeroProjet
+WHERE p.Budget > (SELECT AVG(Budget) FROM Projet);
+
 
 -- Manage DB
 
-select  * from client;
-select  * from employe;
-select  * from projet;
-select  * from assignation;
-select * from  administrateur;
+select *
+from client;
+select *
+from employe;
+select *
+from projet;
+select *
+from assignation;
+select *
+from administrateur;
 
-delete  from employe;
 
-delete  from administrateur;
-
--- insertion d'un administrateur
-SET @nomUtilisateur = 'admin';
-SET @motDePasse = 'motDePasseSecret';
-
-SET @motDePasseHash = SHA2(@motDePasse, 256);
-
-INSERT INTO Administrateur (NomUtilisateur, MotDePasseHash) VALUES (@nomUtilisateur, @motDePasseHash);
+-- delete
+-- from administrateur;
 
 
 
