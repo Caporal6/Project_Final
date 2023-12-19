@@ -1,6 +1,58 @@
-/**********************Creation de la table Employe******************/
+-- DROP DES ELEMENTS EXISTANTS
 
+-- DROP DES PROCEDURES
+DROP PROCEDURE IF EXISTS AjouterEmploye;
+DROP PROCEDURE IF EXISTS ModifierInformationsEmploye;
+DROP PROCEDURE IF EXISTS ObtenirEmployeParMatricule;
+DROP PROCEDURE IF EXISTS GetEmployeeList;
+DROP PROCEDURE IF EXISTS AjouterClient;
+DROP PROCEDURE IF EXISTS ModifierInformationsClient;
+DROP PROCEDURE IF EXISTS GetClientList;
+DROP PROCEDURE IF EXISTS GetAllProjects;
+DROP PROCEDURE IF EXISTS CreerProjet;
+DROP PROCEDURE IF EXISTS ObtenirIdClientParNom;
+DROP PROCEDURE IF EXISTS GetProjectsAndClientsWithDetails;
+DROP PROCEDURE IF EXISTS GetEmployesProjetDetails;
+DROP PROCEDURE IF EXISTS GetProjetByNumero;
+DROP PROCEDURE IF EXISTS AssignerEmployeAProjet;
+DROP PROCEDURE IF EXISTS VerifierAdministrateur;
+DROP PROCEDURE IF EXISTS ModifierProjet;
+DROP PROCEDURE IF EXISTS AjouterAdministrateur;
+DROP PROCEDURE IF EXISTS ObtenirAdministrateurs;
+
+-- DROP DES FONCTIONS
+DROP FUNCTION IF EXISTS CalculerCoutTotalProjet;
+DROP FUNCTION IF EXISTS ObtenirBudgetTotalProjetsClient;
+DROP FUNCTION IF EXISTS ObtenirNombreAssignationsEmploye;
+DROP FUNCTION IF EXISTS CalculerTotalSalaireEmploye;
+DROP FUNCTION IF EXISTS ObtenirInformationsClient;
+
+-- DROP DES TRIGGERS
+DROP TRIGGER IF EXISTS before_insert_employe_set_matricule;
+DROP TRIGGER IF EXISTS before_insert_employe_tauxhoraire_verification;
+DROP TRIGGER IF EXISTS before_update_statut_check_anciennete;
+DROP TRIGGER IF EXISTS before_insert_client_set_identifiant;
+DROP TRIGGER IF EXISTS before_insert_projet_set_numeroprojet;
+DROP TRIGGER IF EXISTS after_insert_assignation_attribute_to_employe;
+DROP TRIGGER IF EXISTS after_insert_assignation_update_totalsalaires;
+
+-- DROP DES VUES
+DROP VIEW IF EXISTS VueEmployeDetails;
+DROP VIEW IF EXISTS VueClientInformations;
+DROP VIEW IF EXISTS VueProjetDetails;
+DROP VIEW IF EXISTS VueAssignations;
+DROP VIEW IF EXISTS VueEmployesProjets;
+
+-- DROP DES TABLES
+DROP TABLE IF EXISTS Assignation;
 DROP TABLE IF EXISTS Employe;
+DROP TABLE IF EXISTS Projet;
+DROP TABLE IF EXISTS Client;
+drop TABLE IF EXISTS Administrateur;
+
+-- CREATION DES TABLES
+
+-- Création de la table Employe
 CREATE TABLE Employe
 (
     Matricule     VARCHAR(20),
@@ -16,174 +68,11 @@ CREATE TABLE Employe
     ProjetId      VARCHAR(20),
     CONSTRAINT Pk_Employe PRIMARY KEY (Matricule),
     CONSTRAINT Ck_Statut CHECK (Statut IN ('Journalier', 'Permanent')),
-    CONSTRAINT Ck_Tauxhorraire CHECK (TauxHoraire >= 15)
+    CONSTRAINT Ck_Tauxhoraire CHECK (TauxHoraire >= 15)
 );
 
-/*******************Trigger sur la table Employe********************/
+-- Création de la table Client
 
-/*------------------Trigger qui change le matricule----------------*/
-
-DELIMITER //
-
-CREATE TRIGGER before_insert_employe_set_matricule
-    BEFORE INSERT
-    ON Employe
-    FOR EACH ROW
-BEGIN
-    SET NEW.Matricule =
-            CONCAT(SUBSTRING(NEW.Nom, 1, 2), '-', YEAR(NEW.DateNaissance), '-', FLOOR(RAND() * (99 - 10 + 1) + 10));
-END;
-
-//
-
-DELIMITER ;
-
-/*-----------------Trigger qui verifie le taux horraire------------------*/
-
-DELIMITER //
-
-CREATE TRIGGER before_insert_employe_tauxhoraire_verification
-    BEFORE INSERT
-    ON Employe
-    FOR EACH ROW
-BEGIN
-    IF NEW.TauxHoraire < 15 THEN
-        SIGNAL SQLSTATE '45000'
-            SET MESSAGE_TEXT = 'Le taux horaire doit être supérieur ou égal à 15 $';
-    END IF;
-END;
-
-//
-
-DELIMITER ;
-
-/*----------------Trigger changement de statut-------------------------*/
-
-DELIMITER //
-
-CREATE TRIGGER before_update_statut_check_anciennete
-    BEFORE UPDATE
-    ON Employe
-    FOR EACH ROW
-BEGIN
-    DECLARE anciennete INT;
-    IF NEW.Statut = 'Permanent' AND OLD.Statut = 'Journalier' THEN
-        -- Calculer la différence entre la date actuelle et la date d'embauche en années
-
-        SET anciennete = DATEDIFF(OLD.DateEmbauche, CURRENT_DATE());
-
-        -- Vérifier si l'ancienneté est inférieure à 3 ans jour pour jour
-        IF anciennete < 3 THEN
-            SIGNAL SQLSTATE '45000'
-                SET MESSAGE_TEXT = 'Un employé doit avoir au moins 3 ans d''ancienneté pour devenir Permanent';
-        ELSEIF NEW.Statut = 'Journalier' AND OLD.Statut = 'Permanent' THEN
-            -- Empêcher le passage de Permanent à Journalier
-            SIGNAL SQLSTATE '45000'
-                SET MESSAGE_TEXT = 'Impossible de passer de Permanent à Journalier';
-        END IF;
-    END IF;
-END;
-
-//
-
-DELIMITER ;
-
-/*************Procedure stocker sur la table employe**************/
-
-/*------------Retourne la liste d'employees----------------------*/
-
-CREATE PROCEDURE GetEmployeeList()
-BEGIN
-    SELECT * FROM Employe;
-END;
-
-/*------------Creer un nouvel employe----------------------*/
-DROP PROCEDURE IF EXISTS AjouterEmploye;
-CREATE PROCEDURE AjouterEmploye(
-    IN p_Nom VARCHAR(50),
-    IN p_Prenom VARCHAR(50),
-    IN p_DateNaissance DATE,
-    IN p_Email VARCHAR(100),
-    IN p_Adresse VARCHAR(200),
-    IN p_DateEmbauche DATE,
-    IN p_TauxHoraire DECIMAL(5, 2),
-    IN p_PhotoIdentite VARCHAR(255),
-    IN p_Statut VARCHAR(20)
-)
-BEGIN
-    INSERT INTO Employe (
-
-        Nom,
-        Prenom,
-        DateNaissance,
-        Email,
-        Adresse,
-        DateEmbauche,
-        TauxHoraire,
-        PhotoIdentite,
-        Statut,
-        ProjetId
-    ) VALUES (
-
-                 p_Nom,
-                 p_Prenom,
-                 p_DateNaissance,
-                 p_Email,
-                 p_Adresse,
-                 p_DateEmbauche,
-                 p_TauxHoraire,
-                 p_PhotoIdentite,
-                 p_Statut,
-                 NULL
-             );
-END;
-
-/*------------Modifier les informations d'un employe----------------------*/
-
-
-CREATE PROCEDURE ModifierInformationsEmploye(
-    IN p_Matricule VARCHAR(20),
-    IN p_Nom VARCHAR(50),
-    IN p_Prenom VARCHAR(50),
-    IN p_Email VARCHAR(100),
-    IN p_Adresse VARCHAR(200),
-    IN p_TauxHoraire DECIMAL(5, 2),
-    IN p_PhotoIdentite VARCHAR(255),
-    IN p_Statut VARCHAR(20)
-)
-BEGIN
-    UPDATE Employe
-    SET
-        Nom = p_Nom,
-        Prenom = p_Prenom,
-        Email = p_Email,
-        Adresse = p_Adresse,
-        TauxHoraire = p_TauxHoraire,
-        PhotoIdentite = p_PhotoIdentite,
-        Statut = p_Statut
-    WHERE Matricule = p_Matricule;
-END;
-
-/*------------Recherche un employe par son matricule----------------------*/
-
-
-DELIMITER //
-DROP PROCEDURE IF EXISTS ObtenirEmployeParMatricule;
-//
-CREATE PROCEDURE ObtenirEmployeParMatricule(IN MatriculeParam VARCHAR(20))
-BEGIN
-    SELECT *
-    FROM Employe
-    WHERE Matricule = MatriculeParam;
-END //
-DELIMITER ;
-
-
-
-
-
-/***************Creation de la table Client*******************/
-DROP TABLE IF EXISTS Client;
 CREATE TABLE Client
 (
     Identifiant     INT,
@@ -194,10 +83,117 @@ CREATE TABLE Client
     CONSTRAINT Pk_Client PRIMARY KEY (Identifiant)
 );
 
-/*Trigger sur la table Client */
+-- Création de la table Projet
 
+CREATE TABLE Projet
+(
+    NumeroProjet      VARCHAR(20),
+    Titre             VARCHAR(100),
+    DateDebut         DATE,
+    Description       TEXT,
+    Budget            DECIMAL(10, 2),
+    EmployesRequis    INT,
+    TotalSalaires     DECIMAL(10, 2) default 0,
+    ClientIdentifiant INT,
+    Statut            VARCHAR(20)    DEFAULT 'En cours',
+    CONSTRAINT CK_NombreEmploye CHECK (EmployesRequis <= 5),
+    CONSTRAINT Pk_Projet PRIMARY KEY (NumeroProjet),
+    CONSTRAINT Fk_Projet_Client FOREIGN KEY (ClientIdentifiant) REFERENCES Client (Identifiant)
+);
+
+
+-- Création de la table Administrateur
+CREATE TABLE IF NOT EXISTS Administrateur
+(
+    Id             INT AUTO_INCREMENT PRIMARY KEY,
+    NomUtilisateur VARCHAR(50) NOT NULL UNIQUE,
+    MotDePasseHash VARCHAR(64) NOT NULL -- Stocker le hachage du mot de passe (SHA-256)
+);
+
+-- Création de la table Assignation
+DROP TABLE IF EXISTS Assignation;
+
+CREATE TABLE Assignation
+(
+    AssignationId INT(32) AUTO_INCREMENT,
+    EmployeId     VARCHAR(20),
+    ProjetId      VARCHAR(20),
+    NbreHeures    INT(32),
+    CONSTRAINT Pk_Assignation PRIMARY KEY (AssignationId),
+    CONSTRAINT Fk_Assignation_Employe FOREIGN KEY (EmployeId) REFERENCES Employe (Matricule),
+    CONSTRAINT Fk_Assignation_Projet FOREIGN KEY (ProjetId) REFERENCES Projet (NumeroProjet)
+);
+
+-- CREATION DES TRIGGERS
+
+-- Trigger pour générer le Matricule
 DELIMITER //
 
+CREATE TRIGGER before_insert_employe_set_matricule
+    BEFORE INSERT
+    ON Employe
+    FOR EACH ROW
+BEGIN
+    -- Générer le Matricule basé sur le nom, la date de naissance et une valeur aléatoire
+    SET NEW.Matricule =
+            CONCAT(SUBSTRING(NEW.Nom, 1, 2), '-', YEAR(NEW.DateNaissance), '-', FLOOR(RAND() * (99 - 10 + 1) + 10));
+END;
+
+//
+
+DELIMITER ;
+
+-- Trigger pour vérifier le Taux Horaire
+DELIMITER //
+
+CREATE TRIGGER before_insert_employe_tauxhoraire_verification
+    BEFORE INSERT
+    ON Employe
+    FOR EACH ROW
+BEGIN
+    -- Vérifier que le Taux Horaire est supérieur ou égal à 15
+    IF NEW.TauxHoraire < 15 THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Le taux horaire doit être supérieur ou égal à 15 $';
+    END IF;
+END;
+
+//
+
+DELIMITER ;
+
+-- Trigger pour changer le Statut
+DELIMITER //
+
+CREATE TRIGGER before_update_statut_check_anciennete
+    BEFORE UPDATE
+    ON Employe
+    FOR EACH ROW
+BEGIN
+    DECLARE anciennete INT;
+
+    -- Vérifier les changements de statut et l'ancienneté nécessaire
+    IF NEW.Statut = 'Permanent' AND OLD.Statut = 'Journalier' THEN
+        SET anciennete = DATEDIFF(OLD.DateEmbauche, CURRENT_DATE());
+
+        -- Vérifier si l'ancienneté est inférieure à 3 ans
+        IF anciennete < 3 THEN
+            SIGNAL SQLSTATE '45000'
+                SET MESSAGE_TEXT = 'Un employé doit avoir au moins 3 ans d''ancienneté pour devenir Permanent';
+        ELSEIF NEW.Statut = 'Journalier' AND OLD.Statut = 'Permanent' THEN
+            -- Empêcher la transition de Permanent à Journalier
+            SIGNAL SQLSTATE '45000'
+                SET MESSAGE_TEXT = 'Impossible de passer de Permanent à Journalier';
+        END IF;
+    END IF;
+END;
+
+//
+
+DELIMITER ;
+
+-- Trigger sur la table Client
+DELIMITER //
 CREATE TRIGGER before_insert_client_set_identifiant
     BEFORE INSERT
     ON Client
@@ -214,234 +210,751 @@ BEGIN
             SET random_id = FLOOR(RAND() * (999 - 100 + 1) + 100);
         END WHILE;
 
-    -- Affecter la valeur aléatoire à l'identifiant
+    -- Affecter la valeur aléatoire à l'Identifiant
     SET NEW.Identifiant = random_id;
 END;
 
 //
-
 DELIMITER ;
 
-
-/*************Procedure stocker sur la table Client**************/
-
-/*------------Retourne la liste de Client----------------------*/
-
-CREATE PROCEDURE GetClientList()
-BEGIN
-    SELECT * FROM Client;
-END;
-
-/*------------Creer un nouveau Client----------------------*/
-
-CREATE PROCEDURE AjouterClient(
-    IN c_Identifiant     INT,
-    IN c_Nom             VARCHAR(50),
-    IN c_Adresse         VARCHAR(200),
-    IN c_NumeroTelephone VARCHAR(15),
-    IN c_Email           VARCHAR(100)
-)
-BEGIN
-    INSERT INTO Client (
-        Identifiant,
-        Nom,
-        Adresse,
-        NumeroTelephone,
-        Email
-    ) VALUES (
-                 c_Identifiant,
-                 c_Nom,
-                 c_Adresse,
-                 c_NumeroTelephone,
-                 c_Email
-             );
-END;
-
-
-
-/*------------Modifier les informations d'un Client----------------------*/
-
-
-CREATE PROCEDURE ModifierInformationsClient(
-    IN c_Identifiant     INT,
-    IN c_Nom             VARCHAR(50),
-    IN c_Adresse         VARCHAR(200),
-    IN c_NumeroTelephone VARCHAR(15),
-    IN c_Email           VARCHAR(100)
-)
-BEGIN
-    UPDATE Client
-    SET
-        Identifiant = c_Identifiant,
-        Nom = c_Nom,
-        Adresse = c_Adresse,
-        NumeroTelephone = c_NumeroTelephone,
-        Email = c_Email
-    WHERE Identifiant = c_Identifiant;
-END;
-
-
-
-/*Creation de la table Projet*/
-DROP TABLE IF EXISTS Projet;
-CREATE TABLE Projet
-(
-    NumeroProjet      VARCHAR(20),
-    Titre             VARCHAR(100),
-    DateDebut         DATE,
-    Description       TEXT,
-    Budget            DECIMAL(10, 2),
-    EmployesRequis    INT,
-    TotalSalaires     DECIMAL(10, 2),
-    ClientIdentifiant INT,
-    test              INT(32)     default 20,
-    Statut            VARCHAR(20) DEFAULT 'En cours',
-    CONSTRAINT CK_NombreEmploye CHECK (EmployesRequis <= 5),
-    CONSTRAINT Pk_Projet PRIMARY KEY (NumeroProjet),
-    CONSTRAINT Fk_Projet_Client FOREIGN KEY (ClientIdentifiant) REFERENCES Client (Identifiant)
-);
-
-/*Trigger sur la table Projet */
-
+-- Trigger sur la table Projet
 DELIMITER //
-
 CREATE TRIGGER before_insert_projet_set_numeroprojet
     BEFORE INSERT
     ON Projet
     FOR EACH ROW
 BEGIN
-
     -- Affecter le nouveau numéro de projet à la nouvelle entrée
     SET NEW.NumeroProjet = CONCAT(New.ClientIdentifiant, '-', (FLOOR(RAND() * 99) + 1), '-', YEAR(New.DateDebut));
 END;
 
 //
-
 DELIMITER ;
 
-
-/*Creation de la table Assignation qui regroupe chaque assignations d'un employe a un projet*/
-
-CREATE TABLE Assignation
-(
-    AssignationId INT(32) AUTO_INCREMENT,
-    EmployeId     VARCHAR(20),
-    ProjetId      VARCHAR(20),
-    NbreHeures    INT(32),
-    CONSTRAINT Pk_Assignation PRIMARY KEY (AssignationId),
-    CONSTRAINT Fk_Assignation_Employe FOREIGN KEY (EmployeId) REFERENCES Employe (Matricule),
-    CONSTRAINT Fk_Assignation_Projet FOREIGN KEY (ProjetId) REFERENCES Projet (NumeroProjet)
-);
+-- Trigger après insertion sur la table Assignation
 
 DELIMITER //
-
 CREATE TRIGGER after_insert_assignation_attribute_to_employe
     AFTER INSERT
     ON Assignation
     FOR EACH ROW
 BEGIN
-
     -- Mettre à jour le ProjetId de l'employé
     UPDATE Employe SET ProjetId = NEW.ProjetId WHERE Matricule = NEW.EmployeId;
 END;
 
 //
+DELIMITER ;
+
+-- Trigger qui va mettre a jour la colone totalsalaire de la table projet apres l'assignation d'un employer a un projet
+
+DELIMITER //
+
+CREATE TRIGGER after_insert_assignation_update_totalsalaires
+    AFTER INSERT
+    ON Assignation
+    FOR EACH ROW
+BEGIN
+    DECLARE salaire DECIMAL(10, 2);
+
+    -- Calculer le salaire pour la nouvelle assignation
+    SET salaire = NEW.NbreHeures * (SELECT TauxHoraire FROM Employe WHERE Matricule = NEW.EmployeId);
+
+    -- Mettre à jour le TotalSalaires dans la table Projet
+    UPDATE Projet
+    SET TotalSalaires = TotalSalaires + salaire
+    WHERE NumeroProjet = NEW.ProjetId;
+END //
 
 DELIMITER ;
 
 
-/*Manage DB*/
+-- CREATION PROCEDURES STOCKEES
 
-/*Commandes SELECT*/
 
-SELECT *
+-- Procédure stockée pour vérifier le nom d'utilisateur et le mot de passe
+DELIMITER //
+CREATE PROCEDURE VerifierAdministrateur(
+    IN p_NomUtilisateur VARCHAR(50),
+    IN p_MotDePasse VARCHAR(255)
+)
+BEGIN
+    -- Hacher le mot de passe avec SHA-256
+    SET p_MotDePasse = SHA2(p_MotDePasse, 256);
+
+    -- Sélectionner la ligne correspondant aux identifiants fournis
+    SELECT *
+    FROM Administrateur
+    WHERE NomUtilisateur = p_NomUtilisateur
+      AND MotDePasseHash = p_MotDePasse;
+END //
+DELIMITER ;
+
+
+-- Procédure pour retourner la liste des employés
+CREATE PROCEDURE GetEmployeeList()
+BEGIN
+    SELECT * FROM Employe;
+END;
+
+-- Procédure pour ajouter un nouvel employé
+DROP PROCEDURE IF EXISTS AjouterEmploye;
+CREATE PROCEDURE AjouterEmploye(
+    IN p_Nom VARCHAR(50),
+    IN p_Prenom VARCHAR(50),
+    IN p_DateNaissance DATE,
+    IN p_Email VARCHAR(100),
+    IN p_Adresse VARCHAR(200),
+    IN p_DateEmbauche DATE,
+    IN p_TauxHoraire DECIMAL(5, 2),
+    IN p_PhotoIdentite VARCHAR(255),
+    IN p_Statut VARCHAR(20)
+)
+BEGIN
+    INSERT INTO Employe (Nom,
+                         Prenom,
+                         DateNaissance,
+                         Email,
+                         Adresse,
+                         DateEmbauche,
+                         TauxHoraire,
+                         PhotoIdentite,
+                         Statut,
+                         ProjetId)
+    VALUES (p_Nom,
+            p_Prenom,
+            p_DateNaissance,
+            p_Email,
+            p_Adresse,
+            p_DateEmbauche,
+            p_TauxHoraire,
+            p_PhotoIdentite,
+            p_Statut,
+            NULL);
+END;
+
+-- Procédure pour modifier les informations d'un employé
+CREATE PROCEDURE ModifierInformationsEmploye(
+    IN p_Matricule VARCHAR(20),
+    IN p_Nom VARCHAR(50),
+    IN p_Prenom VARCHAR(50),
+    IN p_Email VARCHAR(100),
+    IN p_Adresse VARCHAR(200),
+    IN p_TauxHoraire DECIMAL(5, 2),
+    IN p_PhotoIdentite VARCHAR(255),
+    IN p_Statut VARCHAR(20)
+)
+BEGIN
+    UPDATE Employe
+    SET Nom           = p_Nom,
+        Prenom        = p_Prenom,
+        Email         = p_Email,
+        Adresse       = p_Adresse,
+        TauxHoraire   = p_TauxHoraire,
+        PhotoIdentite = p_PhotoIdentite,
+        Statut        = p_Statut
+    WHERE Matricule = p_Matricule;
+END;
+
+-- Procédure pour obtenir un employé par Matricule
+DELIMITER //
+DROP PROCEDURE IF EXISTS ObtenirEmployeParMatricule;
+//
+CREATE PROCEDURE ObtenirEmployeParMatricule(IN MatriculeParam VARCHAR(20))
+BEGIN
+    SELECT *
+    FROM Employe
+    WHERE Matricule = MatriculeParam;
+END //
+DELIMITER ;
+
+-- Procédure pour retourner la liste des clients
+CREATE PROCEDURE GetClientList()
+BEGIN
+    SELECT * FROM Client;
+END;
+
+-- Procédure pour ajouter un nouveau client
+CREATE PROCEDURE AjouterClient(
+    IN c_Identifiant INT,
+    IN c_Nom VARCHAR(50),
+    IN c_Adresse VARCHAR(200),
+    IN c_NumeroTelephone VARCHAR(15),
+    IN c_Email VARCHAR(100)
+)
+BEGIN
+    INSERT INTO Client (Identifiant,
+                        Nom,
+                        Adresse,
+                        NumeroTelephone,
+                        Email)
+    VALUES (c_Identifiant,
+            c_Nom,
+            c_Adresse,
+            c_NumeroTelephone,
+            c_Email);
+END;
+
+-- Procédure pour modifier les informations d'un client
+CREATE PROCEDURE ModifierInformationsClient(
+    IN c_Identifiant INT,
+    IN c_Nom VARCHAR(50),
+    IN c_Adresse VARCHAR(200),
+    IN c_NumeroTelephone VARCHAR(15),
+    IN c_Email VARCHAR(100)
+)
+BEGIN
+    UPDATE Client
+    SET Identifiant     = c_Identifiant,
+        Nom             = c_Nom,
+        Adresse         = c_Adresse,
+        NumeroTelephone = c_NumeroTelephone,
+        Email           = c_Email
+    WHERE Identifiant = c_Identifiant;
+END;
+
+-- Procédure qui retourne la liste de tous les projets
+
+CREATE PROCEDURE GetAllProjects()
+BEGIN
+    SELECT * FROM Projet;
+END;
+
+-- Procédure qui ajoute un projet
+
+DELIMITER //
+
+CREATE PROCEDURE CreerProjet(
+    IN p_Titre VARCHAR(100),
+    IN p_DateDebut DATE,
+    IN p_Description TEXT,
+    IN p_Budget DECIMAL(10, 2),
+    IN p_EmployesRequis INT,
+    IN p_ClientIdentifiant INT
+)
+BEGIN
+
+    -- Insérer le nouveau projet
+    INSERT INTO Projet (Titre,
+                        DateDebut,
+                        Description,
+                        Budget,
+                        EmployesRequis,
+                        ClientIdentifiant)
+    VALUES (p_Titre,
+            p_DateDebut,
+            p_Description,
+            p_Budget,
+            p_EmployesRequis,
+            p_ClientIdentifiant);
+END //
+
+DELIMITER ;
+
+-- Procedure qui retoure l'id d'un client grace a son nom
+
+DELIMITER //
+
+CREATE PROCEDURE ObtenirIdClientParNom(
+    IN p_NomClient VARCHAR(50),
+    OUT p_IdentifiantClient INT
+)
+BEGIN
+    -- Initialiser l'identifiant à null
+    SET p_IdentifiantClient = NULL;
+
+    -- Rechercher l'identifiant du client par son nom
+    SELECT Identifiant
+    INTO p_IdentifiantClient
+    FROM Client
+    WHERE Nom = p_NomClient;
+
+    -- Vérifier si le client a été trouvé
+    IF p_IdentifiantClient IS NULL THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Aucun client trouvé avec ce nom.';
+    END IF;
+END //
+
+DELIMITER ;
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS ObtenirClientParNom;
+//
+CREATE PROCEDURE ObtenirClientParNom(IN NomParam VARCHAR(20))
+BEGIN
+    SELECT *
+    FROM Client
+    WHERE Nom = NomParam;
+END //
+DELIMITER ;
+
+-- Procedure stocker qui retourne les projets et le nom du client qui est associer au projet
+
+DELIMITER //
+
+CREATE PROCEDURE GetProjectsAndClientsWithDetails()
+BEGIN
+    SELECT P.NumeroProjet,
+           P.Titre AS TitreProjet,
+           P.DateDebut,
+           P.Description,
+           P.Budget,
+           P.EmployesRequis,
+           P.TotalSalaires,
+           P.Statut,
+           C.*
+    FROM Projet P
+             LEFT JOIN
+         Client C ON P.ClientIdentifiant = C.Identifiant;
+END //
+
+DELIMITER ;
+
+
+-- Procedure stocker qui retourne tous les employes lier a un projet
+
+DELIMITER //
+
+CREATE PROCEDURE GetEmployesProjetDetails(
+    IN p_NumeroProjet VARCHAR(20)
+)
+BEGIN
+    SELECT E.Matricule,
+           E.Nom,
+           E.Prenom,
+           E.TauxHoraire,
+           E.PhotoIdentite,
+           E.Statut,
+           A.NbreHeures,
+           E.TauxHoraire * A.NbreHeures AS Salaire
+    FROM Employe E
+             JOIN
+         Assignation A ON E.Matricule = A.EmployeId
+    WHERE A.ProjetId = p_NumeroProjet;
+END //
+
+DELIMITER ;
+
+-- Procedure stocker qui retourne un projet en le cherchant par le numero de projet
+
+DELIMITER //
+
+CREATE PROCEDURE GetProjetByNumero(
+    IN p_NumeroProjet VARCHAR(20)
+)
+BEGIN
+    SELECT NumeroProjet,
+           Titre,
+           DateDebut,
+           Description,
+           Budget,
+           EmployesRequis,
+           TotalSalaires,
+           ClientIdentifiant,
+           Statut
+    FROM Projet
+    WHERE NumeroProjet = p_NumeroProjet;
+END //
+
+DELIMITER ;
+
+-- Procédure pour assigner un employé à un projet
+DELIMITER //
+
+CREATE PROCEDURE AssignerEmployeAProjet(
+    IN p_MatriculeEmploye VARCHAR(20),
+    IN p_NumeroProjet VARCHAR(20),
+    IN p_NbreHeures INT
+)
+BEGIN
+    -- Vérifier si l'employé existe
+    IF NOT EXISTS (SELECT 1 FROM Employe WHERE Matricule = p_MatriculeEmploye) THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'L''employé spécifié n''existe pas.';
+    END IF;
+
+    -- Vérifier si le projet existe
+    IF NOT EXISTS (SELECT 1 FROM Projet WHERE NumeroProjet = p_NumeroProjet) THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Le projet spécifié n''existe pas.';
+    END IF;
+
+    -- Vérifier si l'employé a déjà été assigné à un projet
+    IF EXISTS (SELECT 1 FROM Assignation WHERE EmployeId = p_MatriculeEmploye AND ProjetId = p_NumeroProjet) THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'L''employé est déjà assigné à ce projet.';
+    END IF;
+
+    -- Vérifier si l'employé a déjà été assigné à un projet
+    IF (SELECT ProjetId FROM Employe WHERE Matricule = p_MatriculeEmploye) IS NOT NULL THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'L''employé est déjà assigné à un projet.';
+    END IF;
+
+    -- Insérer l'assignation
+    INSERT INTO Assignation (EmployeId, ProjetId, NbreHeures)
+    VALUES (p_MatriculeEmploye, p_NumeroProjet, p_NbreHeures);
+END //
+
+DELIMITER ;
+
+
+DELIMITER //
+
+CREATE PROCEDURE ModifierProjet(
+    IN p_NumeroProjet VARCHAR(20),
+    IN p_Titre VARCHAR(100),
+    IN p_Description TEXT,
+    IN p_Budget DECIMAL(10, 2),
+    IN p_Statut VARCHAR(20)
+)
+BEGIN
+    UPDATE Projet
+    SET Titre       = p_Titre,
+        Description = p_Description,
+        Budget      = p_Budget,
+        Statut      = p_Statut
+    WHERE NumeroProjet = p_NumeroProjet;
+END //
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE PROCEDURE AjouterAdministrateur(
+    IN p_NomUtilisateur VARCHAR(50),
+    IN p_MotDePasse VARCHAR(255)
+)
+BEGIN
+    -- Hachage du mot de passe avec SHA-256
+    DECLARE p_MotDePasseHash VARCHAR(64);
+    SET p_MotDePasseHash = SHA2(p_MotDePasse, 256);
+
+    -- Insertion dans la table
+    INSERT INTO Administrateur (NomUtilisateur, MotDePasseHash)
+    VALUES (p_NomUtilisateur, p_MotDePasseHash);
+END //
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE PROCEDURE ObtenirAdministrateurs()
+BEGIN
+    SELECT * FROM Administrateur;
+END //
+
+DELIMITER ;
+
+
+-- CREATION DES FONCTIONS STOCKEES
+
+-- Fonction pour calculer le coût total d'un projet
+DELIMITER //
+CREATE FUNCTION CalculerCoutTotalProjet(numeroProjet VARCHAR(20)) RETURNS DECIMAL(10, 2)
+BEGIN
+    DECLARE coutTotal DECIMAL(10, 2);
+
+    SELECT SUM(E.TauxHoraire * A.NbreHeures)
+    INTO coutTotal
+    FROM Assignation A
+             JOIN Employe E ON A.EmployeId = E.Matricule
+    WHERE A.ProjetId = numeroProjet;
+
+    RETURN coutTotal;
+END //
+
+DELIMITER //
+
+-- Fonction pour obtenir le budget total des projets d'un client
+DELIMITER //
+CREATE FUNCTION ObtenirBudgetTotalProjetsClient(clientId INT) RETURNS DECIMAL(10, 2)
+BEGIN
+    DECLARE budgetTotal DECIMAL(10, 2);
+
+    SELECT SUM(Budget)
+    INTO budgetTotal
+    FROM Projet
+    WHERE ClientIdentifiant = clientId;
+
+    RETURN budgetTotal;
+END //
+
+DELIMITER //
+
+-- Fonction pour obtenir le nombre d'assignations d'un employé
+DELIMITER //
+CREATE FUNCTION ObtenirNombreAssignationsEmploye(matricule VARCHAR(20)) RETURNS INT
+BEGIN
+    DECLARE nombreAssignations INT;
+
+    SELECT COUNT(*)
+    INTO nombreAssignations
+    FROM Assignation
+    WHERE EmployeId = matricule;
+
+    RETURN nombreAssignations;
+END //
+
+DELIMITER //
+
+-- Fonction pour calculer le salaire total d'un employé
+DELIMITER //
+CREATE FUNCTION CalculerTotalSalaireEmploye(matricule VARCHAR(20)) RETURNS DECIMAL(10, 2)
+BEGIN
+    DECLARE totalSalaire DECIMAL(10, 2);
+
+    SELECT SUM(E.TauxHoraire * A.NbreHeures)
+    INTO totalSalaire
+    FROM Assignation A
+             JOIN Employe E ON A.EmployeId = E.Matricule
+    WHERE A.EmployeId = matricule;
+
+    RETURN totalSalaire;
+END //
+
+DELIMITER ;
+
+-- Fonction pour obtenir les informations d'un client
+DELIMITER //
+CREATE FUNCTION ObtenirInformationsClient(clientId INT) RETURNS VARCHAR(500)
+BEGIN
+    DECLARE clientInfo VARCHAR(500);
+
+    SELECT CONCAT('Nom: ', Nom, ', Adresse: ', Adresse, ', NumeroTelephone: ', NumeroTelephone, ', Email: ', Email)
+    INTO clientInfo
+    FROM Client
+    WHERE Identifiant = clientId;
+
+    RETURN clientInfo;
+END //
+
+DELIMITER ;
+
+
+-- CREATION DES VUES
+
+-- Vue pour afficher les détails des employés
+CREATE VIEW VueEmployeDetails AS
+SELECT Matricule, Nom, Prenom, Email, Statut
 FROM Employe;
-SELECT *
+
+-- Vue pour afficher les informations des clients
+CREATE VIEW VueClientInformations AS
+SELECT Identifiant, Nom, Adresse, NumeroTelephone, Email
 FROM Client;
-SELECT *
+
+-- Vue pour afficher les détails des projets
+CREATE VIEW VueProjetDetails AS
+SELECT NumeroProjet, Titre, DateDebut, Budget, Statut
 FROM Projet;
-SELECT *
+
+-- Vue pour afficher les assignations
+CREATE VIEW VueAssignations AS
+SELECT AssignationId, EmployeId, ProjetId, NbreHeures
 FROM Assignation;
 
-/*Commandes DROP*/
+-- Vue pour afficher les employés et les projets auxquels ils sont assignés
+CREATE VIEW VueEmployesProjets AS
+SELECT E.Matricule, E.Nom, E.Prenom, E.ProjetId, P.Titre AS TitreProjet
+FROM Employe E
+         LEFT JOIN Assignation A ON E.Matricule = A.EmployeId
+         LEFT JOIN Projet P ON A.ProjetId = P.NumeroProjet;
 
-DROP TABLE IF EXISTS Employe;
-DROP TABLE IF EXISTS Client;
-DROP TABLE IF EXISTS Assignation;
-DROP TABLE IF EXISTS Projet;
+-- Insertion dans la table client
+
+-- Assurez-vous de remplacer "votre_table_clients" par le nom réel de votre table
+
+INSERT INTO Client (nom, adresse, NumeroTelephone, email)
+VALUES ('Doe', '123 Main St', '555-1234', 'john.doe@email.com'),
+       ('Smith', '456 Oak St', '555-5678', 'jane.smith@email.com'),
+       ('Brown', '789 Pine St', '555-9012', 'alice.brown@email.com'),
+       ('Johnson', '101 Elm St', '555-3456', 'bob.johnson@email.com'),
+       ('Williams', '202 Maple St', '555-7890', 'emily.williams@email.com'),
+       ('Jones', '303 Birch St', '555-2345', 'chris.jones@email.com'),
+       ('Miller', '404 Cedar St', '555-6789', 'jessica.miller@email.com'),
+       ('Davis', '505 Walnut St', '555-1239', 'michael.davis@email.com'),
+       ('Martinez', '606 Pineapple St', '555-5671', 'sophia.martinez@email.com'),
+       ('Taylor', '707 Peach St', '555-9102', 'william.taylor@email.com');
 
 
-/*Commandes DELETE*/
+-- Insertion dans la table Projet
 
-DELETE
-FROM Employe;
-DELETE
-FROM Client;
-DELETE
+INSERT INTO Projet (NumeroProjet, Titre, DateDebut, Description, Budget, EmployesRequis, ClientIdentifiant)
+VALUES ('P001', 'Construction du Pont de Montréal', '2023-01-01', 'Projet de construction du Pont de Montréal',
+        100000.00, 5, 495),
+       ('P002', 'Projet de la Grande Muraille', '2023-02-15', 'Projet de restauration de la Grande Muraille de Chine',
+        80000.00, 3, 513),
+       ('P003', 'Exploration de Mars', '2023-03-10', 'Mission d\'exploration de la planète Mars', 5000.00, 1, 520),
+       ('P004', 'Projet de Fusion Nucléaire', '2023-04-05', 'Recherche sur la fusion nucléaire pour une énergie propre',
+        120000.00, 4, 522),
+       ('P005', 'Projet de Ville Intelligente', '2023-05-20',
+        'Développement d\'une ville intelligente avec des technologies avancées', 15000.00, 4, 531);
+
+
+INSERT INTO Projet (NumeroProjet, Titre, DateDebut, Description, Budget, EmployesRequis, ClientIdentifiant)
+VALUES ('P006', 'Projet de Colonisation Lunaire', '2023-06-15', 'Mission de colonisation de la Lune', 2000.00, 1,
+        590),
+       ('P007', 'Projet de Tunnel sous la Manche 2', '2023-07-01', 'Construction d\'un deuxième tunnel sous la Manche',
+        5000.00, 5, 656),
+       ('P008', 'Projet de Parc Éolien Offshore', '2023-08-10', 'Installation d\'un parc éolien en mer', 80000.00,
+        2, 807),
+       ('P009', 'Projet de Réhabilitation des Forêts Amazoniennes', '2023-09-05',
+        'Restauration des forêts amazoniennes', 3000.00, 2, 838),
+       ('P010', 'Projet de Conquête de l\'Antarctique', '2023-10-20',
+        'Expédition scientifique et exploration de l\'Antarctique', 1500.00, 4, 978);
+
+
+-- Insertion dans la table employe
+
+INSERT INTO Employe (Matricule, Nom, Prenom, DateNaissance, Email, Adresse, DateEmbauche, TauxHoraire, PhotoIdentite,
+                     Statut, ProjetId)
+VALUES ('E001', 'Dupont', 'Jean', '1980-03-15', 'jean.dupont@email.com', '123 Rue de la Paix, Ville', '2005-05-10',
+        25.50, 'https://this-person-does-not-exist.com/img/avatar-gen1188f4547f4194dd14c72d042450f56c.jpg', 'Permanent',
+        null),
+       ('E002', 'Martin', 'Sophie', '1985-07-20', 'sophie.martin@email.com', '456 Avenue du Bonheur, Ville',
+        '2010-02-18', 20.75,
+        'https://this-person-does-not-exist.com/img/avatar-gend0c90ca65328f06e6f61013008587267.jpg', 'Permanent', null),
+       ('E003', 'Dubois', 'Pierre', '1992-12-08', 'pierre.dubois@email.com', '789 Boulevard de l\'Avenir, Ville',
+        '2018-09-30', 18.00,
+        'https://this-person-does-not-exist.com/img/avatar-gen116a55d32b1b10e15bc98d31e8932164.jpg', 'Journalier',
+        null),
+       ('E004', 'Lefevre', 'Marie', '1988-05-22', 'marie.lefevre@email.com', '101 Rue de la Liberté, Ville',
+        '2013-11-05', 22.00,
+        'https://this-person-does-not-exist.com/img/avatar-gen11304603527c8e455108c2f7f48580b3.jpg', 'Permanent', null),
+       ('E005', 'Moreau', 'Thomas', '1995-08-17', 'thomas.moreau@email.com', '202 Avenue des Rêves, Ville',
+        '2020-04-12', 17.50,
+        'https://this-person-does-not-exist.com/img/avatar-gen11c0b5cdacc974362c8a820156ad5ee7.jpg', 'Journalier',
+        null),
+       ('E006', 'Roux', 'Julie', '1983-11-30', 'julie.roux@email.com', '303 Boulevard des Artistes, Ville',
+        '2007-07-22', 21.25,
+        'https://this-person-does-not-exist.com/img/avatar-genf6cc1c3ed1d56cc1282f661105bdb5ea.jpg', 'Permanent', null),
+       ('E007', 'Garcia', 'Antoine', '1990-04-05', 'antoine.garcia@email.com', '404 Rue de la Science, Ville',
+        '2015-09-15', 19.75,
+        'https://this-person-does-not-exist.com/img/avatar-gena73b3cc1c9d681add9efa722211f829d.jpg', 'Journalier',
+        null),
+       ('E008', 'Fournier', 'Camille', '1986-09-12', 'camille.fournier@email.com', '505 Avenue du Sport, Ville',
+        '2011-01-08', 24.00,
+        'https://this-person-does-not-exist.com/img/avatar-gen11c105feae581976833bf0fc32346b86.jpg', 'Journalier',
+        null),
+       ('E009', 'Lemoine', 'Luc', '1998-02-28', 'luc.lemoine@email.com', '606 Boulevard du Cinéma, Ville', '2021-06-25',
+        16.50, 'https://this-person-does-not-exist.com/img/avatar-gen22448aacd962bc19cb729989a32a4d69.jpg', 'Permanent',
+        null),
+       ('E010', 'Caron', 'Alice', '1981-06-10', 'alice.caron@email.com', '707 Rue de l\'Aventure, Ville', '2006-03-19',
+        23.50, 'https://this-person-does-not-exist.com/img/avatar-gene7d482174be4dbb9b4c980aa6ce05aa0.jpg',
+        'Journalier', null);
+
+-- Insertion dans la table assignation
+
+
+INSERT INTO Assignation (EmployeId, ProjetId, NbreHeures)
+VALUES ('Ca-1981-73', '495-13-2023', 20),
+       ('Du-1980-88', '513-93-2023', 30);
+
+
+-- Requete SQL
+
+-- Sélection des employés d'un projet spécifique :
+
+SELECT e.Nom, e.Prenom
+FROM Employe e
+         JOIN Projet p ON e.ProjetId = p.NumeroProjet
+WHERE p.NumeroProjet = 'VotreNumeroProjet';
+
+-- Liste des clients et de leurs projets associés :
+
+SELECT c.Nom AS Client, p.NumeroProjet, p.Titre
+FROM Client c
+         LEFT JOIN Projet p ON c.Identifiant = p.ClientIdentifiant;
+
+
+-- Calcul du budget total et des salaires totaux pour chaque projet :
+
+SELECT NumeroProjet, Titre, Budget, TotalSalaires
 FROM Projet;
+
+
+-- Liste des employés ayant un salaire supérieur à la moyenne :
+
+SELECT Nom, Prenom, TauxHoraire
+FROM Employe
+WHERE TauxHoraire > (SELECT AVG(TauxHoraire) FROM Employe);
+
+
+-- Insertion d'un nouveau client avec un projet associé :
+
+INSERT INTO Client (Nom, Adresse, NumeroTelephone, Email)
+VALUES ('NouveauClient', 'AdresseClient', '0123456789', 'client@example.com');
+
+INSERT INTO Projet (NumeroProjet, Titre, DateDebut, Description, Budget, EmployesRequis, ClientIdentifiant)
+VALUES ('NouveauProjet', 'TitreProjet', '2023-01-01', 'DescriptionProjet', 50000.00, 3,
+        (SELECT Identifiant FROM Client WHERE Nom = 'NouveauClient'));
+
+-- Suppression des employés qui ne sont pas assignés à un projet :
+
 DELETE
-FROM Assignation;
+FROM Employe
+WHERE ProjetId IS NULL;
 
-/*Commandes DROP TRIGGER*/
+-- Liste des projets en cours avec le nombre d'employés affectés :
 
-DROP TRIGGER IF EXISTS before_insert_employe_set_matricule;
-DROP TRIGGER IF EXISTS before_insert_employe_tauxhoraire_verification;
-DROP TRIGGER IF EXISTS before_insert_client_set_identifiant;
-DROP TRIGGER IF EXISTS before_insert_projet_set_numeroprojet;
-DROP TRIGGER IF EXISTS after_insert_assignation_attribute_to_employe;
+SELECT p.NumeroProjet, p.Titre, COUNT(e.Matricule) AS NombreEmployes
+FROM Projet p
+         LEFT JOIN Employe e ON p.NumeroProjet = e.ProjetId
+WHERE p.Statut = 'En cours'
+GROUP BY p.NumeroProjet, p.Titre;
 
-/*Commandes INSERT*/
+-- Calcul du budget total pour tous les projets d'un client spécifique :
 
-drop table if exists lol;
-create table lol
-(
-    lol int(32) default 398
-);
+SELECT c.Nom AS Client, SUM(p.Budget) AS BudgetTotal
+FROM Client c
+         JOIN Projet p ON c.Identifiant = p.ClientIdentifiant
+WHERE c.Nom = 'NomClient';
+
+-- Liste des employés avec leur âge :
+
+SELECT Nom,
+       Prenom,
+       DateNaissance,
+       YEAR(CURRENT_DATE) - YEAR(DateNaissance) - (RIGHT(CURRENT_DATE, 5) < RIGHT(DateNaissance, 5)) AS Age
+FROM Employe;
+
+-- obtenir une liste d'employés travaillant sur des projets dont le budget total est supérieur à la moyenne des budgets totaux de tous les projets
+
+SELECT e.Nom, e.Prenom, p.NumeroProjet, p.Titre, p.Budget
+FROM Employe e
+         JOIN Projet p ON e.ProjetId = p.NumeroProjet
+WHERE p.Budget > (SELECT AVG(Budget) FROM Projet);
+
+
+-- Manage DB
 
 select *
-from lol;
+from client;
+select *
+from employe;
+select *
+from projet;
+select *
+from assignation;
+select *
+from administrateur;
 
-INSERT INTO lol
-VALUES ();
 
-insert into lol
-values (3),
-       ();
+-- delete
+-- from administrateur;
 
-/*Table Employe*/
 
-INSERT INTO Employe (Matricule, Nom, Prenom, DateNaissance, Email, Adresse, DateEmbauche, TauxHoraire, Statut, ProjetId)
-VALUES ('', 'Doe', 'John', '1978-01-01', 'john.doe@example.com', '123 Main St', '2022-01-01', 20.0, 'Permanent',
-        '123-01-2023'),
-       ('', 'Smith', 'Jane', '1985-05-15', 'jane.smith@example.com', '456 Oak St', '2022-02-01', 18.5, 'Journalier',
-        '456-02-2023'),
-       ('', 'Johnson', 'Robert', '1990-09-10', 'robert.johnson@example.com', '789 Pine St', '2022-03-01', 22.0,
-        'Permanent', '789-03-2023');
 
-/*Table Client*/
 
-INSERT INTO Client (Identifiant, Nom, Adresse, NumeroTelephone, Email)
-VALUES (null, 'ABC Corporation', '10 Corporate Lane', '555-1234', 'abc@example.com'),
-       (null, 'XYZ Corporation', '20 Business Street', '555-5678', 'xyz@example.com'),
-       (null, 'LMN Company', '30 Enterprise Blvd', '555-9101', 'lmn@example.com');
 
-/*Table Projet*/
 
-INSERT INTO Projet (NumeroProjet, Titre, DateDebut, Description, Budget, EmployesRequis, TotalSalaires,
-                    ClientIdentifiant)
-VALUES (null, 'Project A', '2023-01-15', 'Description of Project A', 50000.00, 3, 0.00, 256),
-       (null, 'Project B', '2023-02-01', 'Description of Project B', 75000.00, 5, 0.00, 786),
-       (null, 'Project C', '2023-03-10', 'Description of Project C', 100000.00, 4, 0.00, 903);
 
-DESCRIBE Projet;
 
-/*Table Assignation*/
 
-INSERT INTO Assignation (EmployeId, ProjetId)
-VALUES ('DO-1978-25', '101-01-2023'),
-       ('SM-1985-42', '202-02-2023'),
-       ('JO-1990-17', '303-03-2023');
 
-/*TODO Faire en sorte qu'un projet a sa creation ai le statut en cours*/
 
-update employe set Statut = 'Permanent' where Nom =  'Doe';
+
+
+
