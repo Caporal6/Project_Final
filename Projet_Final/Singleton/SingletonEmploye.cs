@@ -20,7 +20,7 @@ namespace Projet_Final
         public SingletonEmploye()
         {
             liste = new ObservableCollection<EmployeC>();
-            con = new MySqlConnection("Server=cours.cegep3r.info;Database=a2023_420325ri_fabeq23;Uid=2204989;Pwd=2204989;");
+            con = new MySqlConnection("Server=cours.cegep3r.info;Database=a2023_420325ri_fabeq23;Uid=2130649;Pwd=2130649;");
         }
 
         // Retourne l'instance du singleton
