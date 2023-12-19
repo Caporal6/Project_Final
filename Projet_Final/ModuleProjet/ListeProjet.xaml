@@ -12,6 +12,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -19,11 +20,13 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <Button Grid.Row="0" Grid.Column="0" x:Name="retour" Click="retour_Click" Background="Gray" Foreground="White" FontWeight="Bold" Margin="10 10 0 0">Retour</Button>
+        <TextBlock Grid.Row="0" Grid.Column="0" Margin="10 10 0 0" FontWeight="Light" FontStyle="Italic">  code with ❤ by yousouf and xavier</TextBlock>
 
-        <TextBlock Grid.Row="1" Grid.Column="0" Text="Liste des projets" Style="{StaticResource SubheaderTextBlockStyle}" Margin="10"/>
+        <Button Grid.Row="1" Grid.Column="0" x:Name="retour" Click="retour_Click" Background="Gray" Foreground="White" FontWeight="Bold" Margin="10 10 0 0">Retour</Button>
 
-        <GridView Grid.Row="2" Grid.Column="0" x:Name="gvListeProjet" ItemClick="gvListeProjet_ItemClick" SelectionChanged="gvListeProjet_SelectionChanged" IsItemClickEnabled="True" ItemsSource="{x:Bind listeProjetsClient}">
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Liste des projets" Style="{StaticResource SubheaderTextBlockStyle}" Margin="10"/>
+
+        <GridView Grid.Row="3" Grid.Column="0" x:Name="gvListeProjet" ItemClick="gvListeProjet_ItemClick" SelectionChanged="gvListeProjet_SelectionChanged" IsItemClickEnabled="True" ItemsSource="{x:Bind listeProjetsClient}">
             <GridView.ItemTemplate>
                 <DataTemplate x:DataType="local:ProjetClient">
                     <GridViewItem>

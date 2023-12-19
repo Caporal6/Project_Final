@@ -12,6 +12,9 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using Google.Protobuf.WellKnownTypes;
+using Microsoft.UI;
+using System.Text.RegularExpressions;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -21,40 +24,123 @@ namespace Projet_Final
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class Ajouter_Client : Page
+    public sealed partial class Ajouter_Client : ContentDialog
     {
         public Ajouter_Client()
         {
             this.InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
+
+            bool formValid = true;
+
+
             if (txtNom.Text == "")
             {
-                Nom.Text = "Erreur: Entrez un nom";
-            }
-            else if (txtAdresse.Text == "")
-            {
-                Adresse.Text = "Erreur: Entrez une adresse";
-            }
-            else if (txtTelephone.Text == "")
-            {
-                Telephone.Text = "Erreur: Entrez un numero de Telephone";
-            }
-            else if (txtEmail.Text == "")
-            {
-                Email.Text = "Erreur: Entrez un email";
+
+                tbxNomErr.Text = "Le nom est obligatoire";
+                tbxNomErr.Visibility = Visibility.Visible;
+                formValid = formValid & false;
             }
             else
             {
-                SingletonClient.getInstance().ajouter_Client(txtNom.Text, txtAdresse.Text, txtTelephone.Text, txtEmail.Text);
+                tbxNomErr.Visibility = Visibility.Collapsed;
+                formValid = formValid & true;
+            }
+
+
+            if (txtAdresse.Text == "")
+            {
+                txtAdresseErr.Text = "L'adresse est obligatoire";
+                txtAdresseErr.Visibility = Visibility.Visible;
+                formValid = formValid & false;
+
+            }
+            else
+            {
+                txtAdresseErr.Visibility = Visibility.Collapsed;
+                formValid = formValid & true;
+            }
+
+
+            if (txtTelephone.Text == "")
+            {
+
+                txtTelephoneErr.Text = "Le numero de telephone est obligatoire";
+                txtTelephoneErr.Visibility = Visibility.Visible;
+                formValid = formValid & false;
+            }
+            else
+            {
+
+                string phonePattern = @"^\d{10}$";
+                Regex regex = new Regex(phonePattern);
+
+                if (regex.IsMatch(txtTelephone.Text.Trim()) == false)
+                {
+                    txtTelephoneErr.Text = "Entrer un numero de telephone valide";
+                    txtTelephoneErr.Visibility = Visibility.Visible;
+                    formValid = formValid & false;
+                }
+                else
+                {
+                    txtTelephoneErr.Visibility = Visibility.Collapsed;
+                    formValid = formValid & true;
+                }
             }
 
 
 
+            if (txtEmail.Text == "")
+            {
+                txtEmailErr.Text = "L'email est obligatoire";
+                txtEmailErr.Visibility = Visibility.Visible;
+                formValid = formValid & false;
+            }
+            else
+            {
+                string pattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
+                Regex regex = new Regex(pattern);
+
+                if (regex.IsMatch(txtEmail.Text.Trim()) == false)
+                {
+                    txtEmailErr.Text = "Entrer un email valide";
+                    txtEmailErr.Visibility = Visibility.Visible;
+                    formValid = formValid & false;
+                }
+                else
+                {
+                    txtEmailErr.Visibility = Visibility.Collapsed;
+                    formValid = formValid & true;
+                }
+            }
 
 
+            if (formValid)
+            {
+
+                SingletonClient.getInstance().ajouter_Client(txtNom.Text, txtAdresse.Text, txtTelephone.Text, txtEmail.Text);
+
+                this.Hide();
+
+                ContentDialog dialog = new ContentDialog();
+
+                dialog.XamlRoot = mainGrid.XamlRoot;
+                dialog.Title = "Information";
+                dialog.CloseButtonText = "OK";
+                dialog.Content = "Client ajouter avec success";
+
+                var result = await dialog.ShowAsync();
+
+            }
+
+        }
+
+        private void fermer_Click(object sender, RoutedEventArgs e)
+        {
+            this.Hide();
         }
     }
 }

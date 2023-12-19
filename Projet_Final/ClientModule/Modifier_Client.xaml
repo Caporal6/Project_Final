@@ -13,17 +13,20 @@
 
     <StackPanel>
 
+        <Button x:Name="fermer" Click="fermer_Click">Femer le formulaire</Button>
+        
+
         <TextBox Header="Nom: " x:Name="tbxNom"></TextBox>
-        <TextBlock x:Name="tbxNomErr"></TextBlock>
+        <TextBlock Visibility="Collapsed" x:Name="tbxNomErr" Foreground="Red"></TextBlock>
         
         <TextBox Header="Adresse: " x:Name="tbxAdresse"></TextBox>
-        <TextBlock x:Name="tbxAdresseErr"></TextBlock>
-        
-        <TextBox Header="Numéro de Téléphone: " x:Name="tbxNum"></TextBox>
-        <TextBlock x:Name="tbxNumErr"></TextBlock>
-        
-        <TextBox Header="Email: " x:Name="tbxEmail"></TextBox>
-        <TextBlock x:Name="tbxEmailErr"></TextBlock>
+        <TextBlock Visibility="Collapsed" x:Name="tbxAdresseErr" Foreground="Red"></TextBlock>
+
+        <TextBox Header="Numéro de Téléphone: "  x:Name="tbxNum"></TextBox>
+        <TextBlock x:Name="tbxNumErr" Foreground="Red" Visibility="Collapsed"></TextBlock>
+
+        <TextBox Header="Email: "  x:Name="tbxEmail"></TextBox>
+        <TextBlock x:Name="tbxEmailErr" Foreground="Red" Visibility="Collapsed"></TextBlock>
         
     </StackPanel>
 </ContentDialog>

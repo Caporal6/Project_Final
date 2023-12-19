@@ -11,6 +11,7 @@
 
     <Grid x:Name="mainGrid" Background="White">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -19,21 +20,21 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <Border x:Name="listProjetBorder" BorderThickness="3" CornerRadius="8" Grid.Row="0" Grid.Column="0"  HorizontalAlignment="Center" VerticalAlignment="Center" Height="250" Width="250"  BorderBrush="LightGray" Background="#FFFFFFFF" Margin="0 0 2 0">
+        <Border x:Name="listProjetBorder" BorderThickness="3" CornerRadius="8" Grid.Row="1" Grid.Column="0"  HorizontalAlignment="Center" VerticalAlignment="Center" Height="250" Width="250"  BorderBrush="LightGray" Background="#FFFFFFFF" Margin="0 0 2 0">
             <StackPanel x:Name="listProjet" Orientation="Vertical" Background="White" Height="250" Width="250" IsTapEnabled="True" Tapped="listProjet_Tapped">
 
-                <FontIcon FontSize="40" FontFamily="Segoe MDL2 Assets" Glyph="&#xF0E3;"/>
+                <FontIcon Margin="0 80 0 10 " FontSize="40" FontFamily="Segoe MDL2 Assets" Glyph="&#xF0E3;"/>
 
-                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">Liste de Projet</TextBlock>
+                <TextBlock FontWeight="Medium" VerticalAlignment="Center" HorizontalAlignment="Center">Liste des Projets</TextBlock>
 
             </StackPanel>
         </Border>
 
-        <Border x:Name="ajouterProjetBorder"  BorderThickness="3" CornerRadius="8" Grid.Row="0" Grid.Column="1"  HorizontalAlignment="Left" VerticalAlignment="Center" Height="250" Width="250"  BorderBrush="LightGray" Background="#FFFFFFFF" Margin="0 2 0 0">
+        <Border x:Name="ajouterProjetBorder"  BorderThickness="3" CornerRadius="8" Grid.Row="1" Grid.Column="1"  HorizontalAlignment="Left" VerticalAlignment="Center" Height="250" Width="250"  BorderBrush="LightGray" Background="#FFFFFFFF" Margin="0 2 0 0">
             <StackPanel x:Name="ajouterProjet" Background="White" Height="250" Width="250"  IsTapEnabled="True" Tapped="ajouterProjet_Tapped">
-                <FontIcon FontSize="40"  FontFamily="Segoe MDL2 Assets"  Glyph="&#xE710;"/>
+                <FontIcon FontSize="40" Margin="0 80 0 10 "  FontFamily="Segoe MDL2 Assets"  Glyph="&#xE710;"/>
 
-                <TextBlock VerticalAlignment="Center"  HorizontalAlignment="Center">Ajouter un Projet</TextBlock>
+                <TextBlock VerticalAlignment="Center" FontWeight="Medium" HorizontalAlignment="Center">Ajouter un Projet</TextBlock>
             </StackPanel>
         </Border>
 

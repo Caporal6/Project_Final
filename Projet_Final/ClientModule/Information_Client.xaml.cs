@@ -6,6 +6,7 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Projet_Final.EmployeModule;
+using Projet_Final.Singleton;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -28,6 +29,15 @@ namespace Projet_Final
         public Information_Client()
         {
             this.InitializeComponent();
+
+            if (SingletonAdministrateur.GetInstance().online())
+            {
+                modifierClient.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                modifierClient.Visibility = Visibility.Collapsed;
+            }
         }
 
 
@@ -68,7 +78,18 @@ namespace Projet_Final
 
               SingletonClient.getInstance().modifier_Client(tbId.Text,dialog.Nom, dialog.Adresse, dialog.Num, dialog.Email);
 
-                Client newClient = new Client(Convert.ToInt32(tbId.Text), dialog.Nom, dialog.Adresse, dialog.Num, dialog.Email);
+              Client newClient = new Client(Convert.ToInt32(tbId.Text), dialog.Nom, dialog.Adresse, dialog.Num, dialog.Email);
+
+                ContentDialog dialog2 = new ContentDialog();
+                dialog2.XamlRoot = stkpnl.XamlRoot;
+
+                dialog2.Title = "Information";
+                dialog2.CloseButtonText = "OK";
+                dialog2.Content = "Modification effectuer avec success";
+
+                dialog.Hide();
+
+                var result2 = await dialog2.ShowAsync();
 
                 Frame.Navigate(typeof(Information_Client), newClient);
             }

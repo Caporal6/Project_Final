@@ -17,6 +17,16 @@ namespace Projet_Final.Classes
         public int NbreHeures { get; set; }
         public double Salaire { get; set; }
 
+        public string TauxHorraireString
+        {
+            get { return TauxHoraire.ToString()+"$"; }
+        }
+
+        public string SalaireString
+        {
+            get { return Salaire.ToString() + "$"; }
+        }
+
         public string ToStringCSV()
         {
             return $"{Matricule}; {Nom}; {Prenom}; {TauxHoraire}; {PhotoIdentite}; {Statut}; {NbreHeures}; {Salaire}";

@@ -75,7 +75,7 @@ namespace Projet_Final
                 TitreTextBlock.Text = projet.Titre;
                 DateDebutTextBlock.Text = "Date de Début: " + projet.DateDebut.ToString("dd MMMM yyyy");
                 DescriptionTextBlock.Text = projet.Description;
-                BudgetTextBlock.Text = projet.Budget.ToString();
+                BudgetTextBlock.Text = projet.Budget.ToString()+"$";
                 EmployesRequisTextBlock.Text = projet.EmployesRequis.ToString();
                 TotalSalairesTextBlock.Text = projet.TotalSalaires.ToString();
                 ClientIdentifiantTextBlock.Text = projetClient.NomClient.ToString();

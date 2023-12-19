@@ -24,18 +24,18 @@
         <Border x:Name="listEmployeBorder" BorderThickness="3" CornerRadius="8" Grid.Row="0" Grid.Column="0"  HorizontalAlignment="Center" VerticalAlignment="Center" Height="250" Width="250"  BorderBrush="LightGray" Background="#FFFFFFFF" Margin="0 0 2 0">
             <StackPanel x:Name="listClient" Orientation="Vertical" Background="White" Height="250" Width="250" IsTapEnabled="True" Tapped="listClient_Tapped">
 
-                <FontIcon FontSize="40" FontFamily="Segoe MDL2 Assets" Glyph="&#xF0E3;"/>
+                <FontIcon Margin="0 80 0 10 " FontSize="40" FontFamily="Segoe MDL2 Assets" Glyph="&#xF0E3;"/>
 
-                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">Liste des Client</TextBlock>
+                <TextBlock VerticalAlignment="Center" FontWeight="Medium" HorizontalAlignment="Center">Liste des Clients</TextBlock>
 
             </StackPanel>
         </Border>
 
-        <Border  BorderThickness="3" CornerRadius="8" Grid.Row="0" Grid.Column="1"  HorizontalAlignment="Left" VerticalAlignment="Center" Height="250" Width="250"  BorderBrush="LightGray" Background="#FFFFFFFF" Margin="0 2 0 0">
+        <Border x:Name="ajouterClientBorder"  BorderThickness="3" CornerRadius="8" Grid.Row="0" Grid.Column="1"  HorizontalAlignment="Left" VerticalAlignment="Center" Height="250" Width="250"  BorderBrush="LightGray" Background="#FFFFFFFF" Margin="0 2 0 0">
             <StackPanel x:Name="ajouterClient" Background="White" Height="250" Width="250"  IsTapEnabled="True" Tapped="ajouterClient_Tapped">
-                <FontIcon FontSize="40"  FontFamily="Segoe MDL2 Assets"  Glyph="&#xE710;"/>
+                <FontIcon Margin="0 80 0 10 " FontSize="40"  FontFamily="Segoe MDL2 Assets"  Glyph="&#xE710;"/>
 
-                <TextBlock VerticalAlignment="Center"  HorizontalAlignment="Center">Ajouter un Client</TextBlock>
+                <TextBlock VerticalAlignment="Center" FontWeight="Medium" HorizontalAlignment="Center">Ajouter un Client</TextBlock>
             </StackPanel>
         </Border>
 

@@ -103,7 +103,7 @@
                                             <!--TauxHoraire-->
                                             <StackPanel Orientation="Vertical">
                                                 <TextBlock Text="Taux horraire" Foreground="Gray" FontSize="12" Margin="12,8,12,0" Grid.Row="2" />
-                                                <TextBlock x:Name="tbTauxHorraire" Text="{x:Bind TauxHoraire}" FontSize="15" Margin="12,2,12,0" Grid.Row="1" />
+                                                <TextBlock x:Name="tbTauxHorraire" Text="{x:Bind TauxHorraireString}" FontSize="15" FontWeight="Bold" Margin="12,2,12,0" Grid.Row="1" />
                                             </StackPanel>
 
 
@@ -111,14 +111,14 @@
                                             <!--Budget du projet-->
                                             <StackPanel Orientation="Vertical">
                                                 <TextBlock Text="Nombre d'heures travaillées" Foreground="Gray" FontSize="12" Margin="12,8,12,0" Grid.Row="2" />
-                                                <TextBlock x:Name="tbNbreHeures" Text="{x:Bind NbreHeures}" FontSize="15" Margin="12,2,12,12" Grid.Row="2" />
+                                                <TextBlock x:Name="tbNbreHeures" Text="{x:Bind NbreHeures}" FontSize="15" FontWeight="Bold" Margin="12,2,12,12" Grid.Row="2" />
                                             </StackPanel>
 
 
                                             <!--Date du projet-->
                                             <StackPanel Orientation="Vertical">
                                                 <TextBlock Text="Salaire" Foreground="Gray" FontSize="12" Margin="12,8,12,0" Grid.Row="2" />
-                                                <TextBlock x:Name="tbSalaire" Text="{x:Bind Salaire}" FontSize="15" Margin="12,2,12,12" Grid.Row="2" />
+                                                <TextBlock x:Name="tbSalaire" Text="{x:Bind SalaireString}" FontWeight="Bold" FontSize="15" Margin="12,2,12,12" Grid.Row="2" />
                                             </StackPanel>
 
                                         </StackPanel>
